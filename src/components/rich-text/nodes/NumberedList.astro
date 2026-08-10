@@ -1,0 +1,12 @@
+---
+import type { RichTextNode } from '@/types';
+import Node from '../Node.astro';
+
+const { node } = Astro.props;
+---
+
+<ol class="my-6 ml-6 list-decimal">
+  {
+    node.children.map((child: RichTextNode) => (<Node node={child} />))
+  }
+</ol>

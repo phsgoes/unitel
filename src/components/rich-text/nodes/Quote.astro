@@ -1,0 +1,16 @@
+---
+import type { RichTextNode } from '@/types';
+import Node from '../Node.astro';
+
+const { node } = Astro.props;
+---
+
+<blockquote
+  class="my-8 border-l-4 border-zinc-300 pl-6 italic"
+>
+  {
+    node.children.map((child: RichTextNode) => (
+      <Node node={child} />
+    ))
+  }
+</blockquote>

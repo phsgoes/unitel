@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import type { LocalImageProps, RemoteImageProps } from 'astro:assets';
+
+type AstroImageProps = LocalImageProps| RemoteImageProps;
+type ObjectFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
+type ObjectPosition = string;
+
+export interface Props
+  extends Omit<AstroImageProps, 'alt'> {
+  alt: string;
+  sizes?: string;
+  zoomMargin?: number;
+  objectFit?: ObjectFit;
+  objectPosition?: ObjectPosition;
+  imageClass?: string;
+  class?: string;
+}
+
+const {
+  zoomMargin = 30,
+  objectFit = 'cover',
+  objectPosition = 'center',
+  sizes,
+  class: className,
+  imageClass,
+  alt = '',
+  ...imageProps
+} = Astro.props as Props;
+---
+
+<span
+  class:list={['image-zoom', className]}
+  data-image-zoom
+  data-image-zoom-margin={zoomMargin}
+>
+  <Image
+    {...(imageProps as AstroImageProps)}
+    alt={alt}
+    class={imageClass}
+    data-image-zoom-source
+    role="button"
+    tabindex="0"
+    aria-label={`Ampliar imagem: ${alt}`}
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    sizes={sizes}
+    loading="lazy"
+    decoding="async"
+    format="avif"
+    style={{
+      ...(objectFit ? { objectFit } : {}),
+      ...(objectPosition ? { objectPosition } : {}),
+    }}
+  />
+</span>
+
+<style>
+  .image-zoom {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .image-zoom :global(img) {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  [data-image-zoom-source] {
+    cursor: zoom-in;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  [data-image-zoom-source]:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+</style>

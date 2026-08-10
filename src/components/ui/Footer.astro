@@ -1,0 +1,221 @@
+---
+import { Icon } from 'astro-icon/components'
+
+const { pathname } = Astro.url
+const isActive = (href: string | undefined) => {
+  if (!href) return
+  const currentPath = pathname.replace(/\/$/, '')
+  const targetPath = href.replace(/\/$/, '')
+  return currentPath === targetPath
+}
+
+export interface FooterColumn<T> {
+  label: string
+  children?: T[]
+}
+
+export interface FooterItem {
+  id?: string
+  label: string
+  to?: string | undefined
+  icon?: string
+  target?: '_blank' | '_self' | '_parent' | '_top' | string
+}
+
+const columns: FooterColumn<FooterItem>[] = [
+  {
+    label: 'Unitel',
+    children: [
+      {
+        label: 'Home',
+        to: '/',
+        icon: 'mdi:home',
+      },
+      {
+        label: 'Sobre',
+        to: '/sobre',
+        icon: 'mdi:book-open-page-variant-outline',
+      },
+      {
+        label: 'Soluções',
+        to: '/solucoes',
+        icon: 'mdi:rocket-launch-outline',
+      },
+      {
+        label: 'Portfólio',
+        to: '/portfolio',
+        icon: 'mdi:folder-open-outline',
+      },
+      {
+        label: 'Blog',
+        to: '/blog',
+        icon: 'mdi:newspaper-variant-outline',
+      },
+      {
+        label: 'Contato',
+        to: '/contato',
+        icon: 'mdi:contacts-outline',
+      },
+    ],
+  },
+  {
+    label: 'Siga-nos nas redes',
+    children: [
+      {
+        id: 'instagram',
+        label: 'Instagram',
+        icon: 'mdi:instagram',
+        to: 'https://www.instagram.com/uniteltelecom_/',
+      },
+      {
+        id: 'linkedin',
+        label: 'LinkedIn',
+        icon: 'mdi:linkedin',
+        to: 'https://www.linkedin.com/company/uniteltelecomvca',
+      },
+      {
+        id: 'x',
+        label: 'X (Twitter)',
+        icon: 'x',
+        to: 'https://x.com/uniteltelecom_',
+      },
+    ],
+  },
+  {
+    label: 'Contato',
+    children: [
+      {
+        label: 'Praça Joaquim Correia, Centro, Vitória da Conquista',
+        icon: 'mdi:map-marker',
+        to: 'https://www.google.com/maps/place/Unitel+Telecom/@-14.8491661,-40.8396598,17z/data=!3m1!4b1!4m6!3m5!1s0x7463a4b531fcd4d:0x9a8f24ad4398e324!8m2!3d-14.8491713!4d-40.8370849!16s%2Fg%2F1tdbwz27?hl=pt-BR&entry=ttu&g_ep=EgoyMDI2MDEyMS4wIKXMDSoASAFQAw%3D%3D',
+        target: '_blank',
+      },
+      {
+        label: '(77) 2101-3300',
+        icon: 'mdi:phone-message-outline',
+        to: 'tel:+557721013300',
+      },
+      {
+        label: 'atendimento@uniteltelecom.com.br',
+        icon: 'mdi:at',
+        to: 'mailto:atendimento@uniteltelecom.com.br',
+      },
+    ],
+  },
+]
+
+const { class: className = '' } = Astro.props
+---
+
+<footer class:list={[className]}>
+  <div
+    role="separator"
+    class="flex items-center align-center text-center w-full flex-row">
+    <div class="border-default w-full border-solid border-t"></div>
+    <div class="font-medium text-default flex mx-3 whitespace-nowrap">
+      <svg
+        viewBox="0 0 135.46667 135.46667"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        class="w-5 h-5"
+        ><path
+          d="m 99.462444,31.201244 h 4.749876 l 3.77195,0.42233 3.21315,0.70388 2.79404,0.84469 2.79405,1.12623 2.79404,1.40779 2.37493,1.54856 1.67643,1.26701 1.95583,1.68935 1.81613,1.83012 1.53671,1.9709 1.53674,2.25246 1.39702,2.53402 1.25731,2.95636 0.69852,2.11167 0.6985,2.95637 0.41911,2.81557 0.27941,3.23793 0.1397,3.94179 v 37.306366 l -0.1397,0.14079 H 123.0721 l -0.1397,-0.14079 -0.1397,-8.446711 -0.13971,-20.13137 -0.2794,-11.825425 -0.2794,-2.95634 -0.55882,-2.81558 -0.9779,-2.95635 -1.11762,-2.25246 -0.97791,-1.54857 -0.97792,-1.26701 -1.53673,-1.68935 -1.81613,-1.4078 -2.23523,-1.267 -2.23523,-0.98545 -2.51464,-0.70389 -2.79405,-0.42234 h -4.610156 l -2.93375,0.42234 -2.65433,0.70389 -2.09554,0.84467 -2.09552,1.12624 -1.67643,1.26701 -1.53673,1.40779 -1.53673,1.9709 -1.25731,2.11167 -1.11762,2.67481 -0.8382,3.51946 -0.27942,2.67481 -0.13969,6.05349 -0.41911,30.548985 -0.13971,5.349581 -6.28659,0.14079 h -5.72778 l -0.13972,-0.14079 -0.1397,-14.640981 V 63.017254 l 0.41911,-4.36416 0.69851,-3.51945 0.83821,-2.95636 1.11763,-2.6748 1.1176,-2.25247 1.53673,-2.53401 1.53673,-1.9709 1.53672,-1.68934 1.81613,-1.83014 1.95582,-1.54856 2.51464,-1.68934 3.77196,-1.97091 3.49256,-1.26701 2.65434,-0.70389 3.07344,-0.56311 z"
+          fill="currentColor"></path><path
+          d="M -0.14517908,31.131385 H 11.729502 l 0.139703,0.27941 v 23.88906 l 0.139702,19.139185 0.139702,3.77195 0.279403,2.79405 0.558809,2.09554 0.698511,1.67642 1.257319,1.67643 1.257319,1.25731 1.816128,1.25732 1.95583,1.11762 2.794042,1.11761 2.654341,0.69851 2.654341,0.41911 1.257319,0.13971 h 4.889575 l 2.933744,-0.27941 3.771958,-0.83822 2.654341,-0.97791 2.235233,-1.11761 2.374937,-1.67643 1.676426,-1.53672 1.257319,-1.67643 0.977915,-1.95583 0.698505,-2.51464 0.27941,-1.81612 0.1397,-1.67643 0.1397,-5.44839 V 31.271085 l 0.13971,-0.1397 h 11.73498 l 0.13969,0.1397 0.13971,34.92553 V 77.23309 l -0.13971,2.65433 -0.5588,4.05136 -0.69852,2.51465 -1.25732,2.65432 -1.25731,1.95585 -1.25732,1.67642 -1.81612,2.09554 -1.67643,1.67642 -1.53673,1.25732 -2.09553,1.53672 -2.235232,1.25732 -2.374936,1.11761 -2.933745,0.97793 -3.352851,0.8382 -3.492554,0.55882 -3.073447,0.27939 h -5.86749 l -4.191064,-0.4191 -3.632255,-0.6985 -3.492553,-0.97792 -2.933745,-1.11762 -2.654341,-1.257311 -2.235233,-1.397029 -1.6764261,-1.25732 -1.816128,-1.67643 -2.095532,-2.09553 -1.257319,-1.53673 -1.25732,-1.81612 -1.117616,-2.09553 -0.83821298,-2.51464 -0.558809,-3.21314 -0.279404,-3.35285 z"
+          fill="currentColor"></path>
+      </svg>
+    </div>
+    <div class="border-default w-full border-solid border-t"></div>
+  </div>
+  <div class="py-8 lg:py-12 border-b border-default">
+    <div class="mx-auto w-full max-w-ui px-4 py-12 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-10">
+        {
+          columns.map((column) => (
+            <div class="space-y-4">
+              <h3 class="text-sm font-semibold text-foreground">
+                {column.label}
+              </h3>
+              {Array.isArray(column.children) && !!column.children.length && (
+                <ul class="space-y-3">
+                  {column.children.map((item) => (
+                    <li>
+                      {column.label === 'Unitel' && (
+                        <a
+                          href={item.to}
+                          class:list={[
+                            isActive(item.to) && 'text-primary',
+                            'flex items-start gap-3 text-sm text-muted-foreground hover:text-foreground transition',
+                          ]}
+                          aria-label={item.label}>
+                          {item.icon && (
+                            <Icon
+                              name={item.icon}
+                              aria-hidden="true"
+                              class="h-4 w-4 shrink-0 mt-0.5"
+                            />
+                          )}
+                          <span>{item.label}</span>
+                        </a>
+                      )}
+                      {column.label === 'Siga-nos nas redes' && (
+                        <a
+                          href={item.to}
+                          target="item.target"
+                          class="flex items-start gap-3 text-sm text-muted-foreground hover:text-foreground transition"
+                          aria-label={item.label}
+                          data-social-link={item.id}>
+                          {item.icon && (
+                            <Icon
+                              name={item.icon}
+                              aria-hidden="true"
+                              class="h-4 w-4 shrink-0 mt-0.5"
+                            />
+                          )}
+                          <span>{item.label}</span>
+                        </a>
+                      )}
+                      {column.label === 'Contato' && (
+                        <a
+                          href={item.to}
+                          target="item.target"
+                          class="flex items-start gap-3 text-sm text-muted-foreground hover:text-foreground transition"
+                          aria-label={item.label}>
+                          {item.icon && (
+                            <Icon
+                              name={item.icon}
+                              aria-hidden="true"
+                              class="h-4 w-4 shrink-0 mt-0.5"
+                            />
+                          )}
+                          <span>{item.label}</span>
+                        </a>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+  <div
+    class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-4 lg:flex lg:items-center lg:justify-between lg:gap-x-3">
+    <div
+      class="lg:flex-1 flex items-center justify-center lg:justify-end gap-x-1.5 lg:order-3">
+      <p class="font-handwritten text-red-600 dark:text-white">
+        Jesus é o Único Caminho
+      </p>
+    </div>
+    <div class="mt-3 lg:mt-0 lg:order-2 flex items-center justify-center"></div>
+    <div
+      class="flex items-center justify-center lg:justify-start lg:flex-1 gap-x-1.5 mt-3 lg:mt-0 lg:order-1">
+      <p class="text-sm text-muted">
+        Unitel Telecom • © {new Date().getFullYear()}
+      </p>
+    </div>
+  </div>
+</footer>

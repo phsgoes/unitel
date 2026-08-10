@@ -1,0 +1,198 @@
+---
+import { Icon } from 'astro-icon/components'
+import LogoUnitel from './LogoUnitel.astro'
+import ThemeToggle from './ThemeToggle.astro'
+
+export interface NavItem {
+  label: string
+  to: string
+  description?: string
+  icon?: string
+}
+
+export const navigationItems: NavItem[] = [
+  { label: 'Home', to: '/', icon: 'mdi:home', description: 'Página Inicial' },
+  {
+    label: 'Sobre',
+    to: '/sobre',
+    icon: 'mdi:book-open-page-variant-outline',
+    description: 'Sobre a Unitel',
+  },
+  {
+    label: 'Soluções',
+    to: '/solucoes',
+    // icon: 'mdi:rocket-launch-outline',
+    icon: 'mdi:lightbulb-on',
+    description: 'Soluções para sua empresa',
+  },
+  {
+    label: 'Portfólio',
+    to: '/portfolio',
+    icon: 'mdi:folder-open-outline',
+    description: 'Portfólio',
+  },
+  {
+    label: 'Blog',
+    to: '/blog',
+    icon: 'mdi:newspaper-variant-outline',
+    description: 'Blog',
+  },
+  {
+    label: 'Contato',
+    to: '/contato',
+    icon: 'mdi:contacts-outline',
+    description: 'Contato',
+  },
+]
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/'
+
+function isActive(path: string): boolean {
+  const normalizedPath = path.replace(/\/$/, '') || '/'
+  return currentPath === normalizedPath
+}
+---
+
+<header
+  transition:name="page-header"
+  class="backdrop-blur border-default h-(--ui-header-height) sticky top-0 z-50 bg-transparent border-0">
+  <div
+    class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-(--ui-header-height)">
+    <div class="flex items-center z-50">
+      <a href="/" aria-label="Home">
+        <LogoUnitel class="w-auto h-6 shrink-0" />
+      </a>
+    </div>
+
+    <div class="flex items-center gap-4 z-50">
+      <nav class="hidden lg:block" aria-label="Desktop Navigation">
+        <ul class="flex items-center gap-6 text-sm font-medium">
+          {
+            navigationItems.slice(1).map((item) => {
+              const active = isActive(item.to)
+              return (
+                <li>
+                  <a
+                    href={item.to}
+                    aria-current={active ? 'page' : undefined}
+                    class:list={[
+                      'transition-colors duration-200 hover:text-primary',
+                      active ? 'text-primary font-semibold' : 'text-default',
+                    ]}>
+                    {item.label}
+                  </a>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </nav>
+
+      <ThemeToggle />
+
+      <button
+        type="button"
+        id="mobile-menu-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="rounded-md p-1.5 text-default hover:bg-elevated lg:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-primary relative z-50">
+        <Icon name="mdi:menu" id="icon-menu" class="h-6 w-6 shrink-0 block" />
+        <Icon
+          name="mdi:close"
+          id="icon-close"
+          class="h-6 w-6 shrink-0 hidden"
+        />
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="hidden fixed inset-0 h-screen z-40 bg-default pt-(--ui-header-height) lg:hidden">
+    <nav class="flex-1 w-full">
+      <ul class="flex h-[80vh] flex-col justify-evenly gap-0">
+        {
+          navigationItems.map((item) => {
+            const active = isActive(item.to)
+            return (
+              <li class="h-full">
+                <a
+                  href={item.to}
+                  aria-current={active ? 'page' : undefined}
+                  aria-label={item.description ?? item.label}
+                  class:list={[
+                    'group relative h-full flex items-center justify-center gap-4 px-4 py-3 transition-colors duration-300 motion-reduce:transition-none',
+                    active
+                      ? 'text-primary font-semibold'
+                      : 'text-muted hover:text-highlighted',
+                  ]}>
+                  {item.icon && (
+                    <Icon name={item.icon} class="h-6 w-6 shrink-0" />
+                  )}
+                  <span class="text-base">{item.label}</span>
+                  <span
+                    class:list={[
+                      'absolute bottom-0 left-4 right-4 h-px bg-current origin-center transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100 motion-reduce:transition-none motion-reduce:transform-none',
+                      active ? 'scale-x-100' : 'scale-x-0',
+                    ]}
+                  />
+                </a>
+              </li>
+            )
+          })
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  function setupMobileMenu() {
+    const toggle = document.getElementById(
+      'mobile-menu-toggle',
+    ) as HTMLButtonElement | null
+    const menu = document.getElementById('mobile-menu')
+    const iconMenu = document.getElementById('icon-menu')
+    const iconClose = document.getElementById('icon-close')
+
+    if (!toggle || !menu) return
+
+    // Remove old listener to avoid duplication on navigation
+    toggle.replaceWith(toggle.cloneNode(true))
+    const newToggle = document.getElementById(
+      'mobile-menu-toggle',
+    ) as HTMLButtonElement
+    const newIconMenu = document.getElementById('icon-menu')
+    const newIconClose = document.getElementById('icon-close')
+
+    newToggle.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const isHidden = menu.classList.contains('hidden')
+
+      if (isHidden) {
+        menu.classList.remove('hidden')
+        newIconMenu?.classList.add('hidden')
+        newIconMenu?.classList.remove('block')
+        newIconClose?.classList.remove('hidden')
+        newIconClose?.classList.add('block')
+        document.body.style.overflow = 'hidden'
+        newToggle.setAttribute('aria-expanded', 'true')
+        newToggle.setAttribute('aria-label', 'Close menu')
+      } else {
+        menu.classList.add('hidden')
+        newIconMenu?.classList.remove('hidden')
+        newIconMenu?.classList.add('block')
+        newIconClose?.classList.add('hidden')
+        newIconClose?.classList.remove('block')
+        document.body.style.overflow = ''
+        newToggle.setAttribute('aria-expanded', 'false')
+        newToggle.setAttribute('aria-label', 'Open menu')
+      }
+    })
+  }
+
+  // Bind on DOM initialization and re-bind on Astro View Transitions
+  document.addEventListener('DOMContentLoaded', setupMobileMenu)
+  document.addEventListener('astro:page-load', setupMobileMenu)
+</script>

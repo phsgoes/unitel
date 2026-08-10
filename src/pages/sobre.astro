@@ -1,0 +1,209 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro'
+import ImageZoom from '@/components/ui/ImageZoom.astro'
+
+const timelineItems = [
+  {
+    id: "jun-2008",
+    date: "Jun 2008",
+    title: "Founding in a Garage",
+    description: "Aether Tech was born out of a shared ambition to simplify cloud infrastructure. Operating out of a small garage, our founders wrote the first line of code that would eventually power millions of microservices worldwide.",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80",
+    alt: "Team collaborating"
+  },
+  {
+    id: "set-2012",
+    date: "Set 2012",
+    title: "Series A & Global Expansion",
+    description: "Securing $12M in Series A funding enabled us to expand our core engineering team and open our first international office in London, accelerating adoption across Europe.",
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=80",
+    alt: "Engineers working"
+  },
+  {
+    id: "abr-2013",
+    date: "Abr 2013",
+    title: "Launching Aether Engine v1.0",
+    description: "Our flagship product hit general availability, introducing real-time edge synchronization to enterprise developers and setting a new benchmark for low-latency delivery.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1000&q=80",
+    alt: "Data analytics UI"
+  },
+  {
+    id: "jul-2019",
+    date: "Jul 2019",
+    title: "Going Fully Distributed",
+    description: "Transitioning to a remote-first organization allowed us to hire top-tier talent across 30+ countries, driving diversity and rapid innovation across all timezones.",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1000&q=80",
+    alt: "Modern tech office"
+  },
+  {
+    id: "dez-2020",
+    date: "Dez 2020",
+    title: "Automated Security Suite",
+    description: "Integrated continuous threat monitoring and zero-trust architecture into our core offering, ensuring automated compliance for fintech and healthcare enterprise partners.",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1000&q=80",
+    alt: "Cybersecurity dashboard"
+  },
+  {
+    id: "out-2022",
+    date: "Out 2022",
+    title: "AI Engine Integration",
+    description: "Pioneered generative workflow copilots within the developer ecosystem, automating routine deployment tasks and reducing incident response times by 65%.",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80",
+    alt: "Abstract AI visual"
+  },
+  {
+    id: "nov-2024",
+    date: "Nov 2024",
+    title: "Crossing 10M Active Users",
+    description: "A massive milestone: over ten million active developers trust Aether daily for deployment, monitoring, and workflow automation.",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1000&q=80",
+    alt: "Server room grid"
+  },
+  {
+    id: "presente",
+    date: "Hoje em dia",
+    title: "Autonomous Cloud Management",
+    description: "Today, our focus centers on self-healing server infrastructure, letting teams ship code effortlessly without worrying about cluster orchestration or dynamic scaling.",
+    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=80",
+    alt: "Modern workplace setup"
+  },
+  {
+    id: "futuro",
+    date: "Nosso futuro",
+    title: "Quantum Compute Bridging",
+    description: "We are building the hybrid interfaces that will connect classical cloud environments directly with quantum computing nodes, paving the way for the next computational revolution.",
+    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1000&q=80",
+    alt: "Futuristic quantum visual"
+  }
+]
+---
+<PageLayout title="Sobre">
+  <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative border-b border-default py-12.5">
+      <h1 class="text-3xl font-bold text-highlighted sm:text-4xl">Conheça nossa história</h1>
+      <p class="mt-2 text-lg text-muted">
+        Veja cada um dos passos que tomamos para chegar até aqui
+      </p>
+    </div>
+  </div>
+  <section class="relative isolate text-gray-900 dark:text-white">
+    <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="grid grid-cols-1 gap-y-24 lg:grid-cols-12 lg:gap-x-12">
+        
+        <!-- Sticky Navigation -->
+        <aside class="sticky top-0 z-30 flex w-full flex-row items-center overflow-x-auto bg-white/80 py-4 backdrop-blur-md border-b border-gray-200 dark:bg-gray-900/80 dark:border-gray-800 lg:top-8 lg:col-span-3 lg:h-[calc(100dvh-4rem)] lg:flex-col lg:items-start lg:justify-center lg:border-b-0 lg:py-0">
+          <nav class="flex flex-row space-x-6 min-w-max lg:flex-col lg:space-x-0 lg:space-y-6">
+            {timelineItems.map((item, index) => (
+              <a
+                href={`#${item.id}`}
+                data-timeline-link={item.id}
+                class={`timeline-nav-item text-sm transition-colors duration-200 ${
+                  index === 0
+                    ? "active text-indigo-600 font-semibold dark:text-indigo-400"
+                    : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white font-medium"
+                }`}
+              >
+                {item.date}
+              </a>
+            ))}
+          </nav>
+        </aside>
+
+        <!-- Scrollable Timeline Content -->
+        <main class="lg:col-span-9">
+          {timelineItems.map((item, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <div
+                id={item.id}
+                data-timeline-section
+                class="flex min-h-dvh/2 w-full flex-col justify-center py-12 lg:py-24"
+              >
+                <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+                  <!-- Text Block -->
+                  <div class={isEven ? "order-1" : "order-1 lg:order-2"}>
+                    <span class="text-sm font-bold tracking-wider text-indigo-600 dark:text-indigo-400 uppercase">
+                      {item.date}
+                    </span>
+                    <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                      {item.title}
+                    </h2>
+                    <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+                      {item.description}
+                    </p>
+                  </div>
+                  
+                  <!-- Sticky Image Block -->
+                  <div class={`lg:sticky lg:top-24 ${isEven ? "order-2" : "order-2 lg:order-1"}`}>
+                    <ImageZoom
+                      src={item.image}
+                      alt={item.alt}
+                      width={1040}
+                      height={693}
+                      imageClass="w-full rounded-2xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 dark:ring-white/10"
+                    />
+                    {/* <img
+                      src={item.image}
+                      alt={item.alt}
+                      class="w-full rounded-2xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 dark:ring-white/10"
+                    /> */}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </main>
+
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<script>
+  function setupScrollSpy() {
+    const sections = document.querySelectorAll<HTMLElement>("[data-timeline-section]");
+    const navLinks = document.querySelectorAll<HTMLAnchorElement>("[data-timeline-link]");
+
+    if (!sections.length || !navLinks.length) return;
+
+    const activeClasses = ["text-indigo-600", "font-semibold", "dark:text-indigo-400"];
+    const inactiveClasses = ["text-gray-500", "hover:text-gray-900", "dark:text-gray-400", "dark:hover:text-white", "font-medium"];
+
+    const observerOptions: IntersectionObserverInit = {
+      root: null,
+      // Target a horizontal line near the center of the viewport
+      rootMargin: "-40% 0px -40% 0px",
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const activeId = entry.target.getAttribute("id");
+
+          navLinks.forEach((link) => {
+            const linkId = link.getAttribute("data-timeline-link");
+            if (linkId === activeId) {
+              link.classList.add(...activeClasses);
+              link.classList.remove(...inactiveClasses);
+              
+              // Scroll active link into view on horizontal mobile nav
+              link.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            } else {
+              link.classList.remove(...activeClasses);
+              link.classList.add(...inactiveClasses);
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  // Initial execution
+  setupScrollSpy();
+
+  // Re-run if Astro View Transitions are active
+  document.addEventListener("astro:page-load", setupScrollSpy);
+</script>

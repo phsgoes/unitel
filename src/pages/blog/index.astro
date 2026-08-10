@@ -1,0 +1,64 @@
+---
+// src/pages/blog/index.astro
+import BlogLayout from '@/layouts/BlogLayout.astro'
+import BlogCard from '@/components/ui/BlogCard.astro'
+import Pagination from '@/components/ui/Pagination.astro'
+import SearchInput from '@/components/ui/SearchInput.astro'
+import SearchController from '@/components/ui/SearchController.astro'
+
+import { getPosts, getPostsCount } from '@/services/posts'
+import { PAGE_SIZE } from '@/consts'
+
+const posts = await getPosts()
+const totalPosts = await getPostsCount()
+const totalPages = Math.ceil(totalPosts / PAGE_SIZE)
+---
+
+<BlogLayout
+  title="Blog - Nuxt SaaS template"
+  description="Discover the latest insights, tutorials, and updates from our team.">
+  <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header com Busca integrada -->
+    <div class="relative border-b border-default py-12.5">
+      <div
+        class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-highlighted sm:text-4xl">Blog</h1>
+          <p class="mt-2 text-lg text-muted">
+            Discover the latest insights, tutorials, and updates from our team.
+          </p>
+        </div>
+
+        <!-- Input de busca -->
+        <SearchInput />
+      </div>
+    </div>
+
+    <!-- Posts grid com id para o controlador -->
+    <div class="mt-8 pb-24 space-y-12">
+      <div
+        id="posts-grid"
+        class="flex flex-col gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-16">
+        {
+          posts.map((post) => (
+            <BlogCard post={post} featured={posts[0].title === post.title} />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Container da paginação com ID para ocultação dinâmica -->
+  {
+    totalPages > 1 && (
+      <div
+        id="pagination-container"
+        class="w-full max-w-(--ui-container) mx-auto mb-8 px-4 sm:px-6 lg:px-8">
+        <Pagination currentPage={1} totalPages={totalPages} />
+      </div>
+    )
+  }
+
+  <!-- Script que processa a lógica do Fuse.js -->
+  <SearchController />
+</BlogLayout>

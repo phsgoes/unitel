@@ -1,0 +1,28 @@
+---
+const { node } = Astro.props
+
+let classes = ''
+
+if (node.code)
+  classes += ' rounded bg-zinc-100 p-0.5 font-mono dark:bg-amber-800'
+
+if (node.bold) classes += ' font-semibold'
+
+if (node.italic) classes += ' italic'
+
+if (node.underline) classes += ' underline'
+
+if (node.strikethrough) classes += ' line-through'
+---
+
+{
+  node.code ? (
+    <code class={classes}>{node.text}</code>
+  ) : node.bold ? (
+    <strong class={classes}>{node.text}</strong>
+  ) : node.italic ? (
+    <em class={classes}>{node.text}</em>
+  ) : (
+    <span class={classes}>{node.text}</span>
+  )
+}

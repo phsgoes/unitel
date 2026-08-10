@@ -1,0 +1,433 @@
+---
+---
+<div
+  class="image-zoom-provider"
+  data-image-zoom-provider
+>
+  <dialog
+    class="image-zoom__dialog"
+    data-image-zoom-dialog
+    aria-label="Visualização ampliada da imagem"
+  >
+    <div
+      class="image-zoom__viewport"
+      data-image-zoom-viewport
+    >
+      <div
+        class="image-zoom__target"
+        data-image-zoom-target-wrapper
+        role="button"
+        tabindex="0"
+        aria-label="Fechar imagem ampliada"
+      >
+        <img
+          data-image-zoom-target
+          alt=""
+          decoding="async"
+          draggable="false"
+        />
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<style>
+  .image-zoom-provider {
+    position: relative;
+    z-index: 9999;
+  }
+
+  .image-zoom__dialog {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .image-zoom__dialog::backdrop {
+    background: transparent;
+  }
+
+  .image-zoom__viewport {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .image-zoom__target {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    transform-origin: top left;
+    pointer-events: auto;
+    cursor: zoom-out;
+    transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+
+  .image-zoom__target:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  .image-zoom__target img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    background: transparent;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .image-zoom__target {
+      transition-duration: 1ms;
+    }
+  }
+</style>
+
+<script>
+  type ZoomState = | 'closed' | 'opening' | 'open' | 'closing';
+  interface Rect {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  }
+  interface ZoomGeometry {
+    source: Rect;
+    target: Rect;
+    initialTransform: string;
+  }
+
+  const controllerKey = '__imageZoomController';
+  type ImageZoomController = {
+    destroy: () => void;
+  };
+
+  const existingController = (window as Window & {
+    [controllerKey] ? : ImageZoomController;
+  })[controllerKey];
+
+  if (existingController) existingController.destroy();
+
+  const initialize = () => {
+    const provider = document.querySelector < HTMLElement > ('[data-image-zoom-provider]');
+    if (!provider) return;
+    const dialog = provider.querySelector < HTMLDialogElement > ('[data-image-zoom-dialog]');
+    const targetWrapper = provider.querySelector < HTMLElement > ('[data-image-zoom-target-wrapper]');
+    const target = provider.querySelector < HTMLImageElement > ('[data-image-zoom-target]');
+
+    if (!dialog || !targetWrapper || !target) {
+      console.error('[ImageZoomProvider] Required DOM elements are missing.');
+      return;
+    }
+
+    const ANIMATION_DURATION = 380;
+    const ANIMATION_TIMING = 'cubic-bezier(0.16, 1, 0.3, 1)';
+    const SOURCE_HIDE_RATIO = 0.05;
+    const SOURCE_REVEAL_RATIO = 0.75;
+
+    let state: ZoomState = 'closed';
+    let activeSource: | HTMLImageElement | null = null;
+    let closeTimer = 0;
+    let sourceRevealTimer = 0;
+    let resizeFrame = 0;
+
+    const setSourceVisibility = (source: HTMLImageElement, visible: boolean) => {
+      source.style.visibility = visible ? '' : 'hidden';
+    };
+
+    const getRect = (element: HTMLElement): Rect => {
+      const rect = element.getBoundingClientRect();
+      return {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+      };
+    };
+
+    const getZoomMargin = (source: HTMLImageElement): number => {
+      const wrapper = source.closest < HTMLElement > ('[data-image-zoom]');
+      const value = Number.parseFloat(wrapper?.dataset.imageZoomMargin ?? '');
+      return Number.isFinite(value) ? value : 30;
+    };
+
+    const calculateTargetRect = (source: HTMLImageElement): Rect | null => {
+      const naturalWidth = source.naturalWidth;
+      const naturalHeight = source.naturalHeight;
+      if (!naturalWidth || !naturalHeight) return null;
+      const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
+      const viewportHeight = document.documentElement.clientHeight || window.innerHeight;
+      const margin = getZoomMargin(source);
+      const availableWidth = Math.max(1, viewportWidth - margin * 2);
+      const availableHeight = Math.max(1, viewportHeight - margin * 2);
+      const scale = Math.min(availableWidth / naturalWidth, availableHeight / naturalHeight);
+      const width = naturalWidth * scale;
+      const height = naturalHeight * scale;
+      return {
+        left: (viewportWidth - width) / 2,
+        top: (viewportHeight - height) / 2,
+        width,
+        height,
+      };
+    };
+
+    const calculateGeometry = (source: HTMLImageElement): ZoomGeometry | null => {
+      const sourceRect = getRect(source);
+      const targetRect = calculateTargetRect(source);
+      if (!targetRect) return null;
+      const scaleX = sourceRect.width / targetRect.width;
+      const scaleY = sourceRect.height / targetRect.height;
+      const scale = (scaleX + scaleY) / 2;
+      const translateX = sourceRect.left - targetRect.left;
+      const translateY = sourceRect.top - targetRect.top;
+      return {
+        source: sourceRect,
+        target: targetRect,
+        initialTransform: ['translate3d(', `${translateX}px,`, `${translateY}px,`, '0)', `scale(${scale})`, ].join(' '),
+      };
+    };
+
+    const setTargetGeometry = (geometry: ZoomGeometry) => {
+      targetWrapper.style.left = `${geometry.target.left}px`;
+      targetWrapper.style.top = `${geometry.target.top}px`;
+      targetWrapper.style.width = `${geometry.target.width}px`;
+      targetWrapper.style.height = `${geometry.target.height}px`;
+    };
+
+    const prepareTarget = (source: HTMLImageElement): boolean => {
+      const sourceUrl = source.currentSrc || source.src;
+      if (!sourceUrl) return false;
+      target.src = sourceUrl;
+      target.alt = source.alt;
+      return true;
+    };
+
+    const resetZoom = () => {
+      window.clearTimeout(closeTimer);
+      window.clearTimeout(sourceRevealTimer);
+      cancelAnimationFrame(resizeFrame);
+      if (activeSource) {
+        setSourceVisibility(activeSource, true);
+        activeSource.setAttribute('aria-expanded', 'false');
+      }
+      if (dialog.open) dialog.close();
+      targetWrapper.style.transition = 'none';
+      targetWrapper.style.transform = 'translate3d(0, 0, 0) scale(1)';
+      targetWrapper.style.left = '0';
+      targetWrapper.style.top = '0';
+      targetWrapper.style.width = '0';
+      targetWrapper.style.height = '0';
+      targetWrapper.style.transition = '';
+      activeSource = null;
+      state = 'closed';
+    };
+
+    const openZoom = async (source: HTMLImageElement) => {
+      if (state !== 'closed') return;
+      if (!source.complete) {
+        try {
+          await source.decode();
+        } catch {}
+      }
+      if (!source.naturalWidth || !source.naturalHeight) return;
+      if (!prepareTarget(source)) return;
+      if (!target.complete) {
+        try {
+          await target.decode();
+        } catch {}
+      }
+      if (!target.naturalWidth || !target.naturalHeight) return;
+
+      const geometry = calculateGeometry(source);
+
+      if (!geometry) return;
+      state = 'opening';
+      activeSource = source;
+      window.clearTimeout(closeTimer);
+      window.clearTimeout(sourceRevealTimer);
+      setSourceVisibility(source, true);
+      setTargetGeometry(geometry);
+      targetWrapper.style.transition = 'none';
+      targetWrapper.style.transform = geometry.initialTransform;
+      if (!dialog.isConnected) {
+        resetZoom();
+        return;
+      }
+      dialog.showModal();
+      source.setAttribute('aria-expanded', 'true');
+      void targetWrapper.offsetWidth;
+      targetWrapper.style.transition = `transform ${ANIMATION_DURATION}ms ${ANIMATION_TIMING}`;
+
+      requestAnimationFrame(() => {
+        if (state !== 'opening' || !dialog.isConnected) return;
+        targetWrapper.style.transform = 'translate3d(0, 0, 0) scale(1)';
+        state = 'open';
+        const hideDelay = ANIMATION_DURATION * SOURCE_HIDE_RATIO;
+        window.setTimeout(() => {
+          if (state !== 'open' || activeSource !== source) return;
+          setSourceVisibility(source, false);
+        }, hideDelay);
+        targetWrapper.focus({ preventScroll: true });
+      });
+    };
+
+    const closeZoom = () => {
+      if (state === 'closed' || state === 'closing' || !activeSource) return;
+      const source = activeSource;
+      if (!dialog.isConnected) {
+        resetZoom();
+        return;
+      }
+      state = 'closing';
+      window.clearTimeout(closeTimer);
+      window.clearTimeout(sourceRevealTimer);
+      const sourceRect = getRect(source);
+      const targetRect = getRect(targetWrapper);
+      if (!targetRect.width || !targetRect.height) {
+        resetZoom();
+        return;
+      }
+      const scaleX = sourceRect.width / targetRect.width;
+      const scaleY = sourceRect.height / targetRect.height;
+      const scale = (scaleX + scaleY) / 2;
+      const translateX = sourceRect.left - targetRect.left;
+      const translateY = sourceRect.top - targetRect.top;
+
+      targetWrapper.style.transition = 'none';
+      targetWrapper.style.transform = 'translate3d(0, 0, 0) scale(1)';
+      void targetWrapper.offsetWidth;
+      targetWrapper.style.transition = `transform ${ANIMATION_DURATION}ms ${ANIMATION_TIMING}`;
+
+      requestAnimationFrame(() => {
+        if (state !== 'closing' || !dialog.isConnected) return;
+        targetWrapper.style.transform = ['translate3d(', `${translateX}px,`, `${translateY}px,`, '0)', `scale(${scale})`, ].join(' ');
+      });
+      const revealDelay = ANIMATION_DURATION * SOURCE_REVEAL_RATIO;
+
+      sourceRevealTimer = window.setTimeout(() => {
+        if (state !== 'closing' || activeSource !== source) return;
+        setSourceVisibility(source, true);
+      }, revealDelay);
+
+      closeTimer = window.setTimeout(() => {
+        if (state !== 'closing') return;
+        if (dialog.isConnected && dialog.open) dialog.close();
+        setSourceVisibility(source, true);
+        source.setAttribute('aria-expanded', 'false');
+        targetWrapper.style.transition = 'none';
+        targetWrapper.style.transform = 'translate3d(0, 0, 0) scale(1)';
+        targetWrapper.style.left = '0';
+        targetWrapper.style.top = '0';
+        targetWrapper.style.width = '0';
+        targetWrapper.style.height = '0';
+        targetWrapper.style.transition = '';
+        activeSource = null;
+        state = 'closed';
+        if (source.isConnected) source.focus({ preventScroll: true });
+      }, ANIMATION_DURATION);
+    };
+
+    const handleClick = (event: MouseEvent) => {
+      const element = event.target;
+      if (!(element instanceof Element)) return;
+      const source = element.closest < HTMLImageElement > ('[data-image-zoom-source]');
+      if (source && source.isConnected && state === 'closed') {
+        void openZoom(source);
+        return;
+      }
+      if (state !== 'closed' && dialog.open && element.closest('[data-image-zoom-dialog]')) closeZoom();
+    };
+  
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const element = event.target;
+      if (element instanceof HTMLImageElement && element.matches('[data-image-zoom-source]')) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          void openZoom(element);
+        }
+        return;
+      }
+      if (state !== 'closed' && event.key === 'Escape') {
+        event.preventDefault();
+        closeZoom();
+        return;
+      }
+      if (state !== 'closed' && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        closeZoom();
+      }
+    };
+
+    const handleScroll = () => {
+      if (state !== 'closed') closeZoom();
+    };
+  
+    const handleResize = () => {
+      if (state !== 'open' || !activeSource) return;
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(() => {
+        if (!activeSource) return;
+        const geometry = calculateGeometry(activeSource);
+        if (!geometry) return;
+        targetWrapper.style.transition = 'none';
+        setTargetGeometry(geometry);
+        targetWrapper.style.transform = 'translate3d(0, 0, 0) scale(1)';
+        void targetWrapper.offsetWidth;
+        targetWrapper.style.transition = `transform ${ANIMATION_DURATION}ms ${ANIMATION_TIMING}`;
+      });
+    };
+  
+    const handleBeforeSwap = () => resetZoom();
+  
+    document.addEventListener('click', handleClick);
+    document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+    document.addEventListener('astro:before-swap', handleBeforeSwap);
+  
+    return {
+      destroy() {
+        resetZoom();
+        document.removeEventListener('click', handleClick);
+        document.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleResize);
+        document.removeEventListener('astro:before-swap', handleBeforeSwap);
+      },
+    };
+  };
+
+  const setup = () => {
+    const controller = initialize();
+    if (!controller) return;
+    (window as Window & {
+      [controllerKey] ? : ImageZoomController;
+    })[controllerKey] = controller;
+  };
+
+  setup();
+
+  document.addEventListener('astro:page-load', setup);
+</script>

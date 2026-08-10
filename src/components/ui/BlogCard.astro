@@ -1,0 +1,70 @@
+---
+import type { Post } from '@/types'
+import ImageWithSkeleton from './ImageWithSkeleton.astro'
+
+interface Props {
+  post: Post
+  featured?: boolean
+}
+
+const { post, featured = false } = Astro.props
+
+const publishedAt = new Intl.DateTimeFormat('pt-BR', {
+  dateStyle: 'long',
+}).format(new Date(post.publishedAt))
+---
+
+<article
+  class:list={[
+    'relative group/blog-post rounded-lg overflow-hidden flex flex-col p-0 outline-primary/25 has-[&>a:focus-visible]:outline-3 transition',
+    featured && 'lg:grid lg:grid-cols-2 lg:items-center gap-x-8 col-span-full',
+  ]}>
+  <a
+    href={`/blog/${post.slug}`}
+    aria-label={post.title}
+    class="focus:outline-none absolute inset-0"></a>
+
+  <ImageWithSkeleton
+    transition:name={`cover-${post.slug}`}
+    src={post.coverImage.url}
+    alt={post.alternativeText ?? post.title}
+    width={640}
+    height={360}
+    loading="lazy"
+    containerClass="relative overflow-hidden aspect-video w-full pointer-events-none shadow-sm rounded-lg"
+    class="image-content object-cover object-top w-full h-full transform transition-transform duration-300 group-hover/blog-post:scale-110"
+  />
+
+  <div
+    class:list={[
+      'min-w-0 flex-1 flex flex-col',
+      featured ? 'justify-center p-4 sm:p-6 lg:px-0' : 'p-4 sm:p-6',
+    ]}>
+    <div class="flex items-center gap-2 mb-2">
+      {
+        post.categories.map((category: { name: string }) => (
+          <span
+            class="inline-flex rounded-full bg-blue-100 px-3
+          mr-2 py-1 text-xs font-medium text-blue-700
+        dark:bg-blue-950 dark:text-blue-300">
+            {category.name}
+          </span>
+        ))
+      }
+      <time datetime={post.publishedAt} class="text-sm text-toned">
+        {publishedAt}
+      </time>
+    </div>
+
+    <h2 class="text-xl text-pretty font-semibold text-highlighted">
+      {post.title}
+    </h2>
+    <p class="mt-1 text-base text-pretty text-muted line-clamp-2">
+      {post.description}
+    </p>
+
+    <!-- <div class="pt-4 mt-auto flex flex-wrap gap-x-3 gap-y-1.5">
+      {post.authors.map((author) => <Author author={author} />)}
+    </div> -->
+  </div>
+</article>

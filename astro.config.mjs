@@ -1,5 +1,29 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from 'astro/config'
+import tailwindcss from '@tailwindcss/vite'
+import sitemap from '@astrojs/sitemap'
+import icon from 'astro-icon'
 
-// https://astro.build/config
-export default defineConfig({});
+export const SITE_URL = import.meta.env.PROD
+  ? 'https://phsgoes.github.io'
+  : 'http://localhost:4321'
+export const SITE_BASE = import.meta.env.PROD ? '/astro-blog' : '/'
+
+export default defineConfig({
+  site: SITE_URL,
+  base: SITE_BASE,
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  image: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'eu-west-2.graphassets.com' },
+      { protocol: 'https', hostname: 'upload.wikimedia.org' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'tailwindcss.com' },
+    ],
+  },
+
+  integrations: [icon({ iconDir: 'src/assets/icons' }), sitemap()],
+})

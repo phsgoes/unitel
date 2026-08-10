@@ -1,0 +1,210 @@
+---
+import BlogLayout from '@/layouts/BlogLayout.astro'
+import { Icon } from 'astro-icon/components'
+import TableOfContents from '@/components/ui/TableOfContents.astro'
+import RichText from '@/components/rich-text/RichText.astro'
+import ImageWithSkeleton from '@/components/ui/ImageWithSkeleton.astro'
+import BackButton from '@/components/ui/BackButton.astro'
+
+import { getPostSlugs, getAdjacentPosts } from '@/services/posts'
+import { getPost } from '@/services/post'
+
+import { extractTableOfContents, longDateFormat } from '@/utils'
+import type { Post } from '@/types'
+
+export const getStaticPaths = async () => {
+  const posts = await getPostSlugs()
+
+  return posts.map(({ slug }) => ({
+    params: { slug },
+  }))
+}
+
+const { slug } = Astro.params
+
+if (!slug) throw new Error('Faltou o slug...')
+
+const post: Post = await getPost(slug)
+
+if (!post) throw new Error(`Artigo não encontrado para o slug: ${slug}`)
+
+const { previousPost, nextPost } = await getAdjacentPosts(post.publishedAt)
+const toc = extractTableOfContents(post.body.raw)
+---
+
+<BlogLayout
+  title={post.title}
+  description={post.description}
+  image={post.coverImage?.url}
+  article={post}>
+  <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Post hero -->
+    <div class="relative border-b border-default py-8">
+      <BackButton />
+
+      <div
+        class="mb-2.5 text-sm font-semibold text-primary flex items-center gap-1.5">
+        {
+          Array.isArray(post.categories) && post.categories.length ? (
+            post.categories.map((category: { name: string }) => (
+              <span class="font-medium inline-flex items-center text-xs px-2 py-1 gap-1 rounded-md bg-primary/10 text-primary ring ring-inset ring-primary/25">
+                <span class="truncate">{category.name}</span>
+              </span>
+            ))
+          ) : (
+            <span class="font-medium inline-flex items-center text-xs px-2 py-1 gap-1 rounded-md bg-primary/10 text-primary ring ring-inset ring-primary/25">
+              <span class="truncate">Sem categoria</span>
+            </span>
+          )
+        }
+        <span class="text-muted">·</span>
+        <time datetime={post.publishedAt} class="text-muted"
+          >{longDateFormat(post.publishedAt)}</time
+        >
+      </div>
+
+      <div>
+        <div
+          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <h1
+            class="text-3xl sm:text-4xl text-pretty font-bold text-highlighted">
+            {post.title}
+          </h1>
+        </div>
+        <div class="text-lg text-pretty text-muted mt-4">
+          {post.description}
+        </div>
+      </div>
+    </div>
+
+    <!-- Content grid: article + "On this page" aside -->
+    <div class="flex flex-col lg:grid lg:grid-cols-10 lg:gap-10">
+      <div class="lg:col-span-8">
+        <div class="mt-8 pb-24 space-y-12">
+          <ImageWithSkeleton
+            transition:name={`cover-${post.slug}`}
+            transition:animate="initial"
+            src={post.coverImage.url}
+            alt={post.alternativeText ?? post.title}
+            width={965}
+            height={543}
+            loading="eager"
+            containerClass="relative overflow-hidden aspect-video w-full pointer-events-none shadow-lg rounded-2xl"
+            class="image-content mb-10 aspect-video w-full rounded-2xl object-cover"
+          />
+
+          <RichText document={post.body.raw} references={toc} />
+
+          <!-- Separator -->
+          <div
+            role="separator"
+            class="flex items-center align-center text-center w-full flex-row">
+            <div class="border-default w-full border-solid border-t"></div>
+          </div>
+
+          <!-- Prev / next post links -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {
+              previousPost && previousPost.slug ? (
+                <a
+                  href={`/blog/${previousPost.slug}`}
+                  class="group block px-6 py-8 rounded-lg border border-default hover:bg-elevated/50 outline-primary/25 focus-visible:outline-3 focus-visible:border-primary transition-colors">
+                  <div class="inline-flex items-center rounded-full p-1.5 bg-elevated group-hover:bg-primary/10 ring ring-accented mb-4 group-hover:ring-primary/50 transition">
+                    <Icon
+                      name="mdi:arrow-left"
+                      class="size-5 shrink-0 text-highlighted group-hover:text-primary transition-[color,translate] group-active:-translate-x-0.5 rtl:group-active:translate-x-0.5"
+                    />
+                  </div>
+                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">
+                    {previousPost?.title}
+                  </p>
+                  <p class="text-sm text-muted line-clamp-2">
+                    {previousPost?.description}
+                  </p>
+                </a>
+              ) : (
+                <a
+                  href="/blog"
+                  class="group block px-6 py-8 rounded-lg border border-default hover:bg-elevated/50 outline-primary/25 focus-visible:outline-3 focus-visible:border-primary transition-colors">
+                  <div class="inline-flex items-center rounded-full p-1.5 bg-elevated group-hover:bg-primary/10 ring ring-accented mb-4 group-hover:ring-primary/50 transition">
+                    <Icon
+                      name="mdi:newspaper-variant-outline"
+                      class="size-5 shrink-0 text-highlighted group-hover:text-primary transition-[color,translate] group-active:-translate-x-0.5 rtl:group-active:translate-x-0.5"
+                    />
+                  </div>
+                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">
+                    Lista de Posts
+                  </p>
+                  <p class="text-sm text-muted line-clamp-2">
+                    Leia todos os nossos posts
+                  </p>
+                </a>
+              )
+            }
+            {
+              nextPost && nextPost.slug ? (
+                <a
+                  href={`/blog/${nextPost.slug}`}
+                  class="group block px-6 py-8 rounded-lg border border-default hover:bg-elevated/50 outline-primary/25 focus-visible:outline-3 focus-visible:border-primary transition-colors text-end">
+                  <div class="inline-flex items-center rounded-full p-1.5 bg-elevated group-hover:bg-primary/10 ring ring-accented mb-4 group-hover:ring-primary/50 transition">
+                    <Icon
+                      name="mdi:arrow-right"
+                      class="size-5 shrink-0 text-highlighted group-hover:text-primary transition-[color,translate] group-active:translate-x-0.5 rtl:group-active:-translate-x-0.5"
+                    />
+                  </div>
+                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">
+                    {nextPost?.title}
+                  </p>
+                  <p class="text-sm text-muted line-clamp-2">
+                    {nextPost?.description}
+                  </p>
+                </a>
+              ) : (
+                <a
+                  href="/blog"
+                  class="group block px-6 py-8 rounded-lg border border-default hover:bg-elevated/50 outline-primary/25 focus-visible:outline-3 focus-visible:border-primary transition-colors">
+                  <div class="inline-flex items-center rounded-full p-1.5 bg-elevated group-hover:bg-primary/10 ring ring-accented mb-4 group-hover:ring-primary/50 transition">
+                    <Icon
+                      name="mdi:newspaper-variant-outline"
+                      class="size-5 shrink-0 text-highlighted group-hover:text-primary transition-[color,translate] group-active:-translate-x-0.5 rtl:group-active:translate-x-0.5"
+                    />
+                  </div>
+                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">
+                    Lista de Posts
+                  </p>
+                  <p class="text-sm text-muted line-clamp-2">
+                    Leia todos os nossos posts
+                  </p>
+                </a>
+              )
+            }
+          </div>
+        </div>
+      </div>
+
+      <TableOfContents items={toc} />
+    </div>
+  </div>
+</BlogLayout>
+
+<script>
+  function setupBackButton() {
+    const backBtn = document.getElementById(
+      'back-to-blog',
+    ) as HTMLAnchorElement | null
+    if (!backBtn) return
+
+    // Recupera a última página de listagem visitada pelo usuário
+    const lastBlogPath = sessionStorage.getItem('lastBlogPath')
+
+    if (lastBlogPath) {
+      backBtn.href = lastBlogPath
+    } else {
+      // Fallback caso o usuário tenha chegado de um link externo direto no post
+      backBtn.href = '/blog'
+    }
+  }
+
+  // Executa no carregamento inicial e a cada transição no Astro
+  document.addEventListener('astro:page-load', setupBackButton)
+</script>

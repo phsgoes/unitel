@@ -1,0 +1,72 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<button
+  type="button"
+  id="theme-toggle"
+  aria-label="Switch to dark mode"
+  class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-default hover:bg-elevated active:bg-elevated outline-inverted/25 focus-visible:outline-3 hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent p-1.5">
+  <Icon
+    name="mdi:moon-waning-crescent"
+    class="shrink-0 size-5 hidden dark:inline-block"
+  />
+  <Icon name="mdi:weather-sunny" class="shrink-0 size-5 dark:hidden" />
+</button>
+
+<script is:inline>
+  // Utility to obtain current resolved theme
+  function getPreferredTheme() {
+    const stored = localStorage.getItem('color-mode')
+    if (stored) return stored
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+  }
+
+  // Applies the theme class and syncs state
+  function applyTheme() {
+    const theme = getPreferredTheme()
+    const isDark = theme === 'dark'
+
+    document.documentElement.classList.toggle('dark', isDark)
+
+    // Update aria-label dynamically for accessibility
+    const toggleBtn = document.getElementById('theme-toggle')
+    if (toggleBtn) {
+      toggleBtn.setAttribute(
+        'aria-label',
+        isDark ? 'Switch to light mode' : 'Switch to dark mode',
+      )
+    }
+  }
+
+  // Toggles theme state on click
+  function toggleTheme() {
+    const currentTheme = getPreferredTheme()
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+
+    localStorage.setItem('color-mode', newTheme)
+    applyTheme()
+  }
+
+  // Initialize theme
+  applyTheme()
+
+  // Attach click handler (runs on initial load & after view transitions)
+  function setupThemeToggle() {
+    const toggleBtn = document.getElementById('theme-toggle')
+    if (toggleBtn && !toggleBtn.dataset.themeBound) {
+      toggleBtn.addEventListener('click', toggleTheme)
+      toggleBtn.dataset.themeBound = 'true'
+    }
+  }
+
+  setupThemeToggle()
+
+  // Handle Astro View Transitions re-renders smoothly
+  document.addEventListener('astro:after-swap', () => {
+    applyTheme()
+    setupThemeToggle()
+  })
+</script>

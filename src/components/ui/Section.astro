@@ -1,0 +1,36 @@
+---
+interface Props {
+  class?: string
+  as?: keyof HTMLElementTagNameMap
+  container?: boolean
+}
+
+const {
+  class: className = '',
+  as: Tag = 'section',
+  container = true,
+} = Astro.props
+---
+
+<Tag class:list={['relative', className]}>
+  {
+    container ? (
+      <div class="mx-auto w-full max-w-ui px-4 sm:px-6 lg:px-8">
+        <slot />
+      </div>
+    ) : (
+      <slot />
+    )
+  }
+</Tag>
+<!--
+<Section class="py-24">
+  <h2>Serviços</h2>
+</Section>
+
+<Section container={false}>
+  <div class="bg-primary">
+    ...
+  </div>
+</Section>
+-->

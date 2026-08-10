@@ -1,0 +1,12 @@
+---
+import { Image } from 'astro:assets';
+
+const { node } = Astro.props;
+---
+
+<Image
+  src={node.src}
+  alt={node.title}
+  width={node.width}
+  height={node.height}
+/>

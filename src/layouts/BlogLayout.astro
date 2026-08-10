@@ -1,0 +1,97 @@
+---
+import '@/styles/global.css'
+import { ClientRouter } from 'astro:transitions'
+import ArticleSchema from '@/components/seo/ArticleSchema.astro'
+import Header from '@/components/ui/Header.astro'
+import Footer from '@/components/ui/Footer.astro'
+import Main from '@/components/ui/Main.astro'
+import type { Post } from '@/types'
+
+interface Props {
+  title?: string
+  description?: string
+  image?: string
+  article?: Post
+}
+
+const {
+  title = 'Blog - Unitel Telecomunicações',
+  description = 'A Unitel é uma empresa de soluções na área de tecnologia da informação voltada a telecomunicações.',
+  image = 'https://saas-template-j898sqk9c-nuxt-js.vercel.app/_og/s/o_nz6by7.png',
+  article = undefined,
+} = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:locale" content="pt_BR" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+
+    <link rel="canonical" href={canonicalURL} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Your Site's Title"
+      href={new URL('rss.xml', Astro.site)}
+    />
+    <title>{title}</title>
+    {
+      article && (
+        <ArticleSchema
+          title={article.title}
+          description={article.description}
+          slug={article.slug}
+          publishedAt={article.publishedAt}
+          updatedAt={article.updatedAt}
+          coverImageUrl={article.coverImage?.url}
+        />
+      )
+    }
+    <ClientRouter fallback="swap" />
+  </head>
+  <body>
+    <Header />
+    <Main>
+      <slot />
+    </Main>
+
+    <Footer />
+    <script>
+      function saveBlogHistory() {
+        const path = window.location.pathname
+
+        // Normaliza removendo a barra no final, exceto se for a raiz
+        const cleanPath =
+          path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path
+
+        // Salva apenas rotas de listagem (ex: /blog ou /blog/page/3)
+        if (cleanPath === '/blog' || cleanPath.startsWith('/blog/page/')) {
+          sessionStorage.setItem('lastBlogListPath', cleanPath)
+        }
+      }
+
+      document.addEventListener('astro:page-load', saveBlogHistory)
+    </script>
+  </body>
+</html>

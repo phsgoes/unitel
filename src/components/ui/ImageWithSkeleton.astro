@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets'
+import type { ImageMetadata, UnresolvedImageTransform } from 'astro'
+import type { HTMLAttributes } from 'astro/types'
+
+// Support Remote string URLs, Local ImageMetadata, or Unresolved Image objects
+type ImageSrc =
+  | string
+  | ImageMetadata
+  | Promise<{ default: ImageMetadata }>
+  | UnresolvedImageTransform
+
+type Props = HTMLAttributes<'img'> & {
+  src: ImageSrc
+  alt: string
+  width?: number | `${number}`
+  height?: number | `${number}`
+  containerClass?: string
+  format?: string
+  loading?: 'lazy' | 'eager'
+  [key: string]: any // Allows spreading additional Astro <Image /> props
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className = '',
+  containerClass = '',
+  ...restProps
+} = Astro.props
+
+// Calculate aspect ratio dynamically if width & height are supplied
+const computedAspectRatio = width && height ? `${width} / ${height}` : undefined
+---
+
+<div
+  class={`image-container skeleton ${containerClass}`}
+  style={computedAspectRatio ? { aspectRatio: computedAspectRatio } : {}}>
+  <Image
+    src={src as any}
+    alt={alt}
+    width={width as any}
+    height={height as any}
+    class={`image-content ${className}`}
+    onload="this.closest('.image-container')?.classList.remove('skeleton')"
+    {...restProps}
+  />
+</div>
+
+<script>
+  // Immediately reveal cached images
+  document
+    .querySelectorAll<HTMLImageElement>('.image-container .image-content')
+    .forEach((img) => {
+      if (img.complete) {
+        img.closest('.image-container')?.classList.remove('skeleton')
+      }
+    })
+</script>
+
+<style>
+  @reference "@/styles/global.css";
+
+  /* Container background with high transparency */
+  .image-container.skeleton {
+    @apply bg-slate-900/3 dark:bg-white/3;
+  }
+
+  /* Light Theme Shimmer Overlay */
+  .image-container.skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.02) 20%,
+      rgba(0, 0, 0, 0.06) 60%,
+      transparent 100%
+    );
+    animation: shimmer 1.5s infinite;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  /* Dark Theme Shimmer Overlay */
+  .dark .image-container.skeleton::after {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.03) 20%,
+      rgba(255, 255, 255, 0.08) 60%,
+      transparent 100%
+    );
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+</style>

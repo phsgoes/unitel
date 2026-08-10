@@ -1,0 +1,32 @@
+---
+// src/components/BackButton.astro
+interface Props {
+  fallbackHref?: string;
+  class?: string;
+}
+
+const { fallbackHref = '/blog', class: className } = Astro.props;
+---
+
+<a
+  href={fallbackHref}
+  data-back-button
+  class={className ?? "mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-800 dark:text-gray-300 transition hover:text-gray-900 dark:hover:text-gray-100"}
+>
+  ← <slot>Voltar para o blog</slot>
+</a>
+
+<script>
+  function setupBackButton() {
+    const backButtons = document.querySelectorAll<HTMLAnchorElement>('[data-back-button]');
+    const lastListPath = sessionStorage.getItem('lastBlogListPath');
+
+    if (!lastListPath) return;
+
+    backButtons.forEach((btn) => {
+      btn.href = lastListPath;
+    });
+  }
+
+  document.addEventListener('astro:page-load', setupBackButton);
+</script>

@@ -1,0 +1,17 @@
+---
+import Text from './nodes/Text.astro';
+import Unknown from './nodes/Unknown.astro';
+import { registry } from './registry';
+
+const { node, references } = Astro.props;
+
+const Component =
+  node.text !== undefined
+    ? Text
+    : registry[node.type as keyof typeof registry] ?? Unknown;
+---
+
+<Component
+  node={node}
+  references={references}
+/>

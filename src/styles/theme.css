@@ -1,0 +1,329 @@
+@import './fonts.css';
+/* ------------------------------------------------------------------
+   Color mode
+   Class-based dark mode: add/remove the `.dark` class on <html>.
+   See src/layouts/BaseLayout.astro for the inline color-mode script.
+------------------------------------------------------------------- */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------
+   DESIGN TOKENS — cloned from the Nuxt UI SaaS template (Blog page)
+
+   The color system is expressed as raw oklch values (the exact palette
+   emitted by Nuxt UI v3) plus semantic aliases that resolve differently
+   in light and dark mode. Documented in STYLEGUIDE.md.
+------------------------------------------------------------------- */
+:root {
+  /* Layout */
+  --ui-container: 80rem; /* 1280px — page max-width */
+  --ui-header-height: 4rem; /* 64px */
+  --ui-radius: 0.25rem; /* 4px — base radius used by rounded-* utilities */
+
+  --ui-brand-unitel-color: oklch(49.082% 0.11448 248.592);
+  --ui-brand-comuniq-color: oklch(49.082% 0.11448 248.592);
+
+  /* Palette — primary (blue) */
+  --ui-color-primary-50: oklch(97% 0.014 254.604);
+  --ui-color-primary-100: oklch(93.2% 0.032 255.585);
+  --ui-color-primary-200: oklch(88.2% 0.059 254.128);
+  --ui-color-primary-300: oklch(80.9% 0.105 251.813);
+  --ui-color-primary-400: oklch(70.7% 0.165 254.624);
+  --ui-color-primary-500: oklch(62.3% 0.214 259.815);
+  --ui-color-primary-600: oklch(54.6% 0.245 262.881);
+  --ui-color-primary-700: oklch(48.8% 0.243 264.376);
+  --ui-color-primary-800: oklch(42.4% 0.199 265.638);
+  --ui-color-primary-900: oklch(37.9% 0.146 265.522);
+  --ui-color-primary-950: oklch(28.2% 0.091 267.935);
+
+  /* Palette — secondary (blue) */
+  --ui-color-secondary-50: var(--ui-color-primary-50);
+  --ui-color-secondary-100: var(--ui-color-primary-100);
+  --ui-color-secondary-200: var(--ui-color-primary-200);
+  --ui-color-secondary-300: var(--ui-color-primary-300);
+  --ui-color-secondary-400: var(--ui-color-primary-400);
+  --ui-color-secondary-500: var(--ui-color-primary-500);
+  --ui-color-secondary-600: var(--ui-color-primary-600);
+  --ui-color-secondary-700: var(--ui-color-primary-700);
+  --ui-color-secondary-800: var(--ui-color-primary-800);
+  --ui-color-secondary-900: var(--ui-color-primary-900);
+  --ui-color-secondary-950: var(--ui-color-primary-950);
+
+  /* Palette — success (green) */
+  --ui-color-success-50: oklch(98.2% 0.018 155.826);
+  --ui-color-success-100: oklch(96.2% 0.044 156.743);
+  --ui-color-success-200: oklch(92.5% 0.084 155.995);
+  --ui-color-success-300: oklch(87.1% 0.15 154.449);
+  --ui-color-success-400: oklch(79.2% 0.209 151.711);
+  --ui-color-success-500: oklch(72.3% 0.219 149.579);
+  --ui-color-success-600: oklch(62.7% 0.194 149.214);
+  --ui-color-success-700: oklch(52.7% 0.154 150.069);
+  --ui-color-success-800: oklch(44.8% 0.119 151.328);
+  --ui-color-success-900: oklch(39.3% 0.095 152.535);
+  --ui-color-success-950: oklch(26.6% 0.065 152.934);
+
+  /* Palette — info (blue) */
+  --ui-color-info-50: var(--ui-color-primary-50);
+  --ui-color-info-100: var(--ui-color-primary-100);
+  --ui-color-info-200: var(--ui-color-primary-200);
+  --ui-color-info-300: var(--ui-color-primary-300);
+  --ui-color-info-400: var(--ui-color-primary-400);
+  --ui-color-info-500: var(--ui-color-primary-500);
+  --ui-color-info-600: var(--ui-color-primary-600);
+  --ui-color-info-700: var(--ui-color-primary-700);
+  --ui-color-info-800: var(--ui-color-primary-800);
+  --ui-color-info-900: var(--ui-color-primary-900);
+  --ui-color-info-950: var(--ui-color-primary-950);
+
+  /* Palette — warning (yellow) */
+  --ui-color-warning-50: oklch(98.7% 0.026 102.212);
+  --ui-color-warning-100: oklch(97.3% 0.071 103.193);
+  --ui-color-warning-200: oklch(94.5% 0.129 101.54);
+  --ui-color-warning-300: oklch(90.5% 0.182 98.111);
+  --ui-color-warning-400: oklch(85.2% 0.199 91.936);
+  --ui-color-warning-500: oklch(79.5% 0.184 86.047);
+  --ui-color-warning-600: oklch(68.1% 0.162 75.834);
+  --ui-color-warning-700: oklch(55.4% 0.135 66.442);
+  --ui-color-warning-800: oklch(47.6% 0.114 61.907);
+  --ui-color-warning-900: oklch(42.1% 0.095 57.708);
+  --ui-color-warning-950: oklch(28.6% 0.066 53.813);
+
+  /* Palette — error (red) */
+  --ui-color-error-50: oklch(97.1% 0.013 17.38);
+  --ui-color-error-100: oklch(93.6% 0.032 17.717);
+  --ui-color-error-200: oklch(88.5% 0.062 18.334);
+  --ui-color-error-300: oklch(80.8% 0.114 19.571);
+  --ui-color-error-400: oklch(70.4% 0.191 22.216);
+  --ui-color-error-500: oklch(63.7% 0.237 25.331);
+  --ui-color-error-600: oklch(57.7% 0.245 27.325);
+  --ui-color-error-700: oklch(50.5% 0.213 27.518);
+  --ui-color-error-800: oklch(44.4% 0.177 26.899);
+  --ui-color-error-900: oklch(39.6% 0.141 25.723);
+  --ui-color-error-950: oklch(25.8% 0.092 26.042);
+
+  /* Palette — neutral (slate) */
+  --ui-color-neutral-50: oklch(98.4% 0.003 247.858);
+  --ui-color-neutral-100: oklch(96.8% 0.007 247.896);
+  --ui-color-neutral-200: oklch(92.9% 0.013 255.508);
+  --ui-color-neutral-300: oklch(86.9% 0.022 252.894);
+  --ui-color-neutral-400: oklch(70.4% 0.04 256.788);
+  --ui-color-neutral-500: oklch(55.4% 0.046 257.417);
+  --ui-color-neutral-600: oklch(44.6% 0.043 257.281);
+  --ui-color-neutral-700: oklch(37.2% 0.044 257.287);
+  --ui-color-neutral-800: oklch(27.9% 0.041 260.031);
+  --ui-color-neutral-900: oklch(20.8% 0.042 265.755);
+  --ui-color-neutral-950: oklch(12.9% 0.042 264.695);
+
+  /* Brand colors (light mode) */
+  --ui-brand-unitel: var(--ui-brand-unitel-color);
+  --ui-brand-comuniq: var(--ui-brand-comuniq-color);
+  --ui-logo: var(--ui-color-primary-500);
+  --ui-primary: var(--ui-color-primary-500);
+  --ui-secondary: var(--ui-color-secondary-500);
+  --ui-success: var(--ui-color-success-500);
+  --ui-info: var(--ui-color-info-500);
+  --ui-warning: var(--ui-color-warning-500);
+  --ui-error: var(--ui-color-error-500);
+
+  /* Semantic colors (light mode) */
+  --ui-text-dimmed: var(--ui-color-neutral-400);
+  --ui-text-muted: var(--ui-color-neutral-500);
+  --ui-text-toned: var(--ui-color-neutral-600);
+  --ui-text: var(--ui-color-neutral-700);
+  --ui-text-highlighted: var(--ui-color-neutral-900);
+  --ui-text-inverted: #fff;
+  --ui-bg: #fff;
+  --ui-bg-muted: var(--ui-color-neutral-50);
+  --ui-bg-elevated: var(--ui-color-neutral-100);
+  --ui-bg-accented: var(--ui-color-neutral-200);
+  --ui-bg-inverted: var(--ui-color-neutral-900);
+  --ui-border: var(--ui-color-neutral-200);
+  --ui-border-muted: var(--ui-color-neutral-200);
+  --ui-border-accented: var(--ui-color-neutral-300);
+  --ui-border-inverted: var(--ui-color-neutral-900);
+
+  --page-transition-duration: 350ms;
+  --image-transition-duration: 400ms;
+  --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  /* Brand colors (dark mode) */
+  --ui-brand-unitel: var(--ui-color-neutral-50);
+  --ui-brand-comuniq: var(--ui-color-neutral-50);
+  --ui-logo: var(--ui-color-neutral-50);
+  --ui-primary: var(--ui-color-primary-400);
+  --ui-secondary: var(--ui-color-secondary-400);
+  --ui-success: var(--ui-color-success-400);
+  --ui-info: var(--ui-color-info-400);
+  --ui-warning: var(--ui-color-warning-400);
+  --ui-error: var(--ui-color-error-400);
+
+  /* Semantic colors (dark mode) */
+  --ui-text-dimmed: var(--ui-color-neutral-500);
+  --ui-text-muted: var(--ui-color-neutral-400);
+  --ui-text-toned: var(--ui-color-neutral-300);
+  --ui-text: var(--ui-color-neutral-200);
+  --ui-text-highlighted: #fff;
+  --ui-text-inverted: var(--ui-color-neutral-900);
+  --ui-bg: var(--ui-color-neutral-900);
+  --ui-bg-muted: var(--ui-color-neutral-800);
+  --ui-bg-elevated: var(--ui-color-neutral-800);
+  --ui-bg-accented: var(--ui-color-neutral-700);
+  --ui-bg-inverted: #fff;
+  --ui-border: var(--ui-color-neutral-800);
+  --ui-border-muted: var(--ui-color-neutral-700);
+  --ui-border-accented: var(--ui-color-neutral-700);
+  --ui-border-inverted: #fff;
+}
+
+@theme {
+  --font-sans: 'Google Sans Flex', sans-serif;
+  --font-handwritten: 'Yellowtail', cursive;
+}
+
+@theme inline {
+  --color-brand-unitel: var(--ui-brand-unitel);
+  --color-brand-comuniq: var(--ui-brand-comuniq);
+  --color-default: var(--ui-bg);
+  --color-muted: var(--ui-text-muted);
+  --color-toned: var(--ui-text-toned);
+  --color-dimmed: var(--ui-text-dimmed);
+  --color-highlighted: var(--ui-text-highlighted);
+  --color-elevated: var(--ui-bg-elevated);
+  --color-inverted: var(--ui-bg-inverted);
+  --color-primary: var(--ui-primary);
+  --radius-sm: var(--ui-radius);
+}
+
+/* ------------------------------------------------------------------
+   Base styles
+------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    line-height: 1.5;
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--ui-bg);
+    color: var(--ui-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color-scheme: light;
+  }
+
+  .dark body {
+    color-scheme: dark;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Semantic utility overrides (Nuxt UI compatibility)
+
+   `bg-default` → --ui-bg, `text-default` → --ui-text, `border-default`
+   → --ui-border etc. Nuxt UI resolves these ambiguous names per-utility,
+   so we override the Tailwind-generated rules here.
+------------------------------------------------------------------- */
+@layer utilities {
+  .text-default {
+    color: var(--ui-text);
+  }
+  .hover\:text-default:hover {
+    color: var(--ui-text);
+  }
+  .text-inverted {
+    color: var(--ui-text-inverted);
+  }
+  .border-default {
+    border-color: var(--ui-border);
+  }
+  .ring-accented {
+    --tw-ring-color: var(--ui-border-accented);
+  }
+  .ring-inverted {
+    --tw-ring-color: var(--ui-border-inverted);
+  }
+  .outline-inverted\/25 {
+    outline-color: var(--ui-border-inverted);
+  }
+}
+
+/* --------------------------------------------------
+   1. PAGE FADE-SLIDE ANIMATIONS
+   -------------------------------------------------- */
+@keyframes fade-slide-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-40px); /* Subtle slide distance */
+  }
+}
+
+@keyframes fade-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px); /* Subtle slide distance */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Apply fade-slide to root page transitions */
+::view-transition-old(root) {
+  animation: var(--page-transition-duration) var(--transition-easing) both
+    fade-slide-out-left;
+}
+
+::view-transition-new(root) {
+  animation: var(--page-transition-duration) var(--transition-easing) both
+    fade-slide-in-right;
+}
+
+/* --------------------------------------------------
+   2. ISOLATED IMAGE ZOOM/MORPH ANIMATIONS
+   -------------------------------------------------- */
+@keyframes zoom-in-fade {
+  from {
+    opacity: 0.8;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zoom-out-fade {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+/* Cover images override root animations to morph seamlessly */
+::view-transition-group(cover-*) {
+  animation-duration: var(--image-transition-duration);
+  animation-timing-function: var(--transition-easing);
+}
+
+::view-transition-old(cover-*) {
+  animation: var(--image-transition-duration) var(--transition-easing) both
+    zoom-out-fade;
+}
+
+::view-transition-new(cover-*) {
+  animation: var(--image-transition-duration) var(--transition-easing) both
+    zoom-in-fade;
+}

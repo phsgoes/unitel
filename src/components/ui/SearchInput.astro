@@ -1,0 +1,63 @@
+---
+// src/components/SearchInput.astro
+import { Icon } from 'astro-icon/components'
+---
+
+<div class="relative w-full max-w-xl">
+  <div class="relative flex items-center">
+    <Icon
+      name="mdi:magnify"
+      class="pointer-events-none absolute ms-3.5 size-5 text-muted transition-colors"
+    />
+    <input
+      type="search"
+      id="blog-search-input"
+      placeholder="Buscar artigos..."
+      autocomplete="off"
+      class="w-full rounded-xl border border-default bg-zinc-50/50 py-2.5 pe-16 ps-10 text-sm text-highlighted outline-none placeholder:text-muted/70 transition-all focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20 dark:bg-zinc-900/50"
+    />
+    <div
+      class="pointer-events-none absolute inset-e-3 hidden items-center gap-1 sm:flex">
+      <kbd
+        id="search-kbd"
+        class="inline-flex h-5 select-none items-center gap-0.5 rounded border border-default bg-zinc-100 px-1.5 font-mono text-[10px] font-medium text-muted dark:bg-zinc-800">
+        <span id="kbd-symbol">Ctrl</span> + Space
+      </kbd>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupSearchShortcut() {
+    const input = document.getElementById(
+      'blog-search-input',
+    ) as HTMLInputElement | null
+    const kbdSymbol = document.getElementById('kbd-symbol')
+
+    if (kbdSymbol) {
+      const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.userAgent)
+      kbdSymbol.textContent = isMac ? '⌘' : 'Ctrl'
+    }
+
+    if (!input) return
+
+    function handleKeyDown(e: KeyboardEvent) {
+      // Atalho: Ctrl + Space ou Cmd + Space
+      if ((e.ctrlKey || e.metaKey) && e.code === 'Space') {
+        e.preventDefault()
+        input?.focus()
+        input?.select()
+      }
+
+      // Tecla ESC limpa e retira o foco do campo
+      if (e.key === 'Escape' && document.activeElement === input) {
+        input?.blur()
+      }
+    }
+
+    window.removeEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown)
+  }
+
+  document.addEventListener('astro:page-load', setupSearchShortcut)
+</script>

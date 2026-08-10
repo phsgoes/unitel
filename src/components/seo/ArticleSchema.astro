@@ -1,0 +1,59 @@
+---
+interface Props {
+  title: string
+  description: string
+  slug: string
+  publishedAt: string
+  updatedAt?: string
+  coverImageUrl?: string
+  authorName?: string
+}
+
+const {
+  title,
+  description,
+  slug,
+  publishedAt,
+  updatedAt,
+  coverImageUrl,
+  authorName = 'PHSCODE',
+} = Astro.props
+
+// Constrói a URL absoluta do post
+const postUrl = new URL(`/blog/${slug}/`, Astro.site).href
+const logoUrl = new URL('/logo.png', Astro.site).href // Coloque o caminho do seu logo em /public
+
+// Estrutura do JSON-LD para BlogPosting / Article
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': postUrl,
+  },
+  headline: title,
+  description: description,
+  image: coverImageUrl ? [coverImageUrl] : undefined,
+  datePublished: publishedAt,
+  dateModified: updatedAt || publishedAt,
+  author: {
+    // '@type': 'Person', // ou 'Organization'
+    '@type': 'Organization',
+    name: authorName,
+    url: Astro.site,
+  },
+  publisher: {
+    '@type': 'Organization',
+    // 'name': 'Seu Nome ou Nome do Blog',
+    name: authorName,
+    logo: {
+      '@type': 'ImageObject',
+      url: logoUrl,
+    },
+  },
+  inLanguage: 'pt-BR',
+}
+---
+
+<!-- Injeta o JSON-LD de forma segura diretamente no HTML -->
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

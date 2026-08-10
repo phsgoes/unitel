@@ -1,0 +1,44 @@
+---
+import '@/styles/global.css'
+import { ClientRouter } from 'astro:transitions'
+const { title = '404' } = Astro.props
+---
+
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+    <ClientRouter fallback="swap" />
+
+    <!-- Script Inline executado imediatamente antes do render -->
+    <script is:inline>
+      function applyTheme() {
+        const localStorageTheme = localStorage.getItem('theme')
+        const systemPrefersDark = window.matchMedia(
+          '(prefers-color-scheme: dark)',
+        ).matches
+
+        if (
+          localStorageTheme === 'dark' ||
+          (!localStorageTheme && systemPrefersDark)
+        ) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+      }
+
+      // 1. Executa na primeira renderização
+      applyTheme()
+
+      // 2. Re-executa após cada navegação via ClientRouter (View Transitions)
+      document.addEventListener('astro:after-swap', applyTheme)
+    </script>
+  </head>
+  <body class="h-full">
+    <slot />
+  </body>
+</html>

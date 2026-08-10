@@ -1,0 +1,16 @@
+---
+import Node from '../Node.astro';
+import type { RichTextNode } from '@/types';
+
+const { node, references } = Astro.props;
+---
+
+<div class="my-10 w-full overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+  <table class="w-full min-w-3xl border-collapse">
+    {
+      node.children?.map((child: RichTextNode) => (
+        <Node node={child} references={references} />
+      ))
+    }
+  </table>
+</div>
