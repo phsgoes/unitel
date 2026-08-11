@@ -11,18 +11,15 @@ const { section } = Astro.props
 
 <section
   id={section.id ?? 'planos'}
-  class="scroll-mt-20 bg-default py-20 sm:py-24"
->
+  class="scroll-mt-20 bg-default py-20 sm:py-24">
   <div class="mx-auto max-w-7xl px-6 lg:px-8">
     <div class="mx-auto max-w-3xl text-center">
       <span
-        class="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-600"
-      >
+        class="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-600">
         {section.badge}
       </span>
       <h2
-        class="mt-5 text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl"
-      >
+        class="mt-5 text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
         {section.title}
       </h2>
       <p class="mt-5 text-base leading-8 text-toned sm:text-lg">
@@ -36,10 +33,9 @@ const { section } = Astro.props
             class:list={[
               'relative flex flex-col rounded-3xl border p-8',
               plan.highlighted
-                ? 'border-orange-400 bg-orange-50/40 shadow-xl shadow-orange-500/10'
+                ? 'border-orange-400 bg-orange-50/40 dark:bg-red-600/5 shadow-xl shadow-orange-500/10'
                 : 'border-slate-200 bg-default',
-            ]}
-          >
+            ]}>
             {plan.highlighted && (
               <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-orange-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
                 {plan.highlightLabel ?? 'Mais popular'}
@@ -58,8 +54,7 @@ const { section } = Astro.props
               class:list={[
                 'text-sm leading-7 text-toned',
                 plan.audience ? 'mt-2' : 'mt-4',
-              ]}
-            >
+              ]}>
               {plan.description}
             </p>
             {plan.features.length > 0 && (
@@ -78,11 +73,7 @@ const { section } = Astro.props
             )}
             <a
               href={plan.ctaHref}
-              class:list={[
-                'inline-flex items-center justify-center rounded-md bg-primary px-5 py-3 text-sm font-semibold text-inverted transition hover:bg-primary/90',
-                plan.features.length > 0 ? 'mt-8' : 'mt-auto pt-8',
-              ]}
-            >
+              class="mt-auto inline-flex items-center justify-center rounded-md bg-primary px-5 py-3 text-sm font-semibold text-inverted transition hover:bg-primary/90">
               {plan.ctaLabel}
             </a>
           </article>
@@ -96,13 +87,12 @@ const { section } = Astro.props
             <caption class="sr-only">
               Comparativo de recursos entre planos
             </caption>
-            <thead class="bg-muted">
+            <thead class="bg-slate-100 dark:bg-slate-800">
               <tr>
                 {section.comparison.headers.map((header) => (
                   <th
                     scope="col"
-                    class="px-4 py-3 font-semibold text-highlighted"
-                  >
+                    class="px-4 py-3 font-semibold text-highlighted">
                     {header}
                   </th>
                 ))}
