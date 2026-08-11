@@ -1,0 +1,529 @@
+Estrutura visual proposta
+
+Eu montaria a página em 10 blocos, com aproximadamente 900–1.200 palavras no total, mas com bastante espaço visual, cards e elementos de escaneabilidade.
+
+A hierarquia seria:
+
+01. HERO
+02. PROBLEMA / CONTEXTO
+03. PROPOSTA DE VALOR
+04. BENEFÍCIOS
+05. RECURSOS E FUNCIONALIDADES
+06. COMO A SOLUÇÃO FUNCIONA
+07. TELEFONIA IP PARA CONQUISTA
+08. POR QUE A UNITEL
+09. PROVA / CONFIANÇA
+10. CTA + FAQ
+01 — Hero
+Objetivo
+
+Responder em poucos segundos:
+
+O que é? Para quem é? Por que devo me importar?
+
+Visualmente, eu evitaria o tradicional banner corporativo com uma pessoa usando headset.
+
+Faria algo mais tecnológico:
+
+┌─────────────────────────────────────────────────────────────┐
+│ LOGO                         Soluções  Empresa  Contato      │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  TELEFONIA IP                                               │
+│                                                             │
+│  Comunicação empresarial                                    │
+│  preparada para o próximo nível.                            │
+│                                                             │
+│  Mais mobilidade, controle, integração e eficiência         │
+│  para empresas que precisam manter sua operação             │
+│  conectada.                                                 │
+│                                                             │
+│  [ Falar com um especialista ]                              │
+│                                                             │
+│                  ┌──────────────────────────┐               │
+│                  │   interface / telefone   │               │
+│                  │   IP / dashboard        │               │
+│                  └──────────────────────────┘               │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+Copy
+
+Eyebrow:
+
+TELEFONIA IP EMPRESARIAL
+
+H1:
+
+Comunicação empresarial preparada para o próximo nível.
+
+Texto:
+
+Modernize sua telefonia com uma solução IP segura, escalável e integrada aos processos da sua empresa. Mais mobilidade para as equipes, mais controle para a gestão e uma comunicação preparada para acompanhar o crescimento do negócio.
+
+CTA principal:
+
+Falar com um especialista
+
+CTA secundário:
+
+Conhecer a solução ↓
+
+Pequena prova abaixo do CTA
+
+Eu colocaria:
+
+Tecnologia IP · Mobilidade · Integração · Escalabilidade
+
+Isso funciona como uma espécie de “resumo executivo” da solução.
+
+02 — O problema
+
+Aqui a página precisa fazer o visitante pensar:
+
+“É exatamente isso que acontece na minha empresa.”
+
+H2
+
+Sua empresa ainda depende de uma telefonia que não acompanha sua operação?
+
+Texto curto:
+
+Equipes distribuídas, crescimento da empresa, múltiplos setores, atendimento simultâneo e necessidade de integração tornam a comunicação empresarial cada vez mais complexa.
+
+Depois, quatro cards:
+
+Comunicação limitada
+
+Telefonia tradicional pode dificultar a mobilidade e a expansão da estrutura.
+
+Falta de integração
+
+A comunicação precisa conversar com os sistemas que sua equipe já utiliza.
+
+Custos e infraestrutura
+
+Uma estrutura pouco flexível pode gerar despesas e dificultar mudanças.
+
+Falta de controle
+
+Sem recursos adequados de gestão, acompanhar chamadas, atendimento e desempenho se torna mais difícil.
+
+03 — A transformação
+
+Aqui entramos com uma seção visual mais impactante.
+
+H2
+
+De uma central telefônica para uma plataforma de comunicação.
+
+Texto:
+
+A Telefonia IP transforma a comunicação empresarial em uma estrutura mais flexível, conectada e preparada para diferentes modelos de operação.
+
+E faria uma comparação:
+
+Antes	Com Telefonia IP
+Estrutura rígida	Estrutura escalável
+Comunicação concentrada	Mobilidade
+Telefonia isolada	Integração com sistemas
+Pouco controle	Gestão e acompanhamento
+Expansão complexa	Crescimento simplificado
+
+Isso é ótimo para conversão porque explica a mudança de paradigma sem entrar imediatamente em tecnicismo.
+
+04 — Benefícios
+
+Essa deve ser uma das seções visualmente mais fortes.
+
+H2
+
+Uma telefonia que trabalha a favor da sua operação.
+
+Grid 3 × 2:
+
+📉 Mais eficiência
+
+Otimize a estrutura de comunicação e tenha maior controle sobre os recursos utilizados pela empresa.
+
+📱 Mobilidade
+
+Permita que equipes atendam e realizem chamadas de diferentes locais, inclusive em ambientes remotos e híbridos.
+
+🔗 Integração
+
+Conecte a telefonia aos sistemas empresariais utilizados pela sua operação.
+
+📈 Escalabilidade
+
+Adapte a estrutura conforme novos usuários, setores, unidades e necessidades surgem.
+
+🔊 Qualidade
+
+Conte com tecnologia IP voltada à comunicação empresarial e à qualidade das chamadas.
+
+🛡️ Segurança e disponibilidade
+
+Tenha uma infraestrutura projetada para oferecer maior confiabilidade e continuidade à comunicação.
+
+05 — Recursos técnicos
+
+Aqui começa a parte mais técnica.
+
+Eu não colocaria tudo em texto corrido.
+
+Usaria cards com ícones.
+
+H2
+
+Recursos que transformam a telefonia em uma ferramenta de gestão.
+
+A Unitel já apresenta, em sua plataforma ComuniQ, recursos como telefonia profissional em nuvem, URA, filas de atendimento, gravação, histórico de chamadas, relatórios, monitoramento, mobilidade, softphones, integração com CRM e APIs.
+
+Isso permite criar uma seção muito mais concreta:
+
+Central telefônica empresarial
+
+Estrutura para chamadas externas, múltiplos usuários e atendimento simultâneo.
+
+URA inteligente
+
+Direcione chamadas automaticamente para setores e equipes.
+
+Filas de atendimento
+
+Organize a distribuição das chamadas e reduza gargalos no atendimento.
+
+Gravação de chamadas
+
+Tenha recursos de gravação e histórico para apoiar controle e gestão.
+
+Ramal no celular e computador
+
+Leve a comunicação corporativa para diferentes ambientes de trabalho.
+
+Integração com CRM
+
+Conecte a telefonia aos sistemas utilizados pelas equipes comerciais e de atendimento.
+
+APIs e automações
+
+Crie possibilidades de integração entre telefonia, atendimento e sistemas empresariais.
+
+Gestão e relatórios
+
+Obtenha informações para acompanhar utilização e desempenho da operação.
+
+06 — Como funciona
+
+Aqui eu usaria uma linha horizontal com quatro etapas.
+
+01                  02                  03                  04
+
+Diagnóstico   →   Projeto          →   Implantação      →   Evolução
+01 — Diagnóstico
+
+Entendemos sua infraestrutura, quantidade de usuários, processos e necessidades.
+
+02 — Projeto
+
+Definimos a arquitetura adequada ao perfil e aos objetivos da empresa.
+
+03 — Implantação
+
+Configuramos a solução e integramos a telefonia ao ambiente tecnológico.
+
+04 — Evolução
+
+A estrutura acompanha novas demandas, usuários, setores e possibilidades de integração.
+
+Isso é importante porque tira a sensação de que a Unitel está simplesmente “vendendo um PABX”.
+
+07 — A grande seção local
+
+Eu daria bastante destaque para isso.
+
+Telefonia IP para empresas de Vitória da Conquista
+H2
+
+Uma cidade que cresce precisa de uma comunicação à altura.
+
+Aqui entram os fatos.
+
+Vitória da Conquista é um dos principais polos econômicos e de serviços do interior da Bahia. A cidade tem população estimada em 396.613 habitantes e exerce forte influência regional em áreas como comércio, educação e saúde.
+
+Na saúde, essa influência é ainda mais evidente: em 2026, o município é apontado pela Prefeitura como polo da Macrorregião de Saúde Sudoeste, sendo referência para 73 municípios.
+
+Na educação, Conquista reúne instituições públicas e privadas e mais de 10 mil alunos matriculados nas três universidades públicas presentes no município, segundo a Prefeitura.
+
+Então fazemos a conexão:
+
+Nesse cenário, a comunicação não é apenas uma ferramenta administrativa. Ela faz parte da operação.
+
+Hospitais, clínicas, escolas, instituições financeiras, empresas de serviços, comércio e organizações com equipes distribuídas precisam conectar pessoas, setores e clientes com rapidez e confiabilidade.
+
+Destaque numérico
+
+Eu faria um bloco visual:
+
+396.613
+habitantes
+
+73
+municípios atendidos pela rede regional de saúde
+
+R$ 34.152,84
+PIB per capita — 2023
+
+Os números são verificáveis e dão bastante força à narrativa.
+
+Importante
+
+Eu não escreveria:
+
+“Vitória da Conquista precisa urgentemente de Telefonia IP.”
+
+Isso seria uma conclusão comercial não comprovada.
+
+Eu escreveria:
+
+“Em uma economia regional com essa dimensão e complexidade, empresas precisam de estruturas de comunicação capazes de acompanhar equipes, clientes, unidades e processos cada vez mais conectados.”
+
+É muito mais defensável.
+
+08 — Por que a Unitel?
+
+Esta é uma seção que eu considero obrigatória.
+
+A Unitel não deve aparecer apenas como “fornecedor”.
+
+H2
+
+Tecnologia é importante. Experiência na operação é ainda mais.
+
+Texto:
+
+A Unitel atua em projetos de telecomunicações, consultoria, telefonia digital IP, redes estruturadas e soluções de Call Center, combinando tecnologia e conhecimento técnico para empresas que dependem da comunicação para operar.
+
+Depois, quatro diferenciais:
+
+Experiência local
+
+A Unitel está localizada em Vitória da Conquista, com endereço no Centro da cidade.
+
+Conhecimento técnico
+
+Atuação em telecomunicações, telefonia IP, redes estruturadas e soluções de atendimento.
+
+Soluções integradas
+
+A empresa trabalha com telefonia, atendimento, mobilidade, redes e integração de sistemas.
+
+Presença em diferentes segmentos
+
+O site da Unitel apresenta clientes e instituições de segmentos como saúde, educação, comércio, indústria e serviços, incluindo instituições de saúde de Vitória da Conquista.
+
+09 — Prova social
+
+Aqui eu usaria os próprios clientes que já aparecem no site da Unitel.
+
+A página atual apresenta, entre outros, Hospital das Clínicas de Vitória da Conquista, Hospital de Olhos de Vitória da Conquista, Hospital Municipal Esaú Matos, Hospital Samur, Hospital Unimec, Hospital São Vicente de Paula, Unimed do Sudoeste, Sicoob, Teiú, Stark Jeep e Prefeitura Municipal de Vitória da Conquista.
+
+Visualmente:
+
+CONFIADO POR EMPRESAS E INSTITUIÇÕES
+
+[logo] [logo] [logo] [logo] [logo]
+
+[logo] [logo] [logo] [logo] [logo]
+
+E abaixo:
+
+Comunicação crítica exige um parceiro que entenda o impacto da tecnologia na operação.
+
+Se houver autorização para usar os depoimentos já publicados no site, eu colocaria um único depoimento forte, em vez de três ou quatro.
+
+Isso evita transformar a seção em um mural de citações.
+
+10 — CTA final
+
+Eu faria um CTA bem limpo.
+
+H2
+
+Sua empresa está pronta para modernizar a comunicação?
+
+Texto:
+
+Converse com um especialista da Unitel e descubra como estruturar uma solução de Telefonia IP adequada ao tamanho, à operação e aos objetivos do seu negócio.
+
+[ Quero modernizar minha telefonia ]
+
+Texto pequeno:
+
+Atendimento especializado em Vitória da Conquista e região.
+
+FAQ
+
+Eu colocaria 6 perguntas no final, principalmente para SEO e redução de objeções.
+
+O que é Telefonia IP?
+
+Telefonia IP é uma tecnologia que utiliza redes IP para realizar a comunicação de voz, permitindo estruturas mais flexíveis e integráveis do que sistemas tradicionais.
+
+A Telefonia IP funciona para empresas pequenas?
+
+Sim. A estrutura pode ser dimensionada de acordo com o número de usuários e as necessidades da empresa, permitindo evolução conforme o negócio cresce.
+
+Posso usar o ramal no celular?
+
+Dependendo da arquitetura adotada, recursos de mobilidade permitem utilizar ramais em dispositivos móveis e computadores. A solução ComuniQ da Unitel, por exemplo, apresenta recursos de ramal no celular e computador.
+
+É possível integrar a telefonia ao CRM?
+
+Sim. A Unitel apresenta integração com CRM, sistemas de atendimento, discadores e APIs em sua plataforma de comunicação empresarial.
+
+A Telefonia IP reduz custos?
+
+Ela pode contribuir para uma estrutura de comunicação mais eficiente e para a redução de custos, mas o resultado depende do cenário atual, volume de chamadas, infraestrutura e arquitetura adotada.
+
+A Unitel atende empresas em Vitória da Conquista?
+
+Sim. A Unitel está localizada em Vitória da Conquista e apresenta atuação em projetos de telecomunicações e clientes de diferentes segmentos na cidade e região.
+
+Direção visual para Astro + Tailwind CSS 4
+
+Para o seu stack, eu não criaria uma página cheia de componentes visualmente diferentes. Criaria um pequeno sistema de design e repetiria os padrões.
+
+Estrutura de componentes
+
+Eu organizaria aproximadamente assim:
+
+src/
+├── components/
+│   ├── Header.astro
+│   ├── Hero.astro
+│   ├── SectionHeader.astro
+│   ├── BenefitCard.astro
+│   ├── FeatureCard.astro
+│   ├── ProcessSteps.astro
+│   ├── LocalStats.astro
+│   ├── ClientLogos.astro
+│   ├── Testimonial.astro
+│   ├── FAQ.astro
+│   └── CTA.astro
+│
+├── layouts/
+│   └── SolutionLayout.astro
+│
+└── pages/
+    └── solucoes/
+        └── telefonia-ip.astro
+
+E no Tailwind eu trabalharia com uma linguagem visual baseada em:
+
+rounded-2xl
+border
+shadow-sm
+bg-slate-50
+bg-white
+text-slate-900
+text-slate-600
+
+e uma única cor de destaque derivada da identidade visual da Unitel.
+
+Evitaria o excesso de:
+
+gradient
+glassmorphism
+blur
+shadow-xl
+cards flutuando em todo lugar
+
+porque isso pode deixar uma empresa de telecomunicações com aparência de startup SaaS genérica.
+
+A Unitel vende infraestrutura crítica. A interface deve transmitir:
+
+confiabilidade + tecnologia + precisão + maturidade.
+
+Uma decisão importante para o Hero
+
+Eu faria uma composição visual que represente a arquitetura da solução, e não simplesmente um telefone.
+
+Por exemplo:
+
+                  ┌──────────────┐
+                  │     CRM      │
+                  └──────┬───────┘
+                         │
+                         ▼
+┌──────────┐       ┌──────────────┐       ┌──────────┐
+│ CELULAR  │──────▶│  TELEFONIA   │◀──────│ COMPUT.  │
+└──────────┘       │      IP      │       └──────────┘
+                   └──────┬───────┘
+                          │
+                 ┌────────┴────────┐
+                 │                 │
+              ATENDIMENTO       GESTÃO
+
+Isso comunica instantaneamente que estamos falando de um ecossistema de comunicação, não apenas de “ligações pela internet”.
+
+E eu criaria uma segunda página para SEO/localização
+
+Uma decisão estratégica que eu tomaria agora, antes de programar, é separar:
+
+Página principal
+
+/solucoes/telefonia-ip/
+
+de possíveis páginas de intenção local:
+
+/telefonia-ip-vitoria-da-conquista/
+
+ou, se a estratégia de URLs for mais ampla:
+
+/solucoes/telefonia-ip/
+/solucoes/telefonia-ip/vitoria-da-conquista/
+/solucoes/telefonia-ip/empresas/
+/solucoes/telefonia-ip/call-center/
+
+Mas não duplicaria o conteúdo. A página principal venderia a solução; a página local trabalharia especificamente a intenção “Telefonia IP em Vitória da Conquista”.
+
+Isso é particularmente interessante porque a Unitel já possui presença local, clientes locais e endereço em Vitória da Conquista, enquanto a cidade possui uma base econômica e institucional suficientemente relevante para justificar uma estratégia local.
+
+Minha arquitetura final
+
+Se eu fosse implementar essa página no Astro agora, a ordem seria:
+
+HEADER
+  ↓
+HERO
+  ↓
+4 PROBLEMAS
+  ↓
+"DA TELEFONIA À COMUNICAÇÃO INTELIGENTE"
+  ↓
+6 BENEFÍCIOS
+  ↓
+8 RECURSOS TÉCNICOS
+  ↓
+COMO FUNCIONA — 4 ETAPAS
+  ↓
+"POR QUE ISSO IMPORTA EM VITÓRIA DA CONQUISTA?"
+  ↓
+3 NÚMEROS LOCAIS
+  ↓
+"POR QUE A UNITEL?"
+  ↓
+DIFERENCIAIS
+  ↓
+CLIENTES / PROVA SOCIAL
+  ↓
+FAQ
+  ↓
+CTA FINAL
+  ↓
+FOOTER
+
+Esse desenho é mais forte comercialmente do que simplesmente ampliar o texto anterior. Ele cria uma progressão: problema → solução → benefícios → tecnologia → contexto local → autoridade → prova → ação.
+
+E há uma vantagem adicional: cada bloco pode ser transformado em um componente Astro independente, permitindo que você reutilize a mesma arquitetura posteriormente para Telefonia Empresarial, ComuniQ, Call Center, URA, Redes Estruturadas e outras soluções da Unitel, alterando apenas o conteúdo e os recursos específicos. A própria Unitel já apresenta esse portfólio de soluções no site institucional.

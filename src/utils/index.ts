@@ -43,3 +43,14 @@ export function longDateFormat(date: string) {
     new Date(date),
   )
 }
+
+export function mapUrls(pathname: string) {
+  const segments = pathname.split('/').filter(Boolean)
+  return segments.map((segment, index) => {
+    const path = '/' + segments.slice(0, index + 1).join('/')
+    return {
+      label: segment,
+      path: path,
+    }
+  })
+}

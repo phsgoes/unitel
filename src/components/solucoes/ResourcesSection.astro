@@ -1,0 +1,68 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { ResourcesSection } from '@/types/solucao'
+
+interface Props {
+  section: ResourcesSection
+}
+
+const { section } = Astro.props
+const featuredIndex = section.featuredIndex
+---
+
+<section class="bg-default py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <span
+          class="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-600"
+        >
+          {section.badge}
+        </span>
+        <h2
+          class="mt-5 text-3xl font-bold tracking-tight text-default sm:text-4xl"
+        >
+          {section.title}
+        </h2>
+        <p class="mt-6 text-base leading-8 text-toned">
+          {section.description}
+        </p>
+        <div class="mt-8 rounded-3xl bg-slate-950 p-6 text-white">
+          <Icon
+            name={section.aside.icon}
+            size={28}
+            class="text-orange-400"
+          />
+          <p class="mt-5 text-sm font-semibold">{section.aside.title}</p>
+          <p class="mt-2 text-sm leading-6 text-slate-400">
+            {section.aside.text}
+          </p>
+        </div>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          section.items.map((item, index) => (
+            <article
+              class:list={[
+                'group rounded-3xl border border-slate-200 bg-default p-6 transition duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-xl hover:shadow-slate-900/5',
+                typeof featuredIndex === 'number' &&
+                  index === featuredIndex &&
+                  'sm:col-span-2',
+              ]}
+            >
+              <div class="flex gap-5">
+                <span class="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition-colors duration-300 group-hover:bg-orange-50 group-hover:text-orange-500">
+                  <Icon name={item.icon} size={21} />
+                </span>
+                <div>
+                  <h3 class="font-bold text-default">{item.title}</h3>
+                  <p class="mt-2 text-sm leading-6 text-toned">{item.text}</p>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

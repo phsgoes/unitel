@@ -2,25 +2,41 @@
 import '@/styles/global.css'
 
 import { ClientRouter } from 'astro:transitions'
+import ogUnitelImage from '@/assets/images/og-unitel.png'
 
 import Header from '@/components/ui/Header.astro'
 import Footer from '@/components/ui/Footer.astro'
 import Main from '@/components/ui/Main.astro'
 import ImageProvider from '@/components/ui/ImageProvider.astro'
 
+import JsonLdSchemas from '@/seo/JsonLdSchemas.astro'
+import organization from '@/seo/organization'
+import website from '@/seo/website'
+import { site } from '@/data/site'
+
 interface Props {
   title?: string
   description?: string
   image?: string
+  imageType?: string
+  imageWidth?: number
+  imageHeight?: number
+  canonicalUrl?: string
+  jsonLdSchemas?: Array<{ [key: string]: unknown }>
 }
 
-const {
-  title = 'Unitel Telecomunicações',
-  description = 'A Unitel é uma empresa de soluções na área de tecnologia da informação voltada a telecomunicações.',
-  image = 'https://saas-template-j898sqk9c-nuxt-js.vercel.app/_og/s/o_nz6by7.png',
-} = Astro.props
+const defaultOgImage = new URL(ogUnitelImage.src, Astro.site).href
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const {
+  title = site.defaultTitle,
+  description = site.defaultDescription,
+  image = defaultOgImage,
+  imageType = 'image/png',
+  imageWidth = ogUnitelImage.width || 1200,
+  imageHeight = ogUnitelImage.height || 630,
+  canonicalUrl = `${new URL(Astro.url.pathname, Astro.site)}`,
+  jsonLdSchemas = [],
+} = Astro.props
 ---
 
 <!doctype html>
@@ -32,23 +48,29 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={site.legalName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={image} />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="600" />
+    <meta property="og:image:type" content={imageType} />
+    <meta property="og:image:width" content={String(imageWidth)} />
+    <meta property="og:image:height" content={String(imageHeight)} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
-    <meta name="twitter:image:src" content={image} />
-    <link rel="canonical" href={canonicalURL} />
+    <link rel="canonical" href={canonicalUrl} />
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Unitel Telecomunicações"
+      title={site.legalName}
       href={new URL('rss.xml', Astro.site)}
     />
     <title>{title}</title>
+    <JsonLdSchemas schemas={[organization, website, ...jsonLdSchemas]} />
     <ClientRouter fallback="swap" />
   </head>
   <body>

@@ -1,12 +1,580 @@
 ---
-import Container from '@/components/ui/Container.astro'
-import LogoComuniq from '@/components/ui/LogoComuniq.astro'
 import PageLayout from '@/layouts/PageLayout.astro'
+import { Icon } from 'astro-icon/components'
+import FAQ from '@/components/ui/FAQ.astro'
+import { breadcrumbGenerator } from '@/seo/breadcrumb'
+import solucoesImage from '@/assets/images/og-unitel.png'
+import solucoes from '@/seo/solucoes'
+import { absoluteUrl } from '@/data/site'
+
+const services = [
+  {
+    number: '01',
+    name: 'ComuniQ',
+    slug: 'comuniq',
+    eyebrow: 'Comunicação empresarial',
+    title: 'Comunicação integrada em um único ambiente.',
+    description:
+      'Plataforma de comunicação empresarial em nuvem que integra telefonia, atendimento, mobilidade e gestão para empresas que precisam escalar sua comunicação com mais controle e flexibilidade.',
+    icon: 'mdi:cloud-outline',
+    accent: 'orange',
+    features: [
+      'Telefonia profissional',
+      'URA e atendimento',
+      'Gestão de chamadas',
+    ],
+  },
+  {
+    number: '02',
+    name: 'Ouvidoria Digital',
+    slug: 'ouvidoria-digital',
+    eyebrow: 'Escuta e relacionamento',
+    title: 'Transforme manifestações em informação para sua organização.',
+    description:
+      'Canal digital de ouvidoria para organizar manifestações, fortalecer a transparência, ampliar a escuta e apoiar a melhoria contínua dos serviços e processos.',
+    icon: 'mdi:message-text-outline',
+    accent: 'violet',
+    features: [
+      'Canal institucional',
+      'Rastreabilidade',
+      'Gestão de manifestações',
+    ],
+  },
+  {
+    number: '03',
+    name: 'Call Center',
+    slug: 'call-center',
+    eyebrow: 'Atendimento e performance',
+    title: 'Estruture operações de atendimento preparadas para crescer.',
+    description:
+      'Soluções de Call Center com recursos de atendimento, gestão, monitoramento e integração para operações que precisam de produtividade, estabilidade e escala.',
+    icon: 'mdi:headset',
+    accent: 'blue',
+    features: ['Filas de atendimento', 'Monitoramento', 'Relatórios e gestão'],
+  },
+  {
+    number: '04',
+    name: 'Telefonia IP',
+    slug: 'telefonia-ip',
+    eyebrow: 'Comunicação inteligente',
+    title: 'Uma telefonia preparada para a realidade da sua empresa.',
+    description:
+      'Telefonia IP empresarial com mobilidade, integração, escalabilidade e recursos de gestão para conectar equipes, setores e unidades.',
+    icon: 'mdi:phone-in-talk',
+    accent: 'emerald',
+    features: ['Mobilidade', 'Integração', 'Escalabilidade'],
+  },
+  {
+    number: '05',
+    name: 'Redes Estruturadas',
+    slug: 'redes-estruturadas',
+    eyebrow: 'Infraestrutura e conectividade',
+    title: 'Uma infraestrutura de rede preparada para sua operação.',
+    description:
+      'Projetos de redes estruturadas planejados para oferecer conectividade, organização, segurança, desempenho e facilidade de expansão.',
+    icon: 'mdi:lan-connect',
+    accent: 'amber',
+    features: ['Cabeamento estruturado', 'Organização', 'Expansão'],
+  },
+]
+
+const faqItems = [
+  {
+    question: 'Quais soluções de telecomunicações a Unitel oferece?',
+    answer:
+      'A Unitel oferece soluções de ComuniQ, Ouvidoria Digital, Call Center, Telefonia IP e Redes Estruturadas, permitindo estruturar diferentes necessidades de comunicação, atendimento e infraestrutura empresarial.',
+  },
+  {
+    question: 'É possível contratar mais de uma solução?',
+    answer:
+      'Sim. As soluções podem ser combinadas de acordo com as necessidades da empresa. Telefonia, atendimento, redes, mobilidade e gestão podem fazer parte de uma estratégia integrada de comunicação e infraestrutura.',
+  },
+  {
+    question: 'Qual solução é indicada para minha empresa?',
+    answer:
+      'A escolha depende do cenário da organização, dos processos envolvidos, da infraestrutura existente e dos objetivos do projeto. A Unitel pode avaliar essas necessidades para indicar uma arquitetura adequada à operação.',
+  },
+  {
+    question: 'A Unitel atende empresas em Vitória da Conquista?',
+    answer:
+      'Sim. A Unitel está sediada em Vitória da Conquista e atua com soluções de telecomunicações, comunicação empresarial, telefonia digital IP, redes estruturadas e Call Center para empresas e instituições da região.',
+  },
+]
+
+const pageTitle = 'Soluções em Telecomunicações para Empresas | Unitel Telecom'
+
+const pageDescription =
+  'Conheça as soluções da Unitel Telecom para comunicação empresarial: ComuniQ, Ouvidoria Digital, Call Center, Telefonia IP e Redes Estruturadas em Vitória da Conquista e região.'
+
+const serviceImage = `${new URL(solucoesImage.src, Astro.site)}`
+
+const breadcrumbListItem = breadcrumbGenerator([
+  { name: 'Soluções', url: absoluteUrl('/solucoes') },
+])
 ---
 
-<PageLayout title="Soluções">
-  <Container>
-    <h1>Soluções</h1>
-    <LogoComuniq class="w-auto h-6 shrink-0" />
-  </Container>
+<PageLayout
+  title={pageTitle}
+  description={pageDescription}
+  image={serviceImage}
+  jsonLdSchemas={[solucoes, breadcrumbListItem]}>
+  <div class="overflow-hidden">
+    <!-- HERO -->
+    <section class="relative isolate overflow-hidden bg-default">
+      <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div
+          class="absolute -left-40 -top-40 size-128 rounded-full bg-primary/10 blur-3xl">
+        </div>
+        <div
+          class="absolute -right-40 top-1/4 size-128 rounded-full bg-primary/8 blur-3xl">
+        </div>
+        <div
+          class="absolute bottom-0 left-1/3 size-96 rounded-full bg-orange-500/5 blur-3xl">
+        </div>
+        <div
+          class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent">
+        </div>
+      </div>
+
+      <div class="mx-auto max-w-(--ui-container) px-6 lg:px-8">
+        <nav aria-label="Breadcrumb" class="pt-8 text-sm">
+          <ol class="flex items-center gap-2 text-muted">
+            <li>
+              <a href="/" class="transition-colors hover:text-primary">
+                Início
+              </a>
+            </li>
+
+            <li aria-hidden="true">
+              <Icon name="mdi:chevron-right" size={15} class="text-dimmed" />
+            </li>
+
+            <li class="font-medium text-default">Soluções</li>
+          </ol>
+        </nav>
+
+        <div class="py-20 lg:py-28">
+          <div class="max-w-4xl">
+            <div
+              class="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary">
+              <span class="relative flex size-1.5">
+                <span
+                  class="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-50"
+                ></span>
+                <span
+                  class="relative inline-flex size-1.5 rounded-full bg-primary"
+                ></span>
+              </span>
+
+              Soluções para empresas
+            </div>
+
+            <h1
+              class="text-4xl font-semibold tracking-[-0.045em] text-highlighted sm:text-5xl lg:text-7xl">
+              Tecnologia para conectar
+              <span class="text-primary"> pessoas, processos e operação. </span>
+            </h1>
+
+            <p class="mt-7 max-w-3xl text-lg leading-8 text-toned sm:text-xl">
+              Da infraestrutura de rede ao atendimento ao cliente, a Unitel
+              reúne soluções para empresas que precisam de comunicação
+              confiável, atendimento organizado e tecnologia preparada para
+              crescer.
+            </p>
+
+            <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="#solucoes"
+                class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-inverted shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90">
+                Explorar soluções
+                <Icon
+                  name="mdi:arrow-down"
+                  size={18}
+                  class="transition-transform duration-300 group-hover:translate-y-1"
+                />
+              </a>
+
+              <a
+                href="/contato"
+                class="inline-flex items-center justify-center gap-2 rounded-md border border-default bg-default px-5 py-3 text-sm font-semibold text-default transition-colors hover:bg-muted">
+                Falar com um especialista
+                <Icon name="mdi:arrow-right" size={18} class="text-muted" />
+              </a>
+            </div>
+          </div>
+
+          <!-- VISUAL INDEX -->
+          <div class="mt-20 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {
+              services.map((service) => (
+                <a
+                  href={`/solucoes/${service.slug}`}
+                  class="group relative overflow-hidden rounded-3xl border border-default bg-elevated p-5 transition duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-muted">
+                      {service.number}
+                    </span>
+
+                    <Icon
+                      name="mdi:arrow-top-right"
+                      size={17}
+                      class="text-dimmed transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary"
+                    />
+                  </div>
+
+                  <div class="mt-8 flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <Icon name={service.icon} size={22} />
+                  </div>
+
+                  <h2 class="mt-5 text-lg font-bold text-default">
+                    {service.name}
+                  </h2>
+
+                  <p class="mt-2 text-sm leading-6 text-muted">
+                    {service.eyebrow}
+                  </p>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRODUÇÃO -->
+    <section class="border-y border-default bg-muted/30 py-20 sm:py-24">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
+          <div>
+            <span
+              class="inline-flex rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              Uma estratégia completa
+            </span>
+
+            <h2
+              class="mt-5 text-3xl font-bold tracking-tight text-default sm:text-4xl">
+              Sua empresa não precisa de tecnologia isolada.
+            </h2>
+          </div>
+
+          <div>
+            <p class="text-lg leading-8 text-toned">
+              Comunicação empresarial depende de uma combinação de
+              infraestrutura, sistemas, atendimento e processos. Por isso,
+              diferentes necessidades exigem diferentes soluções.
+            </p>
+
+            <p class="mt-5 text-base leading-8 text-toned">
+              A Unitel trabalha essas frentes de forma integrada, permitindo
+              construir projetos compatíveis com o tamanho da empresa, sua
+              infraestrutura atual e os objetivos da operação.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUÇÕES -->
+    <section id="solucoes" class="scroll-mt-20 bg-default py-20 sm:py-28">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <span
+            class="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-600">
+            Nossas soluções
+          </span>
+
+          <h2
+            class="mt-5 text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
+            Encontre a tecnologia certa para o desafio certo.
+          </h2>
+
+          <p class="mt-5 text-base leading-8 text-toned sm:text-lg">
+            Conheça cada solução e descubra como ela pode contribuir para uma
+            operação mais conectada, eficiente e preparada para crescer.
+          </p>
+        </div>
+
+        <div class="mt-14 space-y-5">
+          {
+            services.map((service, index) => (
+              <article
+                class={`group relative overflow-hidden rounded-4xl border border-slate-200 bg-default p-7 shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/5 lg:p-10 ${
+                  index % 2 === 1 ? 'lg:ml-16' : 'lg:mr-16'
+                }`}>
+                <div class="absolute right-0 top-0 size-64 rounded-full bg-primary/5 blur-3xl transition duration-500 group-hover:bg-primary/10" />
+
+                <div class="relative grid gap-8 lg:grid-cols-[auto_1fr_auto] lg:items-center">
+                  <div class="flex items-center gap-5 lg:block">
+                    <div class="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                      <Icon name={service.icon} size={27} />
+                    </div>
+
+                    <span class="text-sm font-bold text-muted lg:mt-5 lg:block">
+                      {service.number}
+                    </span>
+                  </div>
+
+                  <div>
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                      {service.eyebrow}
+                    </p>
+
+                    <h3 class="mt-3 text-2xl font-bold tracking-tight text-default sm:text-3xl">
+                      {service.title}
+                    </h3>
+
+                    <p class="mt-4 max-w-3xl text-sm leading-7 text-toned sm:text-base">
+                      {service.description}
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap gap-2">
+                      {service.features.map((feature) => (
+                        <span class="rounded-full border border-default bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-xs font-medium text-toned">
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <a
+                    href={`/solucoes/${service.slug}`}
+                    class="group/link inline-flex items-center justify-center gap-2 rounded-full border border-default px-5 py-3 text-sm font-semibold text-default transition hover:border-primary hover:bg-primary hover:text-white">
+                    Conhecer solução
+                    <Icon
+                      name="mdi:arrow-right"
+                      size={18}
+                      class="transition-transform duration-300 group-hover/link:translate-x-1"
+                    />
+                  </a>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- MATRIZ -->
+    <section class="overflow-hidden bg-default py-20 sm:py-28">
+      <div
+        class="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0 dark:bg-gray-900">
+        <div class="absolute inset-0 -z-10 overflow-hidden">
+          <svg
+            aria-hidden="true"
+            class="absolute top-0 left-[max(50%,25rem)] h-256 w-512 -translate-x-1/2 mask-[radial-gradient(64rem_64rem_at_top,white,transparent)] stroke-gray-200 dark:stroke-gray-800">
+            <defs>
+              <pattern
+                id="e813992c-7d03-4cc4-a2bd-151760b470a0"
+                width="200"
+                height="200"
+                x="50%"
+                y="-1"
+                patternUnits="userSpaceOnUse">
+                <path d="M100 200V.5M.5 .5H200" fill="none"></path>
+              </pattern>
+            </defs>
+            <svg
+              x="50%"
+              y="-1"
+              class="overflow-visible fill-gray-50 dark:fill-gray-800/50">
+              <path
+                d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
+                stroke-width="0"></path>
+            </svg>
+            <rect
+              width="100%"
+              height="100%"
+              fill="url(#e813992c-7d03-4cc4-a2bd-151760b470a0)"
+              stroke-width="0"></rect>
+          </svg>
+        </div>
+      </div>
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+          <div>
+            <span
+              class="inline-flex rounded-full border border-orange-400/20 bg-orange-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-300">
+              Uma visão integrada
+            </span>
+
+            <h2
+              class="mt-5 text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
+              Comunicação, atendimento e infraestrutura trabalhando juntos.
+            </h2>
+
+            <p class="mt-6 text-base leading-8 text-toned sm:text-lg">
+              Cada solução resolve uma necessidade específica. Juntas, elas
+              podem formar uma arquitetura tecnológica mais completa para a
+              empresa.
+            </p>
+          </div>
+
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div
+              class="rounded-3xl border border-slate-950/20 dark:border-white/10 bg-white/5 p-6">
+              <Icon
+                name="mdi:server-network"
+                size={24}
+                class="text-orange-400"
+              />
+              <h3 class="mt-5 font-bold text-white">Infraestrutura</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">
+                Redes estruturadas criam a base para uma operação conectada e
+                organizada.
+              </p>
+            </div>
+
+            <div
+              class="rounded-3xl border border-slate-950/20 dark:border-white/10 bg-white/5 p-6">
+              <Icon
+                name="mdi:phone-in-talk"
+                size={24}
+                class="text-orange-400"
+              />
+              <h3 class="mt-5 font-bold text-white">Comunicação</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">
+                Telefonia IP e ComuniQ ampliam mobilidade, integração e gestão.
+              </p>
+            </div>
+
+            <div
+              class="rounded-3xl border border-slate-950/20 dark:border-white/10 bg-white/5 p-6">
+              <Icon name="mdi:headset" size={24} class="text-orange-400" />
+              <h3 class="mt-5 font-bold text-white">Atendimento</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">
+                Call Center organiza operações de atendimento e relacionamento.
+              </p>
+            </div>
+
+            <div
+              class="rounded-3xl border border-slate-950/20 dark:border-white/10 bg-white/5 p-6">
+              <Icon
+                name="mdi:message-text-outline"
+                size={24}
+                class="text-orange-400"
+              />
+              <h3 class="mt-5 font-bold text-white">Escuta</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">
+                A Ouvidoria Digital cria um canal estruturado para manifestações
+                e relacionamento institucional.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCAL -->
+    <section class="bg-orange-500 py-20 sm:py-24">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="grid gap-12 lg:grid-cols-[1fr_0.7fr] lg:items-center">
+          <div>
+            <span
+              class="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white">
+              Vitória da Conquista e região
+            </span>
+
+            <h2
+              class="mt-5 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+              Tecnologia próxima de quem precisa manter a operação funcionando.
+            </h2>
+
+            <p
+              class="mt-6 max-w-2xl text-base leading-8 text-orange-50 sm:text-lg">
+              A Unitel está sediada em Vitória da Conquista e atua com
+              telecomunicações, comunicação empresarial, redes estruturadas,
+              telefonia IP, atendimento e soluções digitais.
+            </p>
+
+            <a
+              href="/contato"
+              class="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-orange-600 transition hover:bg-slate-950 hover:text-white">
+              Falar com a Unitel
+              <Icon name="mdi:arrow-right" size={18} />
+            </a>
+          </div>
+
+          <div
+            class="rounded-4xl border border-white/15 bg-white/10 p-7 backdrop-blur">
+            <Icon
+              name="mdi:map-marker-radius-outline"
+              size={32}
+              class="text-white"
+            />
+
+            <h3 class="mt-6 text-xl font-bold text-white">Presença regional</h3>
+
+            <p class="mt-3 text-lg leading-7 text-orange-50">
+              Projetos pensados para empresas e instituições de Vitória da
+              Conquista e do sudoeste baiano.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="bg-default pt-20 sm:pt-24 pb-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <FAQ
+          items={faqItems}
+          title="Qual solução sua empresa precisa?"
+          description="Entenda como as soluções podem ser aplicadas à realidade da sua operação."
+        />
+      </div>
+
+      <!-- CTA -->
+      <section
+        class="relative isolate overflow-hidden bg-default pt-24 sm:pt-32">
+        <div
+          class="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,var(--color-indigo-100),white)] opacity-20 dark:bg-[radial-gradient(45rem_50rem_at_top,var(--color-indigo-500),transparent)] dark:opacity-10">
+        </div>
+        <div
+          class="absolute inset-y-0 right-1/2 -z-10 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] bg-white shadow-xl ring-1 shadow-indigo-600/10 ring-indigo-50 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center dark:bg-gray-900 dark:shadow-indigo-500/5 dark:ring-white/5">
+        </div>
+        <div class="mx-auto max-w-4xl px-6 text-center lg:px-8">
+          <span
+            class="inline-flex rounded-full border border-orange-400/20 bg-orange-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-600">
+            Próximo passo
+          </span>
+
+          <h2
+            class="mt-5 text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
+            Vamos encontrar a solução certa para sua operação?
+          </h2>
+
+          <p
+            class="mx-auto my-16 max-w-2xl text-base leading-8 text-toned sm:text-lg">
+            Converse com a Unitel e descubra como estruturar uma estratégia de
+            comunicação, atendimento e infraestrutura adequada ao seu negócio.
+          </p>
+
+          <div
+            class="my-16 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a
+              href="/contato"
+              class="group inline-flex items-center justify-center gap-2 rounded-full bg-orange-500 px-7 py-4 text-sm font-bold text-white shadow-xl shadow-orange-500/20 transition duration-300 hover:-translate-y-0.5 hover:bg-orange-400">
+              Falar com um especialista
+              <Icon
+                name="mdi:arrow-right"
+                size={18}
+                class="transition-transform duration-300 group-hover:translate-x-1"
+              />
+            </a>
+
+            <a
+              href="tel:+557721013300"
+              class="inline-flex items-center gap-2 rounded-full border border-slate-400 px-7 py-4 text-sm font-semibold text-default transition hover:bg-muted">
+              <Icon name="mdi:phone-outline" size={18} />
+              (77) 2101-3300
+            </a>
+          </div>
+
+          <p class="mt-7 text-lg text-toned">
+            Atendimento especializado em Vitória da Conquista e região.
+          </p>
+        </div>
+      </section>
+    </section>
+  </div>
 </PageLayout>

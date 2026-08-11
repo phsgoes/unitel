@@ -1,43 +1,51 @@
-# Astro Starter Kit: Minimal
+# Unitel Telecom
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
+Marketing site for Unitel Telecomunicações, built with **Astro 7.2**, **Tailwind CSS 4**, and **TypeScript**.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├── assets/           # Images and icons
+├── components/
+│   ├── solucoes/     # Reusable solution-page sections
+│   ├── ui/           # Shared chrome (Header, Footer, FAQ, …)
+│   ├── rich-text/    # Blog rich-text renderer
+│   └── seo/          # Blog article schema
+├── consts/           # Pagination and site title aliases
+├── data/             # SSOT for site identity, nav, solution content
+├── layouts/          # PageLayout, BlogLayout, BlankLayout
+├── pages/            # File-based routes
+├── seo/              # JSON-LD builders and organization/website schemas
+├── services/         # Hygraph blog data access
+├── styles/           # global.css + theme tokens (@theme)
+├── types/            # Shared TypeScript types
+└── utils/            # Helpers (TOC, solution page head, …)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+### Content & SEO single source of truth
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- Site URL, contact, and address: `src/data/site.ts`
+- Navigation / solutions menu: `src/data/nav.ts`
+- Solution page copy: `src/data/solucoes/*.ts`
+- Schema factories: `src/seo/builders/*` + `src/utils/solutionPage.ts`
 
-Any static assets, like images, can be placed in the `public/` directory.
+Do not hardcode titles, descriptions, or hosts in page files when they already exist in these modules.
 
-## 🧞 Commands
+## Commands
 
-All commands are run from the root of the project, from a terminal:
+| Command | Action |
+| --- | --- |
+| `pnpm install` | Install dependencies |
+| `pnpm dev` | Dev server at `localhost:4321` |
+| `astro dev --background` | Background dev server (preferred for agents) |
+| `pnpm build` | Production build to `./dist/` |
+| `pnpm preview` | Preview the production build |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## Stack notes
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Design tokens live in `src/styles/theme.css` (`@theme` / semantic CSS variables).
+- Prefer semantic utilities (`bg-default`, `text-toned`, `text-primary`) over arbitrary hex values.
+- Images for solution heroes should use AVIF/WebP with explicit dimensions; LCP images use `loading="eager"` + `fetchpriority="high"`.
+- Do **not** import `astro.config.mjs` from app/runtime code (`src/consts`, pages, services). That pulls Vite plugins into the prerender graph and breaks `astro build`.
+- `sharp` is required for Astro image optimization during production builds.

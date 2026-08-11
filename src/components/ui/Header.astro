@@ -1,49 +1,16 @@
 ---
 import { Icon } from 'astro-icon/components'
+import {
+  navigationItems,
+  solutionItems,
+  type NavItem,
+  type SolutionNavItem,
+} from '@/data/nav'
 import LogoUnitel from './LogoUnitel.astro'
 import ThemeToggle from './ThemeToggle.astro'
 
-export interface NavItem {
-  label: string
-  to: string
-  description?: string
-  icon?: string
-}
-
-export const navigationItems: NavItem[] = [
-  { label: 'Home', to: '/', icon: 'mdi:home', description: 'Página Inicial' },
-  {
-    label: 'Sobre',
-    to: '/sobre',
-    icon: 'mdi:book-open-page-variant-outline',
-    description: 'Sobre a Unitel',
-  },
-  {
-    label: 'Soluções',
-    to: '/solucoes',
-    // icon: 'mdi:rocket-launch-outline',
-    icon: 'mdi:lightbulb-on',
-    description: 'Soluções para sua empresa',
-  },
-  {
-    label: 'Portfólio',
-    to: '/portfolio',
-    icon: 'mdi:folder-open-outline',
-    description: 'Portfólio',
-  },
-  {
-    label: 'Blog',
-    to: '/blog',
-    icon: 'mdi:newspaper-variant-outline',
-    description: 'Blog',
-  },
-  {
-    label: 'Contato',
-    to: '/contato',
-    icon: 'mdi:contacts-outline',
-    description: 'Contato',
-  },
-]
+export type { NavItem, SolutionNavItem as SolutionItem }
+export { navigationItems, solutionItems }
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/'
 
@@ -51,34 +18,214 @@ function isActive(path: string): boolean {
   const normalizedPath = path.replace(/\/$/, '') || '/'
   return currentPath === normalizedPath
 }
+
+function isSolutionActive(): boolean {
+  return solutionItems.some((item) => isActive(item.to))
+}
 ---
 
 <header
   transition:name="page-header"
-  class="backdrop-blur border-default h-(--ui-header-height) sticky top-0 z-50 bg-transparent border-0">
+  class="sticky top-0 z-50 h-(--ui-header-height) border-0 border-default bg-default/80 backdrop-blur-md"
+>
   <div
-    class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-(--ui-header-height)">
-    <div class="flex items-center z-50">
-      <a href="/" aria-label="Home">
-        <LogoUnitel class="w-auto h-6 shrink-0" />
+    class="mx-auto flex h-(--ui-header-height) w-full max-w-(--ui-container) items-center justify-between px-4 sm:px-6 lg:px-8"
+  >
+    <!-- Logo -->
+    <div class="z-50 flex items-center">
+      <a href="/" aria-label="Unitel Telecom - Página inicial">
+        <LogoUnitel class="h-6 w-auto shrink-0" />
       </a>
     </div>
 
-    <div class="flex items-center gap-4 z-50">
-      <nav class="hidden lg:block" aria-label="Desktop Navigation">
+    <!-- Desktop navigation and controls -->
+    <div class="z-50 flex items-center gap-4">
+      <nav
+        class="hidden lg:block"
+        aria-label="Navegação principal"
+      >
         <ul class="flex items-center gap-6 text-sm font-medium">
           {
             navigationItems.slice(1).map((item) => {
               const active = isActive(item.to)
+
+              /*
+               * Soluções utiliza um botão para abrir o submenu.
+               * O link para /solucoes fica em "Todas as soluções".
+               */
+              if (item.to === '/solucoes') {
+                const solutionsActive = isSolutionActive()
+
+                return (
+                  <li
+                    id="desktop-solutions-container"
+                    class="relative"
+                  >
+                    <button
+                      type="button"
+                      id="desktop-solutions-toggle"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      aria-controls="desktop-solutions-menu"
+                      class:list={[
+                        'flex items-center gap-1.5 rounded-md py-2 transition-colors duration-200',
+                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+                        'focus-visible:ring-offset-default',
+                        solutionsActive
+                          ? 'font-semibold text-primary'
+                          : 'text-default hover:text-primary',
+                      ]}
+                    >
+                      <span>{item.label}</span>
+
+                      <Icon
+                        name="mdi:chevron-down"
+                        id="desktop-solutions-chevron"
+                        size={17}
+                        class="transition-transform duration-200"
+                      />
+                    </button>
+
+                    <!-- Desktop solutions submenu -->
+                    <div
+                      id="desktop-solutions-menu"
+                      role="menu"
+                      aria-labelledby="desktop-solutions-toggle"
+                      class="invisible absolute left-1/2 top-full z-50 w-[23rem] -translate-x-1/2 translate-y-2 pt-3 opacity-0 transition-all duration-150"
+                    >
+                      <div
+                        class="overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-950/10 dark:border-slate-700 dark:bg-slate-900 dark:shadow-black/40"
+                      >
+                        <!-- Todas as soluções -->
+                        <a
+                          href="/solucoes"
+                          role="menuitem"
+                          aria-current={
+                            isActive('/solucoes') ? 'page' : undefined
+                          }
+                          class:list={[
+                            'group/overview flex items-center gap-3 rounded-xl p-3 transition-colors',
+                            'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                            isActive('/solucoes')
+                              ? 'bg-primary/10'
+                              : 'hover:bg-slate-100 dark:hover:bg-slate-800',
+                          ]}
+                        >
+                          <span
+                            class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm shadow-primary/20"
+                          >
+                            <Icon
+                              name="mdi:apps"
+                              size={21}
+                            />
+                          </span>
+
+                          <span class="min-w-0 flex-1">
+                            <span
+                              class="block text-sm font-bold text-slate-900 dark:text-white"
+                            >
+                              Todas as soluções
+                            </span>
+
+                            <span
+                              class="mt-0.5 block text-xs leading-5 text-slate-600 dark:text-slate-300"
+                            >
+                              Conheça todas as soluções da Unitel
+                            </span>
+                          </span>
+
+                          <Icon
+                            name="mdi:arrow-right"
+                            size={18}
+                            class="shrink-0 text-slate-500 transition-transform duration-200 group-hover/overview:translate-x-1 group-hover/overview:text-primary dark:text-slate-400"
+                          />
+                        </a>
+
+                        <div class="my-2 border-t border-slate-200 dark:border-slate-700"></div>
+
+                        {
+                          solutionItems.map((solution) => {
+                            const active = isActive(solution.to)
+
+                            return (
+                              <a
+                                href={solution.to}
+                                role="menuitem"
+                                aria-current={
+                                  active ? 'page' : undefined
+                                }
+                                class:list={[
+                                  'group/item flex items-center gap-3 rounded-xl p-3 transition-colors',
+                                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                                  active
+                                    ? 'bg-primary/10'
+                                    : 'hover:bg-slate-100 dark:hover:bg-slate-800',
+                                ]}
+                              >
+                                <!-- Icon -->
+                                <span
+                                  class:list={[
+                                    'flex size-10 shrink-0 items-center justify-center rounded-xl shadow-sm transition-colors',
+                                    active
+                                      ? 'bg-primary text-white'
+                                      : 'bg-slate-200 text-slate-800 group-hover/item:bg-primary group-hover/item:text-white dark:bg-slate-700 dark:text-white dark:group-hover/item:bg-primary',
+                                  ]}
+                                >
+                                  <Icon
+                                    name={solution.icon}
+                                    size={20}
+                                  />
+                                </span>
+
+                                <!-- Text -->
+                                <span class="min-w-0 flex-1">
+                                  <span
+                                    class:list={[
+                                      'block text-sm font-semibold',
+                                      active
+                                        ? 'text-primary'
+                                        : 'text-slate-900 dark:text-white',
+                                    ]}
+                                  >
+                                    {solution.label}
+                                  </span>
+
+                                  <span
+                                    class="mt-0.5 block text-[11px] leading-4 text-slate-600 dark:text-slate-300"
+                                  >
+                                    {solution.description}
+                                  </span>
+                                </span>
+
+                                <Icon
+                                  name="mdi:chevron-right"
+                                  size={16}
+                                  class="shrink-0 text-slate-400 transition-transform duration-200 group-hover/item:translate-x-0.5 group-hover/item:text-primary dark:text-slate-500"
+                                />
+                              </a>
+                            )
+                          })
+                        }
+                      </div>
+                    </div>
+                  </li>
+                )
+              }
+
               return (
                 <li>
                   <a
                     href={item.to}
                     aria-current={active ? 'page' : undefined}
                     class:list={[
-                      'transition-colors duration-200 hover:text-primary',
-                      active ? 'text-primary font-semibold' : 'text-default',
-                    ]}>
+                      'rounded-md py-2 transition-colors duration-200',
+                      'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+                      'focus-visible:ring-offset-default',
+                      active
+                        ? 'font-semibold text-primary'
+                        : 'text-default hover:text-primary',
+                    ]}
+                  >
                     {item.label}
                   </a>
                 </li>
@@ -88,111 +235,547 @@ function isActive(path: string): boolean {
         </ul>
       </nav>
 
+      <!-- Theme toggle -->
       <ThemeToggle />
 
+      <!-- Mobile menu toggle -->
       <button
         type="button"
         id="mobile-menu-toggle"
-        aria-label="Open menu"
+        aria-label="Abrir menu"
         aria-expanded="false"
         aria-controls="mobile-menu"
-        class="rounded-md p-1.5 text-default hover:bg-elevated lg:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-primary relative z-50">
-        <Icon name="mdi:menu" id="icon-menu" class="h-6 w-6 shrink-0 block" />
+        class="relative z-50 rounded-md p-1.5 text-default transition-colors hover:bg-elevated focus:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:hidden"
+      >
+        <Icon
+          name="mdi:menu"
+          id="icon-menu"
+          class="block h-6 w-6 shrink-0"
+        />
+
         <Icon
           name="mdi:close"
           id="icon-close"
-          class="h-6 w-6 shrink-0 hidden"
+          class="hidden h-6 w-6 shrink-0"
         />
       </button>
     </div>
   </div>
 
+  <!-- Mobile menu -->
   <div
     id="mobile-menu"
-    class="hidden fixed inset-0 h-screen z-40 bg-default pt-(--ui-header-height) lg:hidden">
-    <nav class="flex-1 w-full">
-      <ul class="flex h-[80vh] flex-col justify-evenly gap-0">
-        {
-          navigationItems.map((item) => {
-            const active = isActive(item.to)
-            return (
-              <li class="h-full">
-                <a
-                  href={item.to}
-                  aria-current={active ? 'page' : undefined}
-                  aria-label={item.description ?? item.label}
-                  class:list={[
-                    'group relative h-full flex items-center justify-center gap-4 px-4 py-3 transition-colors duration-300 motion-reduce:transition-none',
-                    active
-                      ? 'text-primary font-semibold'
-                      : 'text-muted hover:text-highlighted',
-                  ]}>
-                  {item.icon && (
-                    <Icon name={item.icon} class="h-6 w-6 shrink-0" />
-                  )}
-                  <span class="text-base">{item.label}</span>
-                  <span
+    class="fixed inset-0 z-40 hidden h-screen bg-default pt-(--ui-header-height) lg:hidden"
+  >
+    <nav
+      class="flex h-full w-full flex-col"
+      aria-label="Navegação móvel"
+    >
+      <div class="flex-1 overflow-y-auto">
+        <ul class="px-4 py-6">
+          {
+            navigationItems.map((item) => {
+              const active = isActive(item.to)
+
+              /*
+               * Soluções mobile:
+               * botão para abrir o submenu.
+               */
+              if (item.to === '/solucoes') {
+                const solutionsActive = isSolutionActive()
+
+                return (
+                  <li class="border-b border-default">
+                    <div class="flex items-center">
+                      <button
+                        type="button"
+                        id="mobile-solutions-toggle"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-controls="mobile-solutions-submenu"
+                        class:list={[
+                          'group flex min-h-16 flex-1 items-center gap-4 px-3 py-4 text-left transition-colors duration-300',
+                          'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset',
+                          solutionsActive
+                            ? 'font-semibold text-primary'
+                            : 'text-muted hover:text-highlighted',
+                        ]}
+                      >
+                        <Icon
+                          name={item.icon ?? 'mdi:lightbulb-on'}
+                          class="h-6 w-6 shrink-0"
+                        />
+
+                        <span class="text-base">
+                          {item.label}
+                        </span>
+
+                        <Icon
+                          name="mdi:chevron-down"
+                          id="mobile-solutions-chevron"
+                          size={22}
+                          class="ml-auto transition-transform duration-200"
+                        />
+                      </button>
+                    </div>
+
+                    <!-- Mobile solutions submenu -->
+                    <div
+                      id="mobile-solutions-submenu"
+                      class="hidden overflow-hidden"
+                    >
+                      <div class="mb-4 ml-3 border-l border-slate-300 pl-3 dark:border-slate-700">
+                        <!-- Todas as soluções -->
+                        <a
+                          href="/solucoes"
+                          aria-current={
+                            isActive('/solucoes') ? 'page' : undefined
+                          }
+                          class:list={[
+                            'flex items-center gap-3 rounded-xl p-3 transition-colors',
+                            'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                            isActive('/solucoes')
+                              ? 'bg-primary/10'
+                              : 'hover:bg-muted',
+                          ]}
+                        >
+                          <span
+                            class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm shadow-primary/20"
+                          >
+                            <Icon
+                              name="mdi:apps"
+                              size={20}
+                            />
+                          </span>
+
+                          <span class="min-w-0">
+                            <span
+                              class="block text-sm font-bold text-default"
+                            >
+                              Todas as soluções
+                            </span>
+
+                            <span
+                              class="mt-0.5 block text-xs leading-5 text-muted"
+                            >
+                              Conheça todas as soluções da Unitel
+                            </span>
+                          </span>
+                        </a>
+
+                        {
+                          solutionItems.map((solution) => {
+                            const active = isActive(solution.to)
+
+                            return (
+                              <a
+                                href={solution.to}
+                                aria-current={
+                                  active ? 'page' : undefined
+                                }
+                                aria-label={solution.description}
+                                class:list={[
+                                  'mt-1 flex items-center gap-3 rounded-xl p-3 transition-colors',
+                                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                                  active
+                                    ? 'bg-primary/10'
+                                    : 'hover:bg-muted',
+                                ]}
+                              >
+                                <span
+                                  class:list={[
+                                    'flex size-10 shrink-0 items-center justify-center rounded-xl shadow-sm',
+                                    active
+                                      ? 'bg-primary text-white'
+                                      : 'bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white',
+                                  ]}
+                                >
+                                  <Icon
+                                    name={solution.icon}
+                                    size={20}
+                                  />
+                                </span>
+
+                                <span class="min-w-0">
+                                  <span
+                                    class:list={[
+                                      'block text-sm font-semibold',
+                                      active
+                                        ? 'text-primary'
+                                        : 'text-default',
+                                    ]}
+                                  >
+                                    {solution.label}
+                                  </span>
+
+                                  <span
+                                    class="mt-0.5 block text-[11px] leading-4 text-muted"
+                                  >
+                                    {solution.description}
+                                  </span>
+                                </span>
+                              </a>
+                            )
+                          })
+                        }
+                      </div>
+                    </div>
+                  </li>
+                )
+              }
+
+              return (
+                <li class="border-b border-default">
+                  <a
+                    href={item.to}
+                    aria-current={active ? 'page' : undefined}
+                    aria-label={item.description ?? item.label}
                     class:list={[
-                      'absolute bottom-0 left-4 right-4 h-px bg-current origin-center transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100 motion-reduce:transition-none motion-reduce:transform-none',
-                      active ? 'scale-x-100' : 'scale-x-0',
+                      'group relative flex min-h-16 items-center gap-4 px-3 py-4 transition-colors duration-300',
+                      'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset',
+                      active
+                        ? 'font-semibold text-primary'
+                        : 'text-muted hover:text-highlighted',
                     ]}
-                  />
-                </a>
-              </li>
-            )
-          })
-        }
-      </ul>
+                  >
+                    {item.icon && (
+                      <Icon
+                        name={item.icon}
+                        class="h-6 w-6 shrink-0"
+                      />
+                    )}
+
+                    <span class="text-base">
+                      {item.label}
+                    </span>
+
+                    <span
+                      class:list={[
+                        'absolute bottom-0 left-3 right-3 h-px origin-center bg-current transition-transform duration-300',
+                        active ? 'scale-x-100' : 'scale-x-0',
+                      ]}
+                    />
+                  </a>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
+
+      <!-- Mobile CTA -->
+      <div class="border-t border-default px-6 py-5">
+        <a
+          href="/contato"
+          class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-inverted shadow-lg shadow-primary/20 transition-all duration-300 hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        >
+          Falar com a Unitel
+
+          <Icon
+            name="mdi:arrow-right"
+            size={18}
+          />
+        </a>
+      </div>
     </nav>
   </div>
 </header>
 
 <script>
-  function setupMobileMenu() {
-    const toggle = document.getElementById(
-      'mobile-menu-toggle',
-    ) as HTMLButtonElement | null
-    const menu = document.getElementById('mobile-menu')
-    const iconMenu = document.getElementById('icon-menu')
-    const iconClose = document.getElementById('icon-close')
+  function setupHeader() {
+    /*
+     * ============================================================
+     * MOBILE MENU
+     * ============================================================
+     */
 
-    if (!toggle || !menu) return
+    const mobileToggle = document.getElementById('mobile-menu-toggle') as HTMLButtonElement | null
+    const mobileMenu = document.getElementById('mobile-menu')
+    if (!mobileToggle || !mobileMenu) return
 
-    // Remove old listener to avoid duplication on navigation
-    toggle.replaceWith(toggle.cloneNode(true))
-    const newToggle = document.getElementById(
-      'mobile-menu-toggle',
-    ) as HTMLButtonElement
-    const newIconMenu = document.getElementById('icon-menu')
-    const newIconClose = document.getElementById('icon-close')
+    /*
+     * Remove listener anterior para evitar duplicação
+     * durante Astro View Transitions.
+     */
+    const newMobileToggle = mobileToggle.cloneNode(true) as HTMLButtonElement
+    mobileToggle.replaceWith(newMobileToggle)
+    const mobileMenuIcon = newMobileToggle.querySelector('#icon-menu')
+    const mobileCloseIcon = newMobileToggle.querySelector('#icon-close')
+    const mobileSolutionsToggle = document.getElementById('mobile-solutions-toggle') as HTMLButtonElement | null
+    const mobileSolutionsSubmenu = document.getElementById('mobile-solutions-submenu')
+    const mobileSolutionsChevron = document.getElementById('mobile-solutions-chevron')
 
-    newToggle.addEventListener('click', (e) => {
-      e.stopPropagation()
-      const isHidden = menu.classList.contains('hidden')
+    function closeMobileMenu() {
+      mobileMenu?.classList.add('hidden')
+      mobileMenuIcon?.classList.remove('hidden')
+      mobileMenuIcon?.classList.add('block')
+      mobileCloseIcon?.classList.add('hidden')
+      mobileCloseIcon?.classList.remove('block')
+      document.body.style.overflow = ''
+      newMobileToggle.setAttribute('aria-expanded', 'false')
+      newMobileToggle.setAttribute('aria-label', 'Abrir menu')
+      mobileSolutionsSubmenu?.classList.add('hidden')
+      mobileSolutionsChevron?.classList.remove('rotate-180')
+      mobileSolutionsToggle?.setAttribute('aria-expanded', 'false')
+    }
 
-      if (isHidden) {
-        menu.classList.remove('hidden')
-        newIconMenu?.classList.add('hidden')
-        newIconMenu?.classList.remove('block')
-        newIconClose?.classList.remove('hidden')
-        newIconClose?.classList.add('block')
-        document.body.style.overflow = 'hidden'
-        newToggle.setAttribute('aria-expanded', 'true')
-        newToggle.setAttribute('aria-label', 'Close menu')
+    function openMobileMenu() {
+      mobileMenu?.classList.remove('hidden')
+      mobileMenuIcon?.classList.add('hidden')
+      mobileMenuIcon?.classList.remove('block')
+      mobileCloseIcon?.classList.remove('hidden')
+      mobileCloseIcon?.classList.add('block')
+      document.body.style.overflow = 'hidden'
+      newMobileToggle.setAttribute('aria-expanded', 'true')
+      newMobileToggle.setAttribute('aria-label', 'Fechar menu')
+    }
+
+    newMobileToggle.addEventListener('click', (event) => {
+      event.stopPropagation()
+      const isClosed = mobileMenu.classList.contains('hidden')
+
+      if (isClosed) {
+        openMobileMenu()
       } else {
-        menu.classList.add('hidden')
-        newIconMenu?.classList.remove('hidden')
-        newIconMenu?.classList.add('block')
-        newIconClose?.classList.add('hidden')
-        newIconClose?.classList.remove('block')
-        document.body.style.overflow = ''
-        newToggle.setAttribute('aria-expanded', 'false')
-        newToggle.setAttribute('aria-label', 'Open menu')
+        closeMobileMenu()
       }
     })
+
+    /*
+     * ============================================================
+     * MOBILE SOLUTIONS SUBMENU
+     * ============================================================
+     */
+
+    if (mobileSolutionsToggle && mobileSolutionsSubmenu) {
+      mobileSolutionsToggle.addEventListener('click', (event) => {
+          event.stopPropagation()
+          const isClosed = mobileSolutionsSubmenu.classList.contains('hidden')
+
+          if (isClosed) {
+            mobileSolutionsSubmenu.classList.remove('hidden')
+            mobileSolutionsChevron?.classList.add('rotate-180')
+            mobileSolutionsToggle.setAttribute('aria-expanded', 'true')
+          } else {
+            mobileSolutionsSubmenu.classList.add('hidden')
+            mobileSolutionsChevron?.classList.remove('rotate-180')
+            mobileSolutionsToggle.setAttribute('aria-expanded', 'false')
+          }
+        },
+      )
+    }
+
+    /*
+     * Fecha o menu após navegar.
+     */
+    const mobileLinks = mobileMenu.querySelectorAll('a')
+    mobileLinks.forEach((link) => {
+      link.addEventListener('click', () => closeMobileMenu())
+    })
+
+    /*
+     * ============================================================
+     * DESKTOP SOLUTIONS MENU
+     * ============================================================
+     */
+
+    const desktopSolutionsToggle = document.getElementById('desktop-solutions-toggle') as HTMLButtonElement | null
+    const desktopSolutionsMenu = document.getElementById('desktop-solutions-menu')
+    const desktopSolutionsContainer = document.getElementById('desktop-solutions-container')
+    const desktopSolutionsChevron = document.getElementById('desktop-solutions-chevron')
+
+    if (
+      desktopSolutionsToggle &&
+      desktopSolutionsMenu &&
+      desktopSolutionsContainer
+    ) {
+      function openDesktopSolutions() {
+        desktopSolutionsMenu?.classList.remove('invisible', 'opacity-0', 'translate-y-2')
+        desktopSolutionsMenu?.classList.add('visible', 'opacity-100', 'translate-y-0')
+        desktopSolutionsToggle?.setAttribute('aria-expanded', 'true')
+        desktopSolutionsChevron?.classList.add('rotate-180')
+      }
+
+      function closeDesktopSolutions() {
+        desktopSolutionsMenu?.classList.remove(
+          'visible',
+          'opacity-100',
+          'translate-y-0',
+        )
+
+        desktopSolutionsMenu?.classList.add(
+          'invisible',
+          'opacity-0',
+          'translate-y-2',
+        )
+
+        desktopSolutionsToggle?.setAttribute(
+          'aria-expanded',
+          'false',
+        )
+
+        desktopSolutionsChevron?.classList.remove(
+          'rotate-180',
+        )
+      }
+
+      desktopSolutionsToggle.addEventListener(
+        'click',
+        (event) => {
+          event.stopPropagation()
+
+          const expanded =
+            desktopSolutionsToggle.getAttribute(
+              'aria-expanded',
+            ) === 'true'
+
+          if (expanded) {
+            closeDesktopSolutions()
+          } else {
+            openDesktopSolutions()
+          }
+        },
+      )
+
+      /*
+       * Abre ao receber foco pelo teclado.
+       */
+      desktopSolutionsToggle.addEventListener(
+        'focus',
+        () => {
+          openDesktopSolutions()
+        },
+      )
+
+      /*
+       * Mantém o submenu aberto enquanto o usuário
+       * navega por seus links usando teclado.
+       */
+      desktopSolutionsContainer.addEventListener(
+        'focusin',
+        () => {
+          openDesktopSolutions()
+        },
+      )
+
+      /*
+       * Fecha quando o foco sai completamente do componente.
+       */
+      desktopSolutionsContainer.addEventListener(
+        'focusout',
+        (event) => {
+          const relatedTarget =
+            event.relatedTarget as Node | null
+
+          if (
+            !relatedTarget ||
+            !desktopSolutionsContainer.contains(
+              relatedTarget,
+            )
+          ) {
+            closeDesktopSolutions()
+          }
+        },
+      )
+
+      /*
+       * Abre no mouse sem depender exclusivamente de hover.
+       */
+      desktopSolutionsContainer.addEventListener(
+        'mouseenter',
+        () => {
+          openDesktopSolutions()
+        },
+      )
+
+      /*
+       * Fecha quando o mouse sai do submenu.
+       */
+      desktopSolutionsContainer.addEventListener(
+        'mouseleave',
+        () => {
+          if (
+            document.activeElement &&
+            desktopSolutionsContainer.contains(
+              document.activeElement,
+            )
+          ) {
+            return
+          }
+
+          closeDesktopSolutions()
+        },
+      )
+
+      /*
+       * Fecha ao clicar fora.
+       */
+      document.addEventListener(
+        'click',
+        (event) => {
+          const target = event.target as Node
+
+          if (
+            !desktopSolutionsContainer.contains(
+              target,
+            )
+          ) {
+            closeDesktopSolutions()
+          }
+        },
+      )
+
+      /*
+       * Escape fecha o submenu e devolve o foco
+       * para o botão que abriu o menu.
+       */
+      document.addEventListener(
+        'keydown',
+        (event) => {
+          if (event.key !== 'Escape') return
+
+          const expanded =
+            desktopSolutionsToggle.getAttribute(
+              'aria-expanded',
+            ) === 'true'
+
+          if (!expanded) return
+
+          closeDesktopSolutions()
+
+          desktopSolutionsToggle.focus()
+        },
+      )
+    }
+
+    /*
+     * ============================================================
+     * GLOBAL ESCAPE
+     * ============================================================
+     */
+
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key === 'Escape') {
+          if (
+            !mobileMenu.classList.contains('hidden')
+          ) {
+            closeMobileMenu()
+            newMobileToggle.focus()
+          }
+        }
+      },
+    )
   }
 
-  // Bind on DOM initialization and re-bind on Astro View Transitions
-  document.addEventListener('DOMContentLoaded', setupMobileMenu)
-  document.addEventListener('astro:page-load', setupMobileMenu)
+  document.addEventListener(
+    'DOMContentLoaded',
+    setupHeader,
+  )
+
+  document.addEventListener(
+    'astro:page-load',
+    setupHeader,
+  )
 </script>

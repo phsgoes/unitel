@@ -1,8 +1,8 @@
-import { SITE_URL, SITE_BASE } from 'astro.config.mjs'
+import { site } from '@/data/site'
 
-export const SITE_PATH =
-  String(`${SITE_URL}${SITE_BASE}`).replace(/\/+$/, '') + '/'
-export const SITE_TITLE = 'Astro Blog'
-export const SITE_DESCRIPTION = 'My first Astro Blog!'
+/** Trailing-slash site origin for absolute links (RSS, etc.). */
+export const SITE_PATH = `${site.url}/`
+export const SITE_TITLE = site.legalName
+export const SITE_DESCRIPTION = site.defaultDescription
 
 export const PAGE_SIZE = 7

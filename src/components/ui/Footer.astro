@@ -1,5 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components'
+import { navigationItems } from '@/data/nav'
+import { site } from '@/data/site'
 
 const { pathname } = Astro.url
 const isActive = (href: string | undefined) => {
@@ -25,38 +27,11 @@ export interface FooterItem {
 const columns: FooterColumn<FooterItem>[] = [
   {
     label: 'Unitel',
-    children: [
-      {
-        label: 'Home',
-        to: '/',
-        icon: 'mdi:home',
-      },
-      {
-        label: 'Sobre',
-        to: '/sobre',
-        icon: 'mdi:book-open-page-variant-outline',
-      },
-      {
-        label: 'Soluções',
-        to: '/solucoes',
-        icon: 'mdi:rocket-launch-outline',
-      },
-      {
-        label: 'Portfólio',
-        to: '/portfolio',
-        icon: 'mdi:folder-open-outline',
-      },
-      {
-        label: 'Blog',
-        to: '/blog',
-        icon: 'mdi:newspaper-variant-outline',
-      },
-      {
-        label: 'Contato',
-        to: '/contato',
-        icon: 'mdi:contacts-outline',
-      },
-    ],
+    children: navigationItems.map((item) => ({
+      label: item.label,
+      to: item.to,
+      icon: item.icon,
+    })),
   },
   {
     label: 'Siga-nos nas redes',
@@ -65,19 +40,19 @@ const columns: FooterColumn<FooterItem>[] = [
         id: 'instagram',
         label: 'Instagram',
         icon: 'mdi:instagram',
-        to: 'https://www.instagram.com/uniteltelecom_/',
+        to: site.sameAs[0],
       },
       {
         id: 'linkedin',
         label: 'LinkedIn',
         icon: 'mdi:linkedin',
-        to: 'https://www.linkedin.com/company/uniteltelecomvca',
+        to: site.sameAs[1],
       },
       {
         id: 'x',
         label: 'X (Twitter)',
         icon: 'x',
-        to: 'https://x.com/uniteltelecom_',
+        to: site.sameAs[2],
       },
     ],
   },
@@ -85,20 +60,20 @@ const columns: FooterColumn<FooterItem>[] = [
     label: 'Contato',
     children: [
       {
-        label: 'Praça Joaquim Correia, Centro, Vitória da Conquista',
+        label: site.addressDisplay,
         icon: 'mdi:map-marker',
-        to: 'https://www.google.com/maps/place/Unitel+Telecom/@-14.8491661,-40.8396598,17z/data=!3m1!4b1!4m6!3m5!1s0x7463a4b531fcd4d:0x9a8f24ad4398e324!8m2!3d-14.8491713!4d-40.8370849!16s%2Fg%2F1tdbwz27?hl=pt-BR&entry=ttu&g_ep=EgoyMDI2MDEyMS4wIKXMDSoASAFQAw%3D%3D',
+        to: site.mapsUrl,
         target: '_blank',
       },
       {
-        label: '(77) 2101-3300',
+        label: site.telephoneDisplay,
         icon: 'mdi:phone-message-outline',
-        to: 'tel:+557721013300',
+        to: `tel:${site.telephone}`,
       },
       {
-        label: 'atendimento@uniteltelecom.com.br',
+        label: site.email,
         icon: 'mdi:at',
-        to: 'mailto:atendimento@uniteltelecom.com.br',
+        to: `mailto:${site.email}`,
       },
     ],
   },
@@ -129,7 +104,7 @@ const { class: className = '' } = Astro.props
     <div class="border-default w-full border-solid border-t"></div>
   </div>
   <div class="py-8 lg:py-12 border-b border-default">
-    <div class="mx-auto w-full max-w-ui px-4 py-12 sm:px-6 lg:px-8">
+    <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-10">
         {
           columns.map((column) => (

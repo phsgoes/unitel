@@ -1,0 +1,77 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { RegionSection } from '@/types/solucao'
+
+interface Props {
+  section: RegionSection
+}
+
+const { section } = Astro.props
+---
+
+<section class="overflow-hidden bg-orange-500 py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid gap-14 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+      <div>
+        <span
+          class="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white"
+        >
+          {section.badge}
+        </span>
+        <h2
+          class="mt-5 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl"
+        >
+          {section.title}
+        </h2>
+        {
+          section.paragraphs.map((paragraph, index) => (
+            <p
+              class:list={[
+                'max-w-2xl text-base leading-8 text-orange-50',
+                index === 0 ? 'mt-6 sm:text-lg' : 'mt-5',
+              ]}
+            >
+              {paragraph}
+            </p>
+          ))
+        }
+        <a
+          href={section.cta.href}
+          class="mt-8 inline-flex items-center gap-2 rounded-full bg-default px-6 py-3.5 text-sm font-bold text-default transition hover:bg-slate-900 hover:text-white"
+        >
+          {section.cta.label}
+          <Icon name="mdi:arrow-right" size={18} />
+        </a>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+        {
+          section.cards.map((card, index) => (
+            <div
+              class:list={[
+                'rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur',
+                index === section.cards.length - 1 &&
+                  'sm:col-span-2 lg:col-span-1',
+              ]}
+            >
+              <div class="flex items-start gap-4">
+                <span class="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white text-orange-500">
+                  <Icon name={card.icon} size={23} />
+                </span>
+                <div>
+                  {card.value ? (
+                    <p class="text-3xl font-bold tracking-tight text-white">
+                      {card.value}
+                    </p>
+                  ) : (
+                    <p class="text-lg font-bold text-white">{card.title}</p>
+                  )}
+                  <p class="mt-1 text-sm leading-6 text-orange-50">{card.text}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

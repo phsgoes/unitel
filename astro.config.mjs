@@ -2,18 +2,19 @@ import { defineConfig } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
 import sitemap from '@astrojs/sitemap'
 import icon from 'astro-icon'
+import { stubViteClientEntryPlugin } from './scripts/stub-vite-client-entry.mjs'
 
 export const SITE_URL = import.meta.env.PROD
-  ? 'https://phsgoes.github.io'
+  ? 'https://www.uniteltelecom.com.br'
   : 'http://localhost:4321'
-export const SITE_BASE = import.meta.env.PROD ? '/astro-blog' : '/'
+export const SITE_BASE = '/'
 
 export default defineConfig({
   site: SITE_URL,
   base: SITE_BASE,
 
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), stubViteClientEntryPlugin()],
   },
 
   image: {

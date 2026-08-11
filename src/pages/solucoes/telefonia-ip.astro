@@ -1,0 +1,13 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro'
+import SolutionPageView from '@/components/solucoes/SolutionPageView.astro'
+import { telefoniaIpPage } from '@/data/solucoes/telefonia-ip'
+import { buildSolutionPageHead } from '@/utils/solutionPage'
+
+const serviceImage = new URL(telefoniaIpPage.hero.image.src, Astro.site).href
+const head = buildSolutionPageHead(telefoniaIpPage, serviceImage)
+---
+
+<PageLayout {...head}>
+  <SolutionPageView page={telefoniaIpPage} />
+</PageLayout>

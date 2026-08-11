@@ -1,0 +1,9 @@
+---
+const { schemas = [] } = Astro.props
+---
+
+{
+  schemas.map((schema: { [key: string]: unknown }) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))
+}

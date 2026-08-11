@@ -1,0 +1,42 @@
+---
+import FAQ from '@/components/ui/FAQ.astro'
+import type { SolutionPage } from '@/types/solucao'
+import ApplicationsSection from './ApplicationsSection.astro'
+import BenefitsSection from './BenefitsSection.astro'
+import ChallengeSection from './ChallengeSection.astro'
+import ClientLogoGrid from './ClientLogoGrid.astro'
+import CompareSection from './CompareSection.astro'
+import FinalCta from './FinalCta.astro'
+import PricingSection from './PricingSection.astro'
+import ProcessSteps from './ProcessSteps.astro'
+import RegionBanner from './RegionBanner.astro'
+import ResourcesSection from './ResourcesSection.astro'
+import SolutionHero from './SolutionHero.astro'
+import WhyUnitel from './WhyUnitel.astro'
+
+interface Props {
+  page: SolutionPage
+}
+
+const { page } = Astro.props
+---
+
+<div class="overflow-hidden">
+  <SolutionHero hero={page.hero} breadcrumbLabel={page.name} />
+  <ChallengeSection section={page.challenge} />
+  <CompareSection section={page.compare} />
+  <BenefitsSection section={page.benefits} />
+  <ResourcesSection section={page.resources} />
+  {page.applications && <ApplicationsSection section={page.applications} />}
+  {page.pricing && <PricingSection section={page.pricing} />}
+  <ProcessSteps section={page.process} />
+  <RegionBanner section={page.region} />
+  <WhyUnitel section={page.whyUnitel} />
+  {page.clients && <ClientLogoGrid section={page.clients} />}
+  <FAQ
+    items={page.faq.items}
+    title={page.faq.title}
+    description={page.faq.description}
+  />
+  <FinalCta section={page.finalCta} />
+</div>

@@ -1,0 +1,54 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { WhyUnitelSection } from '@/types/solucao'
+
+interface Props {
+  section: WhyUnitelSection
+}
+
+const { section } = Astro.props
+---
+
+<section class="bg-default py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div>
+        <span
+          class="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-600"
+        >
+          {section.badge}
+        </span>
+        <h2
+          class="mt-5 text-3xl font-bold tracking-tight text-default sm:text-4xl"
+        >
+          {section.title}
+        </h2>
+        {
+          section.paragraphs.map((paragraph, index) => (
+            <p
+              class:list={[
+                'text-base leading-8 text-toned',
+                index === 0 ? 'mt-6' : 'mt-5',
+              ]}
+            >
+              {paragraph}
+            </p>
+          ))
+        }
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          section.cards.map((card) => (
+            <article class="rounded-3xl border border-slate-200 p-6">
+              <span class="flex size-11 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
+                <Icon name={card.icon} size={22} />
+              </span>
+              <h3 class="mt-5 font-bold text-default">{card.title}</h3>
+              <p class="mt-2 text-sm leading-7 text-toned">{card.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
