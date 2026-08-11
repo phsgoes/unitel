@@ -13,6 +13,7 @@ import JsonLdSchemas from '@/seo/JsonLdSchemas.astro'
 import organization from '@/seo/organization'
 import website from '@/seo/website'
 import { site } from '@/data/site'
+import WhatsappFab from '@/components/ui/WhatsappFab.astro'
 
 interface Props {
   title?: string
@@ -79,6 +80,7 @@ const {
       <slot />
     </Main>
     <Footer />
+    <WhatsappFab />
     <ImageProvider />
   </body>
 </html>

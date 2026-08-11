@@ -6,6 +6,7 @@ import Header from '@/components/ui/Header.astro'
 import Footer from '@/components/ui/Footer.astro'
 import Main from '@/components/ui/Main.astro'
 import type { Post } from '@/types'
+import WhatsappFab from '@/components/ui/WhatsappFab.astro'
 
 interface Props {
   title?: string
@@ -77,6 +78,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
     </Main>
 
     <Footer />
+    <WhatsappFab />
     <script>
       function saveBlogHistory() {
         const path = window.location.pathname
