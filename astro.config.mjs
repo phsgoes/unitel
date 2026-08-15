@@ -5,7 +5,7 @@ import icon from 'astro-icon'
 import { stubViteClientEntryPlugin } from './scripts/stub-vite-client-entry.mjs'
 
 export const SITE_URL = import.meta.env.PROD
-  ? 'https://www.uniteltelecom.com.br'
+  ? 'https://unitel-liard.vercel.app/'
   : 'http://localhost:4321'
 export const SITE_BASE = '/'
 

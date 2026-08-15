@@ -9,7 +9,7 @@ export const site = {
   name: 'Unitel',
   legalName: 'Unitel Telecomunicações',
   /** Canonical origin (no trailing slash). */
-  url: 'https://www.uniteltelecom.com.br',
+  url: 'https://unitel-liard.vercel.app/',
   defaultTitle: 'Unitel Telecomunicações',
   defaultDescription:
     'A Unitel é uma empresa de soluções na área de tecnologia da informação voltada a telecomunicações.',
