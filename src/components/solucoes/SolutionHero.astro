@@ -2,7 +2,7 @@
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import type { SolutionHero } from '@/types/solucao'
-import SolutionBreadcrumb from './SolutionBreadcrumb.astro'
+import Breadcrumb from '@/components/ui/Breadcrumb.astro'
 
 interface Props {
   hero: SolutionHero
@@ -15,20 +15,17 @@ const { hero, breadcrumbLabel } = Astro.props
 <section class="relative isolate overflow-hidden bg-default">
   <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
     <div
-      class="absolute -left-40 -top-40 size-128 rounded-full bg-primary/10 blur-3xl"
-    >
+      class="absolute -left-40 -top-40 size-128 rounded-full bg-primary/10 blur-3xl">
     </div>
     <div
-      class="absolute -right-40 top-1/3 size-112 rounded-full bg-primary/8 blur-3xl"
-    >
+      class="absolute -right-40 top-1/3 size-112 rounded-full bg-primary/8 blur-3xl">
     </div>
     <div
-      class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent"
-    >
+      class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent">
     </div>
   </div>
   <div class="mx-auto max-w-(--ui-container) px-6 lg:px-8">
-    <SolutionBreadcrumb
+    <Breadcrumb
       items={[
         { label: 'Início', href: '/' },
         { label: 'Soluções', href: '/solucoes' },
@@ -36,12 +33,10 @@ const { hero, breadcrumbLabel } = Astro.props
       ]}
     />
     <div
-      class="grid min-h-170 items-center gap-14 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20 lg:py-20"
-    >
+      class="grid min-h-170 items-center gap-14 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20 lg:py-20">
       <div class="max-w-3xl">
         <div
-          class="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary"
-        >
+          class="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary">
           <span class="relative flex size-1.5">
             <span
               class="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-50"
@@ -52,8 +47,7 @@ const { hero, breadcrumbLabel } = Astro.props
           {hero.badge}
         </div>
         <h1
-          class="max-w-3xl text-4xl font-semibold tracking-[-0.045em] text-highlighted sm:text-5xl lg:text-6xl xl:text-7xl"
-        >
+          class="max-w-3xl text-4xl font-semibold tracking-[-0.045em] text-highlighted sm:text-5xl lg:text-6xl xl:text-7xl">
           {hero.titleBefore}
           <span class="text-primary">{hero.titleHighlight}</span>
           {hero.titleAfter}
@@ -64,8 +58,7 @@ const { hero, breadcrumbLabel } = Astro.props
         <div class="mt-9 flex flex-col gap-3 sm:flex-row">
           <a
             href={hero.primaryCta.href}
-            class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-inverted shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90"
-          >
+            class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-inverted shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90">
             {hero.primaryCta.label}
             <Icon
               name="mdi:arrow-right"
@@ -75,15 +68,13 @@ const { hero, breadcrumbLabel } = Astro.props
           </a>
           <a
             href={hero.secondaryCta.href}
-            class="inline-flex items-center justify-center gap-2 rounded-md border border-default bg-default px-5 py-3 text-sm font-semibold text-default transition-colors hover:bg-muted"
-          >
+            class="inline-flex items-center justify-center gap-2 rounded-md border border-default bg-default px-5 py-3 text-sm font-semibold text-default transition-colors hover:bg-muted">
             {hero.secondaryCta.label}
             <Icon name="mdi:arrow-down" size={18} class="text-muted" />
           </a>
         </div>
         <div
-          class="mt-12 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-5 border-t border-default pt-7 sm:grid-cols-4"
-        >
+          class="mt-12 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-5 border-t border-default pt-7 sm:grid-cols-4">
           {
             hero.chips.map((chip) => (
               <div>
@@ -95,10 +86,10 @@ const { hero, breadcrumbLabel } = Astro.props
         </div>
       </div>
       <div class="relative mx-auto w-full max-w-xl">
-        <div class="absolute -inset-8 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute -inset-8 rounded-full bg-primary/10 blur-3xl">
+        </div>
         <div
-          class="relative overflow-hidden rounded-2xl border border-default bg-elevated p-2 shadow-2xl shadow-neutral-950/10 dark:shadow-black/30"
-        >
+          class="relative overflow-hidden rounded-2xl border border-default bg-elevated p-2 shadow-2xl shadow-neutral-950/10 dark:shadow-black/30">
           <div class="relative overflow-hidden rounded-xl bg-muted">
             <Image
               src={hero.image}
@@ -110,16 +101,13 @@ const { hero, breadcrumbLabel } = Astro.props
               class="aspect-4/3 w-full object-cover"
             />
             <div
-              class="absolute inset-0 bg-linear-to-t from-neutral-950/70 via-transparent to-transparent"
-            >
+              class="absolute inset-0 bg-linear-to-t from-neutral-950/70 via-transparent to-transparent">
             </div>
             <div
-              class="absolute bottom-5 left-5 right-5 rounded-xl border border-white/15 bg-neutral-950/75 p-4 shadow-xl backdrop-blur-md"
-            >
+              class="absolute bottom-5 left-5 right-5 rounded-xl border border-white/15 bg-neutral-950/75 p-4 shadow-xl backdrop-blur-md">
               <div class="flex items-center gap-3">
                 <div
-                  class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary text-white"
-                >
+                  class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
                   <Icon name={hero.imageCard.icon} size={21} />
                 </div>
                 <div class="min-w-0">
