@@ -1,23 +1,15 @@
-# purple-disk-622d.paulo-igen.workers.dev
 name: Deploy Astro to Vercel
 
 on:
   push:
     branches:
       - main
-
   repository_dispatch:
     types: [hygraph_publish]
-
-permissions:
-  contents: read
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
-    env:
-      ASTRO_HYGRAPH_ENDPOINT: ${{ secrets.ASTRO_HYGRAPH_ENDPOINT }}
 
     steps:
       - uses: actions/checkout@v4
@@ -36,10 +28,10 @@ jobs:
         id: pnpm-cache
         shell: bash
         run: |
-          echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
       - name: Setup pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -47,7 +39,18 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
-      - name: Build
+      - name: Type check
+        run: pnpm exec astro check
+
+      - name: Build Astro project
         run: pnpm build
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
