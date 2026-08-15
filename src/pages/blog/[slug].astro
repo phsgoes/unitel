@@ -6,29 +6,42 @@ import RichText from '@/components/rich-text/RichText.astro'
 import ImageWithSkeleton from '@/components/ui/ImageWithSkeleton.astro'
 import BackButton from '@/components/ui/BackButton.astro'
 
-import { getPostSlugs, getAdjacentPosts } from '@/services/posts'
-import { getPost } from '@/services/post'
+import { getAllPosts } from '@/services/posts'
 
 import { extractTableOfContents, longDateFormat } from '@/utils'
 import type { Post } from '@/types'
 
-export const getStaticPaths = async () => {
-  const posts = await getPostSlugs()
+export async function getStaticPaths() {
+  const posts = await getAllPosts()
 
-  return posts.map(({ slug }) => ({
-    params: { slug },
-  }))
+  return posts.map((post, index) => {
+    const previousPost = posts[index + 1] ?? null
+    const nextPost = posts[index - 1] ?? null
+
+    return {
+      params: {
+        slug: post.slug,
+      },
+
+      props: {
+        post,
+        previousPost,
+        nextPost,
+      },
+    }
+  })
 }
 
-const { slug } = Astro.params
+const {
+  post,
+  previousPost,
+  nextPost,
+}: {
+  post: Post
+  previousPost: Post | null
+  nextPost: Post | null
+} = Astro.props
 
-if (!slug) throw new Error('Faltou o slug...')
-
-const post: Post = await getPost(slug)
-
-if (!post) throw new Error(`Artigo não encontrado para o slug: ${slug}`)
-
-const { previousPost, nextPost } = await getAdjacentPosts(post.publishedAt)
 const toc = extractTableOfContents(post.body.raw)
 ---
 

@@ -1,5 +1,4 @@
 ---
-// src/pages/blog/index.astro
 import BlogLayout from '@/layouts/BlogLayout.astro'
 import BlogCard from '@/components/ui/BlogCard.astro'
 import Pagination from '@/components/ui/Pagination.astro'
@@ -9,8 +8,11 @@ import SearchController from '@/components/ui/SearchController.astro'
 import { getPosts, getPostsCount } from '@/services/posts'
 import { PAGE_SIZE } from '@/consts'
 
-const posts = await getPosts()
-const totalPosts = await getPostsCount()
+const [posts, totalPosts] = await Promise.all([
+  getPosts(PAGE_SIZE, 0),
+  getPostsCount(),
+])
+
 const totalPages = Math.ceil(totalPosts / PAGE_SIZE)
 ---
 

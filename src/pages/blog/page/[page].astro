@@ -5,34 +5,54 @@ import Pagination from '@/components/ui/Pagination.astro'
 import SearchInput from '@/components/ui/SearchInput.astro'
 import SearchController from '@/components/ui/SearchController.astro'
 
-import { getPosts, getPostsCount } from '@/services/posts'
+import { getAllPostsForListing } from '@/services/posts'
 import { PAGE_SIZE } from '@/consts'
 import type { Post } from '@/types'
 
 export async function getStaticPaths() {
-  const totalPosts = await getPostsCount()
-  const totalPages = Math.ceil(totalPosts / PAGE_SIZE)
+  const posts = await getAllPostsForListing()
+  const totalPages = Math.ceil(posts.length / PAGE_SIZE)
 
-  return Array.from({ length: totalPages - 1 }, (_, index) => ({
-    params: {
-      page: String(index + 2),
-    },
-  }))
+  return Array.from({ length: Math.max(totalPages - 1, 0) }, (_, index) => {
+    const currentPage = index + 2
+
+    const start = (currentPage - 1) * PAGE_SIZE
+    const end = start + PAGE_SIZE
+
+    const pagePosts = posts.slice(start, end)
+
+    return {
+      params: {
+        page: String(currentPage),
+      },
+      props: {
+        pagePosts,
+        totalPages,
+      },
+    }
+  })
 }
 
 const currentPage = Number(Astro.params.page)
-const skip = (currentPage - 1) * PAGE_SIZE
 
-const posts: Post[] = await getPosts(PAGE_SIZE, skip)
-const totalPosts = await getPostsCount()
-const totalPages = Math.ceil(totalPosts / PAGE_SIZE)
+if (!Number.isInteger(currentPage) || currentPage < 2) {
+  throw new Error(`Página inválida: ${Astro.params.page}`)
+}
+
+const {
+  pagePosts,
+  totalPages,
+}: {
+  pagePosts: Post[]
+  totalPages: number
+} = Astro.props
 ---
 
 <BlogLayout
   title="Blog - Nuxt SaaS template"
   description="Discover the latest insights, tutorials, and updates from our team. Stay informed about web development trends, best practices, and innovative solutions.">
   <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header com mesmo estilo e espaçamento de index.astro -->
+    <!-- Header -->
     <div class="relative border-b border-default py-12.5">
       <div
         class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -41,6 +61,7 @@ const totalPages = Math.ceil(totalPosts / PAGE_SIZE)
             class="text-3xl font-bold text-highlighted sm:text-4xl text-pretty">
             Blog
           </h1>
+
           <p class="mt-4 text-lg text-pretty text-muted">
             Discover the latest insights, tutorials, and updates from our team.
             Stay informed about web development trends, best practices, and
@@ -53,21 +74,21 @@ const totalPages = Math.ceil(totalPosts / PAGE_SIZE)
       </div>
     </div>
 
-    <!-- Grid de Posts espelhado do index.astro -->
+    <!-- Grid de Posts -->
     <div class="mt-8 pb-24 space-y-12">
       <div
         id="posts-grid"
         class="flex flex-col gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-16">
         {
-          posts.map((post) => (
-            <BlogCard post={post} featured={posts[0].title === post.title} />
+          pagePosts.map((post, index) => (
+            <BlogCard post={post} featured={currentPage === 2 && index === 0} />
           ))
         }
       </div>
     </div>
   </div>
 
-  <!-- Container de Paginação espelhado -->
+  <!-- Paginação -->
   {
     totalPages > 1 && (
       <div
