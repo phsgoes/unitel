@@ -313,9 +313,12 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
             0,
             1,
           )
+          const scaleProgress = transitionProgress
+          const scale = 1 - scaleProgress * 0.06
           const leaving = clamp((transitionProgress - 0.55) / 0.45, 0, 1)
-          card.style.opacity = String(1 - leaving * 0.9)
-          card.style.transform = `translate3d(0, ${-leaving * 5}%, 0) scale(${1 - leaving * 0.06})`
+          const opacity = 1 - leaving * 0.9
+          card.style.opacity = String(opacity)
+          card.style.transform = `translate3d(0, ${-leaving * 5}%, 0) scale(${scale})`
           card.classList.remove('is-active')
           card.setAttribute('aria-hidden', 'true')
           return
