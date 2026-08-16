@@ -3,6 +3,8 @@ import LogoComuniq from '@/components/ui/LogoComuniq.astro'
 import PageLayout from '@/layouts/PageLayout.astro'
 import officeBackground from '@/assets/images/office-background.webp'
 import { Image } from 'astro:assets'
+import StoryReveal from '@/components/ui/StoryReveal.astro'
+import { storyItems } from '@/data/story'
 ---
 
 <PageLayout title="Home">
@@ -63,5 +65,5 @@ import { Image } from 'astro:assets'
       </div>
     </div>
   </section>
-  <LogoComuniq class="w-auto h-6 shrink-0" />
+  <StoryReveal items={storyItems} />
 </PageLayout>

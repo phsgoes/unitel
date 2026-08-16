@@ -1,0 +1,355 @@
+---
+export interface StoryRevealItem {
+  backgroundColor: string
+  image: {
+    src: string
+    alt: string
+    caption?: string
+  }
+  eyebrow: string
+  title: string
+  titleAccent: string
+  accentColor: StoryRevealColor
+  description: string
+  secondaryDescription: string
+}
+
+export type StoryRevealColor = 'zinc' | 'emerald' | 'blue' | 'rose' | 'slate'
+
+interface Props {
+  items: StoryRevealItem[]
+  id?: string
+}
+
+const { items, id = `story-reveal-${Math.random().toString(36).slice(2, 9)}` } =
+  Astro.props
+
+const safeItems = items.slice(0, 20)
+
+const themes: Record<
+  StoryRevealColor,
+  {
+    text: string
+    muted: string
+    accent: string
+    divider: string
+    overlay: string
+  }
+> = {
+  zinc: {
+    text: 'text-zinc-950',
+    muted: 'text-zinc-600',
+    accent: 'text-orange-500',
+    divider: 'bg-zinc-900',
+    overlay: 'bg-gradient-to-r from-black/10 to-transparent',
+  },
+
+  emerald: {
+    text: 'text-white',
+    muted: 'text-white/70',
+    accent: 'text-emerald-400',
+    divider: 'bg-emerald-400',
+    overlay: 'bg-black/10',
+  },
+
+  blue: {
+    text: 'text-white',
+    muted: 'text-white/70',
+    accent: 'text-blue-400',
+    divider: 'bg-blue-400',
+    overlay: 'bg-black/10',
+  },
+
+  rose: {
+    text: 'text-white',
+    muted: 'text-white/70',
+    accent: 'text-rose-400',
+    divider: 'bg-rose-400',
+    overlay: 'bg-black/20',
+  },
+
+  slate: {
+    text: 'text-white',
+    muted: 'text-white/70',
+    accent: 'text-slate-400',
+    divider: 'bg-slate-400',
+    overlay: 'bg-black/20',
+  },
+}
+
+const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
+---
+
+<section
+  id={id}
+  data-story-reveal
+  data-story-count={safeItems.length}
+  class="story-stage bg-zinc-950"
+  transition:persist>
+  <div class="story-panel">
+    {
+      safeItems.map((item, index) => {
+        const theme = getTheme(item.accentColor)
+
+        return (
+          <article
+            class:list={['story-card', index === 0 ? 'is-active' : '']}
+            data-story-card
+            data-card-index={index}
+            style={`background-color: ${item.backgroundColor}; z-index: ${index + 1};`}
+            aria-hidden={index === 0 ? 'false' : 'true'}>
+            <div class="grid h-full grid-cols-1 md:grid-cols-2">
+              <div class="relative h-[48dvh] overflow-hidden md:h-full">
+                <img
+                  src={item.image.src}
+                  alt={item.image.alt}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={index === 0 ? 'high' : 'auto'}
+                  decoding="async"
+                  class="h-full w-full object-cover"
+                />
+
+                <div class:list={['absolute inset-0', theme.overlay]} />
+
+                {item.image.caption && (
+                  <div class="absolute bottom-6 left-6 text-xs uppercase tracking-[0.3em] text-white/70">
+                    {String(index + 1).padStart(2, '0')} / {item.image.caption}
+                  </div>
+                )}
+              </div>
+
+              <div
+                class:list={[
+                  'flex h-[52dvh] items-center px-8 py-12 sm:px-12 md:h-full md:px-16 lg:px-24',
+                  theme.text,
+                ]}
+                style={`background-color: ${item.backgroundColor};`}>
+                <div class="max-w-xl">
+                  <p
+                    class:list={[
+                      'mb-5 text-xs font-bold uppercase tracking-[0.3em]',
+                      theme.accent,
+                      'opacity-70',
+                    ]}>
+                    {item.eyebrow}
+                  </p>
+                  <h2 class="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                    {item.title}{' '}
+                    <span class={theme.accent}>{item.titleAccent}</span>
+                  </h2>
+                  <p class:list={['mt-8 text-lg leading-relaxed', theme.muted]}>
+                    {item.description}
+                  </p>
+                  <p
+                    class:list={[
+                      'mt-5 text-base leading-relaxed',
+                      theme.muted,
+                      'opacity-70',
+                    ]}>
+                    {item.secondaryDescription}
+                  </p>
+                  <div class:list={['mt-10 h-px w-24', theme.divider]} />
+                </div>
+              </div>
+            </div>
+          </article>
+        )
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .story-stage {
+    --story-scroll-height: 1000dvh;
+    height: var(--story-scroll-height);
+    position: relative;
+  }
+
+  .story-panel {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .story-card {
+    position: absolute;
+    inset: 0;
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+    will-change: transform, opacity;
+    pointer-events: none;
+    backface-visibility: hidden;
+    transform-origin: center center;
+  }
+
+  .story-card.is-active {
+    pointer-events: auto;
+  }
+
+  .story-card img {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  @media (max-width: 768px) {
+    .story-stage {
+      --story-mobile-scroll-per-item: 80dvh;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .story-card {
+      will-change: auto;
+    }
+  }
+</style>
+
+<script>
+  const INITIALIZED_ATTRIBUTE = 'data-story-reveal-initialized'
+  if (!document.documentElement.hasAttribute(INITIALIZED_ATTRIBUTE)) {
+    document.documentElement.setAttribute(INITIALIZED_ATTRIBUTE, '')
+
+    const clamp = (value: number, min: number, max: number) => {
+      return Math.min(Math.max(value, min), max)
+    }
+
+    const components = new Set<HTMLElement>()
+
+    type StoryRevealState = HTMLElement & {
+      __storyRevealCards?: HTMLElement[]
+      __storyRevealCount?: number
+    }
+
+    function collectComponents() {
+      document
+        .querySelectorAll<HTMLElement>('[data-story-reveal]')
+        .forEach((element) => components.add(element))
+
+      for (const element of components) {
+        if (!document.documentElement.contains(element)) {
+          components.delete(element)
+        }
+      }
+    }
+
+    function initializeComponent(container: HTMLElement) {
+      const cards = Array.from(
+        container.querySelectorAll<HTMLElement>('[data-story-card]'),
+      )
+      if (!cards.length) return
+      const count = cards.length
+      const isMobile = window.matchMedia('(max-width: 768px)').matches
+      const viewportPerCard = isMobile ? 0.8 : 1
+      const scrollHeight = count * viewportPerCard * 100
+      container.style.setProperty('--story-scroll-height', `${scrollHeight}dvh`)
+      const state = container as StoryRevealState
+      state.__storyRevealCards = cards
+      state.__storyRevealCount = count
+    }
+
+    function updateComponent(container: HTMLElement) {
+      const state = container as StoryRevealState
+      let cards = state.__storyRevealCards
+      if (!cards?.length) {
+        initializeComponent(container)
+        cards = state.__storyRevealCards
+        if (!cards?.length) return
+      }
+
+      const count = cards.length
+      const rect = container.getBoundingClientRect()
+      const totalScroll = container.offsetHeight - window.innerHeight
+      if (totalScroll <= 0) return
+
+      const passed = clamp(-rect.top, 0, totalScroll)
+      const progress = passed / totalScroll
+      const step = 1 / count
+      const activeIndex = Math.min(count - 1, Math.floor(progress / step))
+      cards.forEach((card, index) => {
+        if (activeIndex === 0 && index === 0) {
+          card.style.opacity = '1'
+          card.style.transform = 'translate3d(0, 0, 0) scale(1)'
+          card.classList.add('is-active')
+          card.setAttribute('aria-hidden', 'false')
+          return
+        }
+
+        if (index > activeIndex) {
+          card.style.opacity = '0'
+          card.style.transform = 'translate3d(0, 100%, 0) scale(1)'
+          card.classList.remove('is-active')
+          card.setAttribute('aria-hidden', 'true')
+          return
+        }
+
+        if (index < activeIndex - 1) {
+          card.style.opacity = '0'
+          card.style.transform = 'translate3d(0, -5%, 0) scale(0.94)'
+          card.classList.remove('is-active')
+          card.setAttribute('aria-hidden', 'true')
+          return
+        }
+
+        if (index === activeIndex && index > 0) {
+          const cardProgress = clamp(
+            (progress - activeIndex * step) / step,
+            0,
+            1,
+          )
+          const entering = clamp(cardProgress / 0.55, 0, 1)
+          card.style.opacity = String(entering)
+          card.style.transform = `translate3d(0, ${(1 - entering) * 100}%, 0) scale(1)`
+          card.classList.add('is-active')
+          card.setAttribute('aria-hidden', 'false')
+          return
+        }
+
+        if (index === activeIndex - 1) {
+          const transitionProgress = clamp(
+            (progress - activeIndex * step) / step,
+            0,
+            1,
+          )
+          const leaving = clamp((transitionProgress - 0.55) / 0.45, 0, 1)
+          card.style.opacity = String(1 - leaving * 0.9)
+          card.style.transform = `translate3d(0, ${-leaving * 5}%, 0) scale(${1 - leaving * 0.06})`
+          card.classList.remove('is-active')
+          card.setAttribute('aria-hidden', 'true')
+          return
+        }
+      })
+    }
+
+    function updateAll() {
+      collectComponents()
+      components.forEach(updateComponent)
+    }
+
+    let ticking = false
+
+    function requestUpdate() {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        updateAll()
+        ticking = false
+      })
+    }
+
+    window.addEventListener('scroll', requestUpdate, { passive: true })
+    window.addEventListener('resize', requestUpdate, { passive: true })
+    document.addEventListener('astro:page-load', () => {
+      collectComponents()
+      requestUpdate()
+    })
+    document.addEventListener('astro:after-swap', () => {
+      collectComponents()
+      requestUpdate()
+    })
+    collectComponents()
+    requestUpdate()
+  }
+</script>
