@@ -3,7 +3,6 @@ import { Image } from 'astro:assets'
 import type { ImageMetadata, UnresolvedImageTransform } from 'astro'
 import type { HTMLAttributes } from 'astro/types'
 
-// Support Remote string URLs, Local ImageMetadata, or Unresolved Image objects
 type ImageSrc =
   | string
   | ImageMetadata
@@ -18,7 +17,7 @@ type Props = HTMLAttributes<'img'> & {
   containerClass?: string
   format?: string
   loading?: 'lazy' | 'eager'
-  [key: string]: any // Allows spreading additional Astro <Image /> props
+  [key: string]: any
 }
 
 const {
@@ -31,26 +30,63 @@ const {
   ...restProps
 } = Astro.props
 
-// Calculate aspect ratio dynamically if width & height are supplied
 const computedAspectRatio = width && height ? `${width} / ${height}` : undefined
+
+// Identifica se a imagem pertence à CDN do Hygraph
+const isHygraphImage =
+  typeof src === 'string' && src.includes('graphassets.com')
+
+let finalSrc = src
+let isRemoteStatic = typeof src === 'string'
+
+if (isHygraphImage && typeof src === 'string') {
+  // Extrai a URL base limpando possíveis parâmetros existentes
+  const baseUrl = src.split('?')[0]
+
+  // Injeta a API de transformação nativa do Hygraph (Filestack)
+  // Converte para WebP e redimensiona direto na CDN deles de forma gratuita
+  const resizeParam =
+    width && height ? `resize=width:${width},height:${height},fit:crop/` : ''
+  finalSrc = baseUrl.replace(
+    '://graphassets.com',
+    `://graphassets.com${resizeParam}output=format:webp/`,
+  )
+}
 ---
 
 <div
   class={`image-container skeleton ${containerClass}`}
   style={computedAspectRatio ? { aspectRatio: computedAspectRatio } : {}}>
-  <Image
-    src={src as any}
-    alt={alt}
-    width={width as any}
-    height={height as any}
-    class={`image-content ${className}`}
-    onload="this.closest('.image-container')?.classList.remove('skeleton')"
-    {...restProps}
-  />
+  {
+    isHygraphImage ? (
+      // Se for Hygraph, renderiza a tag nativa usando a CDN deles. Zero downloads no GitHub Actions.
+      <img
+        src={finalSrc as string}
+        alt={alt}
+        width={width}
+        height={height}
+        class={`image-content ${className}`}
+        loading={restProps.loading || 'lazy'}
+        decoding="async"
+        onload="this.closest('.image-container')?.classList.remove('skeleton')"
+        {...restProps}
+      />
+    ) : (
+      // Se for imagem local ou de outros domínios, mantém o comportamento padrão do Astro
+      <Image
+        src={src as any}
+        alt={alt}
+        width={width as any}
+        height={height as any}
+        class={`image-content ${className}`}
+        onload="this.closest('.image-container')?.classList.remove('skeleton')"
+        {...restProps}
+      />
+    )
+  }
 </div>
 
 <script>
-  // Immediately reveal cached images
   document
     .querySelectorAll<HTMLImageElement>('.image-container .image-content')
     .forEach((img) => {
@@ -63,12 +99,12 @@ const computedAspectRatio = width && height ? `${width} / ${height}` : undefined
 <style>
   @reference "@/styles/global.css";
 
-  /* Container background with high transparency */
   .image-container.skeleton {
     @apply bg-slate-900/3 dark:bg-white/3;
+    position: relative;
+    overflow: hidden;
   }
 
-  /* Light Theme Shimmer Overlay */
   .image-container.skeleton::after {
     content: '';
     position: absolute;
@@ -86,7 +122,6 @@ const computedAspectRatio = width && height ? `${width} / ${height}` : undefined
     pointer-events: none;
   }
 
-  /* Dark Theme Shimmer Overlay */
   .dark .image-container.skeleton::after {
     background-image: linear-gradient(
       90deg,

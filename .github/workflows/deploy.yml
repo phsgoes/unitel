@@ -42,6 +42,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Cache Astro Build Cache
+        uses: actions/cache@v3
+        with:
+          path: .astro
+          key: ${{ runner.os }}-astro-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-astro-build-
+
       - name: Install dependencies
         run: pnpm install
 
