@@ -1,5 +1,4 @@
-# ORG_ID = USER_ID
-name: Deploy Astro to Vercel
+name: Deploy Astro to Hostinger
 
 on:
   push:
@@ -7,6 +6,11 @@ on:
       - main
   repository_dispatch:
     types: [hygraph_publish]
+
+# ADICIONE ESTE BLOCO AQUI:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
