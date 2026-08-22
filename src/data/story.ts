@@ -1,123 +1,91 @@
 import type { StoryRevealItem } from '@/components/ui/StoryReveal.astro'
 
+import comuniq from '@/assets/images/stories/comuniq.avif'
+import callCenter from '@/assets/images/stories/call-center.avif'
+import redesEstruturadas from '@/assets/images/stories/redes-estruturadas.avif'
+import telefoniaIp from '@/assets/images/stories/telefonia-ip.avif'
+import ouvidoriaDigital from '@/assets/images/stories/ouvidoria-digital.avif'
+
 export const storyItems: StoryRevealItem[] = [
   {
-    backgroundColor: '#e8e3da',
-
+    backgroundColor: '#202020',
     image: {
-      src: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=90',
-      alt: 'Montanhas ao amanhecer',
-      caption: 'Origin',
+      src: comuniq.src,
+      alt: 'ComuniQ',
+      caption: 'ComuniQ',
     },
-
-    eyebrow: 'Chapter One',
-
-    title: 'Everything begins',
-
-    titleAccent: 'somewhere.',
-
+    eyebrow: 'ComuniQ',
+    title: 'Tudo começa',
+    titleAccent: 'por aqui.',
     accentColor: 'zinc',
-
     description:
-      'Existe sempre um primeiro instante. Uma paisagem, uma ideia, uma decisão aparentemente pequena que eventualmente transforma todo o caminho.',
-
+      'O ComuniQ é a solução definitiva para empresas que buscam flexibilidade e inovação na comunicação empresarial. Nossa plataforma digital opera totalmente em nuvem, garantindo maior escalabilidade, segurança e acessibilidade.',
     secondaryDescription:
-      'Neste primeiro momento, queremos desacelerar. Observar o espaço, perceber a luz e permitir que a narrativa encontre seu próprio ritmo.',
+      'Esta é de fato uma plataforma de comunicação em nuvem para empresas que querem escalar e simplificar.',
   },
-
+  {
+    backgroundColor: '#24151b',
+    image: {
+      src: callCenter.src,
+      alt: 'Call Center',
+      caption: 'Call Center',
+    },
+    eyebrow: 'Call Center',
+    title: 'Cada chamada é sempre',
+    titleAccent: 'uma oportunidade.',
+    accentColor: 'rose',
+    description:
+      'A nossa solução de Call Center é pensada para otimizar o atendimento, melhorar a experiência do cliente e gerar dados estratégicos. Com recursos avançados de monitoramento, relatórios, gravação e integração omnichannel, ajudamos sua empresa a transformar atendimento em relacionamento, com mais controle, eficiência e profissionalismo.',
+    secondaryDescription:
+      'Maximize a produtividade do seu call center com tecnologia de ponta. Oferecemos soluções completas para atendimento eficiente, incluindo filas de chamadas, URA Multinível e integração com CRMs.',
+  },
   {
     backgroundColor: '#17221d',
-
     image: {
-      src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1800&q=90',
-      alt: 'Floresta',
-      caption: 'Depth',
+      src: redesEstruturadas.src,
+      alt: 'Redes estruturadas',
+      caption: 'Redes estruturadas',
     },
-
-    eyebrow: 'Chapter Two',
-
-    title: 'Go deeper than',
-
-    titleAccent: 'surface.',
-
+    eyebrow: 'Redes Estruturadas',
+    title: 'Infraestrutura forte para seu negócio',
+    titleAccent: 'crescer.',
     accentColor: 'emerald',
-
     description:
-      'Quanto mais avançamos, mais detalhes começam a aparecer. Aquilo que parecia simples ganha novas camadas e novas interpretações.',
-
+      'Projetamos e implantamos infraestruturas de rede estruturada que garantem desempenho, segurança e estabilidade para ambientes empresariais. Nossas soluções seguem padrões técnicos rigorosos, permitindo crescimento organizado, alta performance de dados, voz e imagem, além de facilitar manutenções e futuras expansões. A base sólida que sustenta todas as suas operações digitais.',
     secondaryDescription:
-      'O movimento da página cria uma transição contínua entre uma ideia e outra, como se cada capítulo estivesse escondido atrás do anterior.',
+      'Com organização e padronização da infraestrutura, facilitam a manutenção, reduzem falhas e suportam o crescimento tecnológico.',
   },
-
   {
     backgroundColor: '#111827',
-
     image: {
-      src: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=90',
-      alt: 'Espaço arquitetônico',
-      caption: 'Form',
+      src: ouvidoriaDigital.src,
+      alt: 'Ouvidoria Digital',
+      caption: 'Ouvidoria Digital',
     },
-
-    eyebrow: 'Chapter Three',
-
-    title: 'Shape creates',
-
-    titleAccent: 'meaning.',
-
+    eyebrow: 'Ouvidoria Digital',
+    title: 'O canal seguro que fortalece',
+    titleAccent: 'a sua reputação.',
     accentColor: 'blue',
-
     description:
-      'Espaços não são apenas volumes vazios. Eles definem como percebemos distância, proximidade, silêncio e movimento.',
-
+      'Pensando nas rigidez e exigências das normas de segurança e saúde no trabalaho, desenvolvemos uma solução específica para gerenciamento de riscos operacionais.',
     secondaryDescription:
-      'A mesma lógica existe em uma interface. Cada espaço, cada intervalo e cada transição ajuda a construir uma sensação.',
+      'A Ouvidoria ACOLHER+ é um canal seguro, confidencial e tecnológico criado para receber, tratar e encaminhar denúncias relacionadas a assédio e condutas inadequadas, garantindo proteção à vítima e integridade institucional.',
   },
 
   {
     backgroundColor: '#24151b',
-
     image: {
-      src: 'https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1800&q=90',
-      alt: 'Céu estrelado',
-      caption: 'Beyond',
+      src: telefoniaIp.src,
+      alt: 'Telefonia IP',
+      caption: 'Telefonia IP',
     },
-
-    eyebrow: 'Final Chapter',
-
-    title: 'Keep moving',
-
-    titleAccent: 'forward.',
-
-    accentColor: 'rose',
-
-    description:
-      'Toda narrativa precisa de um ponto em que deixa de olhar para trás. O espaço se abre novamente e o movimento continua.',
-
-    secondaryDescription:
-      'Depois deste último capítulo, a página deixa de controlar a rolagem e devolve ao usuário o fluxo natural do documento.',
-  },
-
-  {
-    backgroundColor: '#24151b',
-
-    image: {
-      src: 'https://images.unsplash.com/photo-1780552274859-b3a1e6effd50?q=80&w=2070&auto=format&fit=crop',
-      alt: 'Iceberg',
-      caption: 'Right now',
-    },
-
-    eyebrow: 'Epilogue',
-
-    title: 'Just keep',
-
-    titleAccent: 'moving.',
-
+    eyebrow: 'Telefonia IP',
+    title: 'Modernize seu atendimento tendo o custo',
+    titleAccent: 'sob controle.',
     accentColor: 'slate',
-
     description:
-      'Toda narrativa precisa de um ponto em que deixa de olhar para trás. O espaço se abre novamente e o movimento continua.',
-
+      'Transforme sua comunicação com um sistema de telefonia moderna, segura e escalável.',
     secondaryDescription:
-      'Depois deste último capítulo, a página deixa de controlar a rolagem e devolve ao usuário o fluxo natural do documento.',
+      'Nossa tecnologia IP proporciona mais qualidade e flexibilidade para chamadas empresariais.',
   },
 ]

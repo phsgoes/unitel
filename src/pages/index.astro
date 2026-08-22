@@ -1,15 +1,14 @@
 ---
-import LogoComuniq from '@/components/ui/LogoComuniq.astro'
 import PageLayout from '@/layouts/PageLayout.astro'
 import officeBackground from '@/assets/images/office-background.webp'
 import { Image } from 'astro:assets'
 import StoryReveal from '@/components/ui/StoryReveal.astro'
 import { storyItems } from '@/data/story'
+import LogoUnitel from '@/components/ui/LogoUnitel.astro'
 ---
 
 <PageLayout title="Home">
   <section class="relative h-screen w-full overflow-hidden bg-neutral-900">
-    <!-- Background Image -->
     <Image
       src={officeBackground}
       alt="Hero Background"
@@ -19,49 +18,15 @@ import { storyItems } from '@/data/story'
       fetchpriority="high"
       class="absolute inset-0 h-full w-full object-cover object-center"
     />
-
-    <!-- Dark Overlay for Contrast -->
     <div class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
-
-    <!-- Content Container -->
     <div
       class="relative z-10 flex h-full items-center justify-center px-6 text-center sm:px-12">
       <div class="max-w-3xl space-y-6">
-        <!-- Tagline -->
-        <span
-          class="inline-block text-xs font-semibold tracking-widest text-blue-400 uppercase">
-          Discover New Horizons
-        </span>
-
-        <!-- Main Heading -->
-        <h1
-          class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
-          Build the Future of <br />
-          <span
-            class="bg-linear-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-            Web Development
-          </span>
-        </h1>
-
-        <!-- Description -->
-        <p class="mx-auto max-w-xl text-lg text-neutral-300 md:text-xl">
-          Experience blazing fast performance with Astro and the modern utility
-          classes of Tailwind CSS v4.
+        <LogoUnitel dark />
+        <p class="mx-auto mt-12 max-w-2xl text-lg text-neutral-300 md:text-xl">
+          Soluções especializada em projetos de telecomunicações, consultoria,
+          telefonia digital IP, redes estruturadas e softwares de Call Center.
         </p>
-
-        <!-- Action Buttons -->
-        <div class="flex flex-col justify-center gap-4 sm:flex-row">
-          <a
-            href="#get-started"
-            class="rounded-lg bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-blue-500 focus:visible:outline-2 focus:visible:outline-offset-2 focus:visible:outline-blue-600">
-            Get Started
-          </a>
-          <a
-            href="#learn-more"
-            class="rounded-lg border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/20">
-            Learn More
-          </a>
-        </div>
       </div>
     </div>
   </section>
