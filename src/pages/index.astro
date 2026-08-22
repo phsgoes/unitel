@@ -11,7 +11,8 @@ import LogoUnitel from '@/components/ui/LogoUnitel.astro'
   <section class="relative h-screen w-full overflow-hidden bg-neutral-900">
     <Image
       src={officeBackground}
-      alt="Hero Background"
+      alt=""
+      aria-hidden="true"
       widths={[640, 1024, 1440, 1920, officeBackground.width]}
       sizes="100vw"
       loading="eager"
@@ -22,7 +23,8 @@ import LogoUnitel from '@/components/ui/LogoUnitel.astro'
     <div
       class="relative z-10 flex h-full items-center justify-center px-6 text-center sm:px-12">
       <div class="max-w-3xl space-y-6">
-        <LogoUnitel dark />
+        <h1 class="sr-only">Unitel Telecomunicações</h1>
+        <LogoUnitel dark role="img" aria-label="Unitel Telecomunicações" />
         <p class="mx-auto mt-12 max-w-2xl text-lg text-neutral-300 md:text-xl">
           Soluções especializada em projetos de telecomunicações, consultoria,
           telefonia digital IP, redes estruturadas e softwares de Call Center.
