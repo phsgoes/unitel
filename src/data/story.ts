@@ -71,9 +71,8 @@ export const storyItems: StoryRevealItem[] = [
     secondaryDescription:
       'A Ouvidoria ACOLHER+ é um canal seguro, confidencial e tecnológico criado para receber, tratar e encaminhar denúncias relacionadas a assédio e condutas inadequadas, garantindo proteção à vítima e integridade institucional.',
   },
-
   {
-    backgroundColor: '#24151b',
+    backgroundColor: '#3a0e58',
     image: {
       src: telefoniaIp,
       alt: 'Telefonia IP',

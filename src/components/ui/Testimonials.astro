@@ -1,0 +1,244 @@
+---
+import { Image } from 'astro:assets'
+
+export interface TestimonialItem {
+  id: string | number
+  companyLogo: {
+    src: string | ImageMetadata
+    alt: string
+  }
+  quote: string
+  author: {
+    name: string
+    role: string
+    avatar: string | ImageMetadata
+  }
+}
+
+interface Props {
+  testimonials: TestimonialItem[]
+  title?: string
+  subtitle?: string
+}
+
+const { 
+  testimonials, 
+  title = "Não acredite apenas na nossa palavra. Acredite na deles!", 
+  subtitle = "Veja o que nossos clientes falam sobre a Unitel" 
+} = Astro.props
+
+// ID único para associar controles de acessibilidade (ARIA)
+const sliderId = `testimonial-slider-${Math.random().toString(36).substring(2, 9)}`
+---
+
+<section 
+  class="overflow-hidden bg-default px-4 py-6 text-default antialiased sm:px-6 lg:px-8" 
+  aria-labelledby={`${sliderId}-title`}
+>
+  <div class="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0 dark:bg-gray-900">
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <svg
+        aria-hidden="true"
+        class="absolute top-0 left-[max(50%,25rem)] h-256 w-512 -translate-x-1/2 mask-[radial-gradient(64rem_64rem_at_top,white,transparent)] stroke-gray-200 dark:stroke-gray-800"
+      >
+        <defs>
+          <pattern
+            id="e813992c-7d03-4cc4-a2bd-151760b470a0"
+            width="200"
+            height="200"
+            x="50%"
+            y="-1"
+            patternUnits="userSpaceOnUse">
+            <path d="M100 200V.5M.5 .5H200" fill="none"></path>
+          </pattern>
+        </defs>
+        <svg
+          x="50%"
+          y="-1"
+          class="overflow-visible fill-gray-50 dark:fill-gray-800/50">
+          <path
+            d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
+            stroke-width="0"></path>
+        </svg>
+        <rect
+          width="100%"
+          height="100%"
+          fill="url(#e813992c-7d03-4cc4-a2bd-151760b470a0)"
+          stroke-width="0"></rect>
+      </svg>
+    </div>
+  </div>
+  <div class="mx-auto max-w-7xl">
+    
+    <!-- Cabeçalho da Seção (SEO e Acessibilidade) -->
+    <header class="mb-10 text-center md:mb-14">
+      <h2 
+        id={`${sliderId}-title`} 
+        class="text-2xl font-bold tracking-tight text-default sm:text-3xl lg:text-4xl"
+      >
+        {title}
+      </h2>
+      {subtitle && (
+        <p class="mt-3 text-base text-default/80 sm:text-lg">
+          {subtitle}
+        </p>
+      )}
+    </header>
+
+    <!-- Slider Container -->
+    <div class="relative group">
+      
+      <!-- Track do Slider (Scroll Snap CSS Nativo) -->
+      <div 
+        id={sliderId}
+        class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth py-4 no-scrollbar focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0f19]"
+        tabindex="0"
+        aria-label="Carrossel de depoimentos"
+      >
+        {testimonials.map((item, index) => (
+          <figure 
+            class:list={[
+              // Mobile: 1 por tela (100% width) | Tablet/Desktop: 2 por tela (50% width)
+              "w-full shrink-0 snap-start snap-always px-4 md:w-1/2 md:px-8 lg:px-12",
+              "flex flex-col justify-between",
+              // Borda divisória no mobile (bottom) e desktop (right) exceto no último item
+              index < testimonials.length - 1 && "border-b border-slate-800/30 dark:border-slate-50/10 pb-10 md:border-b-0 md:border-r md:pb-0"
+            ]}
+          >
+            <div class="mb-6 flex h-8 items-center md:mb-8">
+              {typeof item.companyLogo.src === 'string' ? (
+                <img 
+                  src={item.companyLogo.src} 
+                  alt={item.companyLogo.alt} 
+                  loading="lazy" 
+                  decoding="async" 
+                  class="max-h-full w-auto object-contain brightness-0 dark:invert"
+                />
+              ) : (
+                <Image 
+                  src={item.companyLogo.src} 
+                  alt={item.companyLogo.alt} 
+                  height={32}
+                  class="max-h-full w-auto object-contain brightness-0 dark:invert"
+                />
+              )}
+            </div>
+
+            <blockquote class="mb-8 grow">
+              <p class="text-base font-normal leading-relaxed text-default/50 sm:text-lg md:text-xl">
+                “{item.quote}”
+              </p>
+            </blockquote>
+
+            <figcaption class="flex items-center gap-4">
+              <div class="size-12 shrink-0 overflow-hidden rounded-full bg-default">
+                {typeof item.author.avatar === 'string' ? (
+                  <img 
+                    src={item.author.avatar} 
+                    alt={`Foto de ${item.author.name}`} 
+                    width="48" 
+                    height="48" 
+                    loading="lazy" 
+                    decoding="async"
+                    class="size-full object-cover"
+                  />
+                ) : (
+                  <Image 
+                    src={item.author.avatar} 
+                    alt={`Foto de ${item.author.name}`} 
+                    width={96} 
+                    height={96}
+                    class="size-full object-cover"
+                  />
+                )}
+              </div>
+              <div class="flex flex-col">
+                <span class="text-base font-semibold text-default">
+                  {item.author.name}
+                </span>
+                <span class="text-sm text-dimmed">
+                  {item.author.role}
+                </span>
+              </div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <!-- Botões de Navegação (Apenas se houver múltiplos depoimentos) -->
+      {testimonials.length > 1 && (
+        <div class="mt-8 flex items-center justify-center gap-4">
+          <button
+            type="button"
+            data-slider-prev={sliderId}
+            class="flex size-10 items-center justify-center rounded-full border border-slate-700 bg-slate-900/80 text-slate-300 transition-colors hover:bg-slate-800 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+            aria-label="Depoimento anterior"
+          >
+            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            data-slider-next={sliderId}
+            class="flex size-10 items-center justify-center rounded-full border border-slate-700 bg-slate-900/80 text-slate-300 transition-colors hover:bg-slate-800 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+            aria-label="Próximo depoimento"
+          >
+            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+    </div>
+  </div>
+</section>
+
+<!-- Script ultra-leve e progressivo para scroll dos botões e suporte a teclado -->
+<script>
+  function setupSliders() {
+    const prevButtons = document.querySelectorAll<HTMLButtonElement>('[data-slider-prev]')
+    const nextButtons = document.querySelectorAll<HTMLButtonElement>('[data-slider-next]')
+
+    prevButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-slider-prev')
+        if (!targetId) return
+        const slider = document.getElementById(targetId)
+        if (slider) {
+          const cardWidth = slider.firstElementChild?.clientWidth || 300
+          slider.scrollBy({ left: -cardWidth, behavior: 'smooth' })
+        }
+      })
+    })
+
+    nextButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-slider-next')
+        if (!targetId) return
+        const slider = document.getElementById(targetId)
+        if (slider) {
+          const cardWidth = slider.firstElementChild?.clientWidth || 300
+          slider.scrollBy({ left: cardWidth, behavior: 'smooth' })
+        }
+      })
+    })
+  }
+
+  // Executa no carregamento e ao navegar via View Transitions do Astro
+  setupSliders()
+  document.addEventListener('astro:page-load', setupSliders)
+</script>
+
+<style>
+  /* Utilitário para ocultar a barra de rolagem visualmente mantendo o scroll nativo e touch gestures */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none
+    scrollbar-width: none
+  }
+</style>
