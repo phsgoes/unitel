@@ -4,7 +4,11 @@ import { Icon } from 'astro-icon/components'
 import TableOfContents from '@/components/ui/TableOfContents.astro'
 import RichText from '@/components/rich-text/RichText.astro'
 import ImageWithSkeleton from '@/components/ui/ImageWithSkeleton.astro'
-import BackButton from '@/components/ui/BackButton.astro'
+
+import Breadcrumb from '@/components/ui/Breadcrumb.astro'
+import { breadcrumbGenerator } from '@/seo/breadcrumb'
+import { absoluteUrl } from '@/data/site'
+// import about from '@/seo/about'
 
 import { getAllPosts } from '@/services/posts'
 
@@ -43,18 +47,29 @@ const {
 } = Astro.props
 
 const toc = extractTableOfContents(post.body.raw)
+
+const breadcrumbListItem = breadcrumbGenerator([
+  { name: 'Blog', url: absoluteUrl('/blog') },
+  { name: post.title, url: absoluteUrl(`/blog/${post.slug}`) },
+])
 ---
 
 <BlogLayout
   title={post.title}
   description={post.description}
   image={post.coverImage?.url}
-  article={post}>
+  article={post}
+  jsonLdSchemas={[breadcrumbListItem]}>
   <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
+    <Breadcrumb
+      items={[
+        { label: 'Início', href: '/' },
+        { label: 'Blog', href: '/blog' },
+        { label: `${post.title}` },
+      ]}
+    />
     <!-- Post hero -->
     <div class="relative border-b border-default py-8">
-      <BackButton />
-
       <div
         class="mb-2.5 text-sm font-semibold text-primary flex items-center gap-1.5">
         {

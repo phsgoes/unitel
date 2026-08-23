@@ -1,14 +1,31 @@
 ---
-import Container from '@/components/ui/Container.astro'
-import EmbeddedMap from '@/components/ui/EmbeddedMap.astro'
-import LogoComuniq from '@/components/ui/LogoComuniq.astro'
 import PageLayout from '@/layouts/PageLayout.astro'
+import EmbeddedMap from '@/components/ui/EmbeddedMap.astro'
+import Breadcrumb from '@/components/ui/Breadcrumb.astro'
+import contatoImage from '@/assets/images/og-unitel.png'
+import { breadcrumbGenerator } from '@/seo/breadcrumb'
+import { absoluteUrl } from '@/data/site'
+// import about from '@/seo/about'
+
+const pageTitle = 'Contato | Unitel Telecom'
+const pageDescription = 'Entre em contato conosco.'
+const contactImage = `${new URL(contatoImage.src, Astro.site)}`
+const breadcrumbListItem = breadcrumbGenerator([
+  { name: 'Contato', url: absoluteUrl('/contato') },
+])
 ---
 
-<PageLayout title="Contato">
-  <Container>
-    <h1>Contato</h1>
-    <LogoComuniq class="w-auto h-6 shrink-0" />
+<PageLayout
+  title={pageTitle}
+  description={pageDescription}
+  image={contactImage}
+  jsonLdSchemas={[breadcrumbListItem]}>
+  <div class="mx-auto max-w-(--ui-container) px-6 lg:px-8">
+    <Breadcrumb
+      items={[{ label: 'Início', href: '/' }, { label: 'Contato' }]}
+    />
+  </div>
+  <div class="min-h-screen py-12">
     <EmbeddedMap />
-  </Container>
+  </div>
 </PageLayout>

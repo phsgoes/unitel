@@ -1,6 +1,11 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro'
 import ImageZoom from '@/components/ui/ImageZoom.astro'
+import Breadcrumb from '@/components/ui/Breadcrumb.astro'
+import aboutImage from '@/assets/images/og-unitel.png'
+import { breadcrumbGenerator } from '@/seo/breadcrumb'
+import { absoluteUrl } from '@/data/site'
+import about from '@/seo/about'
 
 const timelineItems = [
   {
@@ -76,9 +81,29 @@ const timelineItems = [
     alt: "Futuristic quantum visual"
   }
 ]
+
+const pageTitle = 'Sobre | Unitel Telecom'
+const pageDescription = 'Conheça a história, missão, visão e valores da Unitel Telecomunicações.'
+const sobreImage = `${new URL(aboutImage.src, Astro.site)}`
+const breadcrumbListItem = breadcrumbGenerator([
+  { name: 'Sobre', url: absoluteUrl('/sobre') },
+])
 ---
-<PageLayout title="Sobre">
+<PageLayout
+  title={pageTitle}
+  description={pageDescription}
+  image={sobreImage}
+  jsonLdSchemas={[about, breadcrumbListItem]}>
   <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -left-40 -top-40 size-128 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute -right-40 top-1/3 size-112 rounded-full bg-primary/8 blur-3xl"></div>
+      <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent"></div>
+    </div>
+    <Breadcrumb items={[
+      { label: 'Início', href: '/' },
+      { label: 'Sobre' },
+    ]} />
     <div class="relative border-b border-default py-12.5">
       <h1 class="text-3xl font-bold text-highlighted sm:text-4xl">Conheça nossa história</h1>
       <p class="mt-2 text-lg text-muted">
@@ -86,12 +111,12 @@ const timelineItems = [
       </p>
     </div>
   </div>
-  <section class="relative isolate text-gray-900 dark:text-white">
+  <div class="relative isolate text-gray-900 dark:text-white">
     <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
       <div class="grid grid-cols-1 gap-y-24 lg:grid-cols-12 lg:gap-x-12">
         
         <!-- Sticky Navigation -->
-        <aside class="sticky top-0 z-30 flex w-full flex-row items-center overflow-x-auto bg-white/80 py-4 backdrop-blur-md border-b border-gray-200 dark:bg-gray-900/80 dark:border-gray-800 lg:top-8 lg:col-span-3 lg:h-[calc(100dvh-4rem)] lg:flex-col lg:items-start lg:justify-center lg:border-b-0 lg:py-0">
+        <aside class="sticky top-0 z-30 flex w-full flex-row items-center overflow-x-auto py-4 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 lg:top-8 lg:col-span-3 lg:h-[calc(100dvh-4rem)] lg:flex-col lg:items-start lg:justify-center lg:border-b-0 lg:py-0">
           <nav class="flex flex-row space-x-6 min-w-max lg:flex-col lg:space-x-0 lg:space-y-6">
             {timelineItems.map((item, index) => (
               <a
@@ -153,7 +178,7 @@ const timelineItems = [
 
       </div>
     </div>
-  </section>
+  </div>
 </PageLayout>
 
 <script>

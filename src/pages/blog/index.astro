@@ -5,6 +5,11 @@ import Pagination from '@/components/ui/Pagination.astro'
 import SearchInput from '@/components/ui/SearchInput.astro'
 import SearchController from '@/components/ui/SearchController.astro'
 
+import Breadcrumb from '@/components/ui/Breadcrumb.astro'
+import { breadcrumbGenerator } from '@/seo/breadcrumb'
+import { absoluteUrl } from '@/data/site'
+// import about from '@/seo/about'
+
 import { getPosts, getPostsCount } from '@/services/posts'
 import { PAGE_SIZE } from '@/consts'
 
@@ -14,12 +19,21 @@ const [posts, totalPosts] = await Promise.all([
 ])
 
 const totalPages = Math.ceil(totalPosts / PAGE_SIZE)
+
+const pageTitle = 'Blog - Unitel Telecomunicações'
+const pageDescription =
+  'Confira as últimas novidades, artigos e dicas sobre telecomunicações, conectividade e tecnologia corporativa.'
+const breadcrumbListItem = breadcrumbGenerator([
+  { name: 'Blog', url: absoluteUrl('/blog') },
+])
 ---
 
 <BlogLayout
-  title="Blog - Unitel Telecomunicações"
-  description="Confira as últimas novidades, artigos e dicas sobre telecomunicações, conectividade e tecnologia corporativa.">
+  title={pageTitle}
+  description={pageDescription}
+  jsonLdSchemas={[breadcrumbListItem]}>
   <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
+    <Breadcrumb items={[{ label: 'Início', href: '/' }, { label: 'Blog' }]} />
     <!-- Header com Busca integrada -->
     <div class="relative border-b border-default py-12.5">
       <div
@@ -27,7 +41,8 @@ const totalPages = Math.ceil(totalPosts / PAGE_SIZE)
         <div>
           <h1 class="text-3xl font-bold text-highlighted sm:text-4xl">Blog</h1>
           <p class="mt-2 text-lg text-muted">
-            Confira as últimas novidades, artigos e dicas sobre telecomunicações, conectividade e tecnologia corporativa.
+            Confira as últimas novidades, artigos e dicas sobre
+            telecomunicações, conectividade e tecnologia corporativa.
           </p>
         </div>
 

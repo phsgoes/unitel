@@ -1,12 +1,29 @@
 ---
-import Container from '@/components/ui/Container.astro'
-import LogoComuniq from '@/components/ui/LogoComuniq.astro'
 import PageLayout from '@/layouts/PageLayout.astro'
+import Breadcrumb from '@/components/ui/Breadcrumb.astro'
+import portfolioImage from '@/assets/images/og-unitel.png'
+import { breadcrumbGenerator } from '@/seo/breadcrumb'
+import { absoluteUrl } from '@/data/site'
+// import about from '@/seo/about'
+
+const pageTitle = 'Portfólio | Unitel Telecom'
+const pageDescription =
+  'Conheça os trabalhos e projetos da Unitel Telecomunicações.'
+const portImage = `${new URL(portfolioImage.src, Astro.site)}`
+const breadcrumbListItem = breadcrumbGenerator([
+  { name: 'Portfólio', url: absoluteUrl('/portfolio') },
+])
 ---
 
-<PageLayout title="Portfólio">
-  <Container>
-    <h1>Portfólio</h1>
-    <LogoComuniq class="w-auto h-6 shrink-0" />
-  </Container>
+<PageLayout
+  title={pageTitle}
+  description={pageDescription}
+  image={portImage}
+  jsonLdSchemas={[breadcrumbListItem]}>
+  <div class="mx-auto max-w-(--ui-container) px-6 lg:px-8">
+    <Breadcrumb
+      items={[{ label: 'Início', href: '/' }, { label: 'Portfólio' }]}
+    />
+  </div>
+  <div class="min-h-screen"></div>
 </PageLayout>

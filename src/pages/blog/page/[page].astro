@@ -5,6 +5,11 @@ import Pagination from '@/components/ui/Pagination.astro'
 import SearchInput from '@/components/ui/SearchInput.astro'
 import SearchController from '@/components/ui/SearchController.astro'
 
+import Breadcrumb from '@/components/ui/Breadcrumb.astro'
+import { breadcrumbGenerator } from '@/seo/breadcrumb'
+import { absoluteUrl } from '@/data/site'
+// import about from '@/seo/about'
+
 import { getAllPostsForListing } from '@/services/posts'
 import { PAGE_SIZE } from '@/consts'
 import type { Post } from '@/types'
@@ -46,12 +51,21 @@ const {
   pagePosts: Post[]
   totalPages: number
 } = Astro.props
+
+const pageTitle = `Blog (Página ${currentPage}) - Unitel Telecomunicações`
+const pageDescription =
+  'Confira as últimas novidades, artigos e dicas sobre telecomunicações, conectividade e tecnologia corporativa.'
+const breadcrumbListItem = breadcrumbGenerator([
+  { name: 'Blog', url: absoluteUrl('/blog') },
+])
 ---
 
 <BlogLayout
-  title={`Blog (Página ${currentPage}) - Unitel Telecomunicações`}
-  description="Confira as últimas novidades, artigos e dicas sobre telecomunicações, conectividade e tecnologia corporativa.">
+  title={pageTitle}
+  description={pageDescription}
+  jsonLdSchemas={[breadcrumbListItem]}>
   <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
+    <Breadcrumb items={[{ label: 'Início', href: '/' }, { label: 'Blog' }]} />
     <!-- Header -->
     <div class="relative border-b border-default py-12.5">
       <div
@@ -63,7 +77,8 @@ const {
           </h1>
 
           <p class="mt-4 text-lg text-pretty text-muted">
-            Confira as últimas novidades, artigos e dicas sobre telecomunicações, conectividade e tecnologia corporativa.
+            Confira as últimas novidades, artigos e dicas sobre
+            telecomunicações, conectividade e tecnologia corporativa.
           </p>
         </div>
 
