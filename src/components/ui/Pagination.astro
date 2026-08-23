@@ -36,7 +36,7 @@ const pages = getPageNumbers(currentPage, totalPages);
       <a
         href={currentPage === 2 ? '/blog' : `/blog/page/${currentPage - 1}`}
         class="inline-flex items-center justify-center rounded-lg border border-default px-2.5 py-2 text-sm font-medium transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 sm:px-4"
-        aria-label="Página anterior"
+        aria-label="Anterior"
       >
         <span>←</span>
         <span class="ms-1.5 hidden sm:inline">Anterior</span>
@@ -69,6 +69,7 @@ const pages = getPageNumbers(currentPage, totalPages);
       return (
         <a
           href={pageNumber === 1 ? '/blog' : `/blog/page/${pageNumber}`}
+          aria-label={`Página ${pageNumber}`}
           aria-current={isCurrent ? 'page' : undefined}
           class:list={[
             'flex h-9 min-w-9 items-center justify-center rounded-lg border px-3 text-sm font-medium transition-colors',
@@ -89,7 +90,7 @@ const pages = getPageNumbers(currentPage, totalPages);
       <a
         href={`/blog/page/${currentPage + 1}`}
         class="inline-flex items-center justify-center rounded-lg border border-default px-2.5 py-2 text-sm font-medium transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 sm:px-4"
-        aria-label="Próxima página"
+        aria-label="Próximo"
       >
         <span class="me-1.5 hidden sm:inline">Próximo</span>
         <span>→</span>

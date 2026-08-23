@@ -13,6 +13,8 @@ import JsonLdSchemas from '@/seo/JsonLdSchemas.astro'
 import organization from '@/seo/organization'
 import website from '@/seo/website'
 import { site } from '@/data/site'
+import googleSansFont from '@/assets/fonts/google-sans-flex.woff2'
+import yellowtailFont from '@/assets/fonts/yellowtail.woff2'
 import WhatsappFab from '@/components/ui/WhatsappFab.astro'
 
 interface Props {
@@ -44,8 +46,12 @@ const {
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
+    <link rel="preload" href={googleSansFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={yellowtailFont} as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#2563eb" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />

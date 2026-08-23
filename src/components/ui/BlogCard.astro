@@ -25,12 +25,13 @@ const publishedAt = new Intl.DateTimeFormat('pt-BR', {
     class="focus:outline-none absolute inset-0"></a>
 
   <ImageWithSkeleton
-    transition:name={`cover-${post.slug}`}
+    transition:name={featured ? `cover-${post.slug}` : undefined}
     src={post.coverImage.url}
     alt={post.alternativeText ?? post.title}
     width={640}
     height={360}
-    loading="lazy"
+    loading={featured ? 'eager' : 'lazy'}
+    fetchpriority={featured ? 'high' : 'auto'}
     containerClass="relative overflow-hidden aspect-video w-full pointer-events-none shadow-sm rounded-lg"
     class="image-content object-cover object-top w-full h-full transform transition-transform duration-300 group-hover/blog-post:scale-110"
   />

@@ -94,7 +94,7 @@ function isSolutionActive(): boolean {
                       id="desktop-solutions-menu"
                       role="menu"
                       aria-labelledby="desktop-solutions-toggle"
-                      class="invisible absolute left-1/2 top-full z-50 w-[23rem] -translate-x-1/2 translate-y-2 pt-3 opacity-0 transition-all duration-150"
+                      class="invisible absolute left-1/2 top-full z-50 w-92 -translate-x-1/2 translate-y-2 pt-3 opacity-0 transition-all duration-150"
                     >
                       <div
                         class="overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-950/10 dark:border-slate-700 dark:bg-slate-900 dark:shadow-black/40"
@@ -486,27 +486,20 @@ function isSolutionActive(): boolean {
 
 <script>
   function setupHeader() {
-    /*
-     * ============================================================
-     * MOBILE MENU
-     * ============================================================
-     */
-
+    const header = document.querySelector('header')
     const mobileToggle = document.getElementById('mobile-menu-toggle') as HTMLButtonElement | null
     const mobileMenu = document.getElementById('mobile-menu')
-    if (!mobileToggle || !mobileMenu) return
-
-    /*
-     * Remove listener anterior para evitar duplicação
-     * durante Astro View Transitions.
-     */
-    const newMobileToggle = mobileToggle.cloneNode(true) as HTMLButtonElement
-    mobileToggle.replaceWith(newMobileToggle)
-    const mobileMenuIcon = newMobileToggle.querySelector('#icon-menu')
-    const mobileCloseIcon = newMobileToggle.querySelector('#icon-close')
+    const mobileMenuIcon = document.getElementById('icon-menu')
+    const mobileCloseIcon = document.getElementById('icon-close')
     const mobileSolutionsToggle = document.getElementById('mobile-solutions-toggle') as HTMLButtonElement | null
     const mobileSolutionsSubmenu = document.getElementById('mobile-solutions-submenu')
     const mobileSolutionsChevron = document.getElementById('mobile-solutions-chevron')
+    const desktopSolutionsToggle = document.getElementById('desktop-solutions-toggle') as HTMLButtonElement | null
+    const desktopSolutionsMenu = document.getElementById('desktop-solutions-menu')
+    const desktopSolutionsContainer = document.getElementById('desktop-solutions-container')
+    const desktopSolutionsChevron = document.getElementById('desktop-solutions-chevron')
+
+    if (!header || !mobileToggle || !mobileMenu) return
 
     function closeMobileMenu() {
       mobileMenu?.classList.add('hidden')
@@ -515,8 +508,8 @@ function isSolutionActive(): boolean {
       mobileCloseIcon?.classList.add('hidden')
       mobileCloseIcon?.classList.remove('block')
       document.body.style.overflow = ''
-      newMobileToggle.setAttribute('aria-expanded', 'false')
-      newMobileToggle.setAttribute('aria-label', 'Abrir menu')
+      mobileToggle?.setAttribute('aria-expanded', 'false')
+      mobileToggle?.setAttribute('aria-label', 'Abrir menu')
       mobileSolutionsSubmenu?.classList.add('hidden')
       mobileSolutionsChevron?.classList.remove('rotate-180')
       mobileSolutionsToggle?.setAttribute('aria-expanded', 'false')
@@ -529,14 +522,57 @@ function isSolutionActive(): boolean {
       mobileCloseIcon?.classList.remove('hidden')
       mobileCloseIcon?.classList.add('block')
       document.body.style.overflow = 'hidden'
-      newMobileToggle.setAttribute('aria-expanded', 'true')
-      newMobileToggle.setAttribute('aria-label', 'Fechar menu')
+      mobileToggle?.setAttribute('aria-expanded', 'true')
+      mobileToggle?.setAttribute('aria-label', 'Fechar menu')
     }
 
-    newMobileToggle.addEventListener('click', (event) => {
+    function closeDesktopSolutions() {
+      desktopSolutionsMenu?.classList.remove(
+        'visible',
+        'opacity-100',
+        'translate-y-0',
+      )
+      desktopSolutionsMenu?.classList.add(
+        'invisible',
+        'opacity-0',
+        'translate-y-2',
+      )
+      desktopSolutionsToggle?.setAttribute('aria-expanded', 'false')
+      desktopSolutionsChevron?.classList.remove('rotate-180')
+    }
+
+    function openDesktopSolutions() {
+      desktopSolutionsMenu?.classList.remove(
+        'invisible',
+        'opacity-0',
+        'translate-y-2',
+      )
+      desktopSolutionsMenu?.classList.add(
+        'visible',
+        'opacity-100',
+        'translate-y-0',
+      )
+      desktopSolutionsToggle?.setAttribute('aria-expanded', 'true')
+      desktopSolutionsChevron?.classList.add('rotate-180')
+    }
+
+    // Se já inicializado na transição de página, apenas reseta os estados
+    if (header.dataset.headerInitialized === 'true') {
+      closeMobileMenu()
+      closeDesktopSolutions()
+      return
+    }
+
+    header.dataset.headerInitialized = 'true'
+
+    /*
+     * ============================================================
+     * MOBILE MENU TOGGLE
+     * ============================================================
+     */
+    mobileToggle.addEventListener('click', (event) => {
       event.stopPropagation()
       const isClosed = mobileMenu.classList.contains('hidden')
-
       if (isClosed) {
         openMobileMenu()
       } else {
@@ -549,23 +585,21 @@ function isSolutionActive(): boolean {
      * MOBILE SOLUTIONS SUBMENU
      * ============================================================
      */
-
     if (mobileSolutionsToggle && mobileSolutionsSubmenu) {
       mobileSolutionsToggle.addEventListener('click', (event) => {
-          event.stopPropagation()
-          const isClosed = mobileSolutionsSubmenu.classList.contains('hidden')
+        event.stopPropagation()
+        const isClosed = mobileSolutionsSubmenu.classList.contains('hidden')
 
-          if (isClosed) {
-            mobileSolutionsSubmenu.classList.remove('hidden')
-            mobileSolutionsChevron?.classList.add('rotate-180')
-            mobileSolutionsToggle.setAttribute('aria-expanded', 'true')
-          } else {
-            mobileSolutionsSubmenu.classList.add('hidden')
-            mobileSolutionsChevron?.classList.remove('rotate-180')
-            mobileSolutionsToggle.setAttribute('aria-expanded', 'false')
-          }
-        },
-      )
+        if (isClosed) {
+          mobileSolutionsSubmenu.classList.remove('hidden')
+          mobileSolutionsChevron?.classList.add('rotate-180')
+          mobileSolutionsToggle.setAttribute('aria-expanded', 'true')
+        } else {
+          mobileSolutionsSubmenu.classList.add('hidden')
+          mobileSolutionsChevron?.classList.remove('rotate-180')
+          mobileSolutionsToggle.setAttribute('aria-expanded', 'false')
+        }
+      })
     }
 
     /*
@@ -581,174 +615,70 @@ function isSolutionActive(): boolean {
      * DESKTOP SOLUTIONS MENU
      * ============================================================
      */
-
-    const desktopSolutionsToggle = document.getElementById('desktop-solutions-toggle') as HTMLButtonElement | null
-    const desktopSolutionsMenu = document.getElementById('desktop-solutions-menu')
-    const desktopSolutionsContainer = document.getElementById('desktop-solutions-container')
-    const desktopSolutionsChevron = document.getElementById('desktop-solutions-chevron')
-
     if (
       desktopSolutionsToggle &&
       desktopSolutionsMenu &&
       desktopSolutionsContainer
     ) {
-      function openDesktopSolutions() {
-        desktopSolutionsMenu?.classList.remove('invisible', 'opacity-0', 'translate-y-2')
-        desktopSolutionsMenu?.classList.add('visible', 'opacity-100', 'translate-y-0')
-        desktopSolutionsToggle?.setAttribute('aria-expanded', 'true')
-        desktopSolutionsChevron?.classList.add('rotate-180')
-      }
+      desktopSolutionsToggle.addEventListener('click', (event) => {
+        event.stopPropagation()
+        const expanded =
+          desktopSolutionsToggle.getAttribute('aria-expanded') === 'true'
 
-      function closeDesktopSolutions() {
-        desktopSolutionsMenu?.classList.remove(
-          'visible',
-          'opacity-100',
-          'translate-y-0',
-        )
-
-        desktopSolutionsMenu?.classList.add(
-          'invisible',
-          'opacity-0',
-          'translate-y-2',
-        )
-
-        desktopSolutionsToggle?.setAttribute(
-          'aria-expanded',
-          'false',
-        )
-
-        desktopSolutionsChevron?.classList.remove(
-          'rotate-180',
-        )
-      }
-
-      desktopSolutionsToggle.addEventListener(
-        'click',
-        (event) => {
-          event.stopPropagation()
-
-          const expanded =
-            desktopSolutionsToggle.getAttribute(
-              'aria-expanded',
-            ) === 'true'
-
-          if (expanded) {
-            closeDesktopSolutions()
-          } else {
-            openDesktopSolutions()
-          }
-        },
-      )
-
-      /*
-       * Abre ao receber foco pelo teclado.
-       */
-      desktopSolutionsToggle.addEventListener(
-        'focus',
-        () => {
-          openDesktopSolutions()
-        },
-      )
-
-      /*
-       * Mantém o submenu aberto enquanto o usuário
-       * navega por seus links usando teclado.
-       */
-      desktopSolutionsContainer.addEventListener(
-        'focusin',
-        () => {
-          openDesktopSolutions()
-        },
-      )
-
-      /*
-       * Fecha quando o foco sai completamente do componente.
-       */
-      desktopSolutionsContainer.addEventListener(
-        'focusout',
-        (event) => {
-          const relatedTarget =
-            event.relatedTarget as Node | null
-
-          if (
-            !relatedTarget ||
-            !desktopSolutionsContainer.contains(
-              relatedTarget,
-            )
-          ) {
-            closeDesktopSolutions()
-          }
-        },
-      )
-
-      /*
-       * Abre no mouse sem depender exclusivamente de hover.
-       */
-      desktopSolutionsContainer.addEventListener(
-        'mouseenter',
-        () => {
-          openDesktopSolutions()
-        },
-      )
-
-      /*
-       * Fecha quando o mouse sai do submenu.
-       */
-      desktopSolutionsContainer.addEventListener(
-        'mouseleave',
-        () => {
-          if (
-            document.activeElement &&
-            desktopSolutionsContainer.contains(
-              document.activeElement,
-            )
-          ) {
-            return
-          }
-
+        if (expanded) {
           closeDesktopSolutions()
-        },
-      )
+        } else {
+          openDesktopSolutions()
+        }
+      })
 
-      /*
-       * Fecha ao clicar fora.
-       */
-      document.addEventListener(
-        'click',
-        (event) => {
-          const target = event.target as Node
+      desktopSolutionsToggle.addEventListener('focus', () => {
+        openDesktopSolutions()
+      })
 
-          if (
-            !desktopSolutionsContainer.contains(
-              target,
-            )
-          ) {
-            closeDesktopSolutions()
-          }
-        },
-      )
+      desktopSolutionsContainer.addEventListener('focusin', () => {
+        openDesktopSolutions()
+      })
 
-      /*
-       * Escape fecha o submenu e devolve o foco
-       * para o botão que abriu o menu.
-       */
-      document.addEventListener(
-        'keydown',
-        (event) => {
-          if (event.key !== 'Escape') return
-
-          const expanded =
-            desktopSolutionsToggle.getAttribute(
-              'aria-expanded',
-            ) === 'true'
-
-          if (!expanded) return
-
+      desktopSolutionsContainer.addEventListener('focusout', (event) => {
+        const relatedTarget = event.relatedTarget as Node | null
+        if (
+          !relatedTarget ||
+          !desktopSolutionsContainer.contains(relatedTarget)
+        ) {
           closeDesktopSolutions()
+        }
+      })
 
-          desktopSolutionsToggle.focus()
-        },
-      )
+      desktopSolutionsContainer.addEventListener('mouseenter', () => {
+        openDesktopSolutions()
+      })
+
+      desktopSolutionsContainer.addEventListener('mouseleave', () => {
+        if (
+          document.activeElement &&
+          desktopSolutionsContainer.contains(document.activeElement)
+        ) {
+          return
+        }
+        closeDesktopSolutions()
+      })
+
+      document.addEventListener('click', (event) => {
+        const target = event.target as Node
+        if (!desktopSolutionsContainer.contains(target)) {
+          closeDesktopSolutions()
+        }
+      })
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return
+        const expanded =
+          desktopSolutionsToggle.getAttribute('aria-expanded') === 'true'
+        if (!expanded) return
+        closeDesktopSolutions()
+        desktopSolutionsToggle.focus()
+      })
     }
 
     /*
@@ -756,29 +686,16 @@ function isSolutionActive(): boolean {
      * GLOBAL ESCAPE
      * ============================================================
      */
-
-    document.addEventListener(
-      'keydown',
-      (event) => {
-        if (event.key === 'Escape') {
-          if (
-            !mobileMenu.classList.contains('hidden')
-          ) {
-            closeMobileMenu()
-            newMobileToggle.focus()
-          }
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        if (!mobileMenu.classList.contains('hidden')) {
+          closeMobileMenu()
+          mobileToggle.focus()
         }
-      },
-    )
+      }
+    })
   }
 
-  document.addEventListener(
-    'DOMContentLoaded',
-    setupHeader,
-  )
-
-  document.addEventListener(
-    'astro:page-load',
-    setupHeader,
-  )
+  document.addEventListener('DOMContentLoaded', setupHeader)
+  document.addEventListener('astro:page-load', setupHeader)
 </script>

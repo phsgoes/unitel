@@ -19,7 +19,7 @@ export default defineConfig({
 
   image: {
     remotePatterns: [
-      // { protocol: 'https', hostname: 'eu-west-2.graphassets.com' },
+      { protocol: 'https', hostname: 'eu-west-2.graphassets.com' },
       { protocol: 'https', hostname: 'upload.wikimedia.org' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'tailwindcss.com' },

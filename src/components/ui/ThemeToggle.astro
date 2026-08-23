@@ -5,7 +5,7 @@ import { Icon } from 'astro-icon/components'
 <button
   type="button"
   id="theme-toggle"
-  aria-label="Switch to dark mode"
+  aria-label="Alternar para tema escuro"
   class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-default hover:bg-elevated active:bg-elevated outline-inverted/25 focus-visible:outline-3 hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent p-1.5">
   <Icon
     name="mdi:moon-waning-crescent"
@@ -17,7 +17,7 @@ import { Icon } from 'astro-icon/components'
 <script is:inline>
   // Utility to obtain current resolved theme
   function getPreferredTheme() {
-    const stored = localStorage.getItem('color-mode')
+    const stored = localStorage.getItem('theme') || localStorage.getItem('color-mode')
     if (stored) return stored
     return window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
@@ -36,7 +36,7 @@ import { Icon } from 'astro-icon/components'
     if (toggleBtn) {
       toggleBtn.setAttribute(
         'aria-label',
-        isDark ? 'Switch to light mode' : 'Switch to dark mode',
+        isDark ? 'Alternar para tema claro' : 'Alternar para tema escuro',
       )
     }
   }
@@ -46,6 +46,7 @@ import { Icon } from 'astro-icon/components'
     const currentTheme = getPreferredTheme()
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
 
+    localStorage.setItem('theme', newTheme)
     localStorage.setItem('color-mode', newTheme)
     applyTheme()
   }

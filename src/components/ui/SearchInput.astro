@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components'
 ---
 
 <div class="relative w-full max-w-xl">
+  <label for="blog-search-input" class="sr-only">Buscar artigos</label>
   <div class="relative flex items-center">
     <Icon
       name="mdi:magnify"
@@ -12,9 +13,10 @@ import { Icon } from 'astro-icon/components'
     <input
       type="search"
       id="blog-search-input"
+      aria-label="Buscar artigos"
       placeholder="Buscar artigos..."
       autocomplete="off"
-      class="w-full rounded-xl border border-default bg-zinc-50/50 py-2.5 pe-16 ps-10 text-sm text-highlighted outline-none placeholder:text-muted/70 transition-all focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20 dark:bg-zinc-900/50"
+      class="w-full rounded-xl border border-default bg-zinc-50/50 py-2.5 pe-16 ps-10 text-sm text-highlighted outline-none placeholder:text-muted/70 transition-all focus:border-primary focus:bg-default focus:ring-2 focus:ring-primary/20 dark:bg-zinc-900/50"
     />
     <div
       class="pointer-events-none absolute inset-e-3 hidden items-center gap-1 sm:flex">

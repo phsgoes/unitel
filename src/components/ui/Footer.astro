@@ -41,18 +41,21 @@ const columns: FooterColumn<FooterItem>[] = [
         label: 'Instagram',
         icon: 'mdi:instagram',
         to: site.sameAs[0],
+        target: '_blank',
       },
       {
         id: 'linkedin',
         label: 'LinkedIn',
         icon: 'mdi:linkedin',
         to: site.sameAs[1],
+        target: '_blank',
       },
       {
         id: 'x',
         label: 'X (Twitter)',
         icon: 'x',
         to: site.sameAs[2],
+        target: '_blank',
       },
     ],
   },
@@ -109,9 +112,9 @@ const { class: className = '' } = Astro.props
         {
           columns.map((column) => (
             <div class="space-y-4">
-              <h3 class="text-sm font-semibold text-foreground">
+              <h2 class="text-sm font-semibold text-highlighted">
                 {column.label}
-              </h3>
+              </h2>
               {Array.isArray(column.children) && !!column.children.length && (
                 <ul class="space-y-3">
                   {column.children.map((item) => (
@@ -120,10 +123,9 @@ const { class: className = '' } = Astro.props
                         <a
                           href={item.to}
                           class:list={[
-                            isActive(item.to) && 'text-primary',
-                            'flex items-start gap-3 text-sm text-muted-foreground hover:text-foreground transition',
-                          ]}
-                          aria-label={item.label}>
+                            isActive(item.to) && 'text-primary font-medium',
+                            'flex items-start gap-3 text-sm text-muted hover:text-highlighted transition',
+                          ]}>
                           {item.icon && (
                             <Icon
                               name={item.icon}
@@ -137,14 +139,9 @@ const { class: className = '' } = Astro.props
                       {column.label === 'Siga-nos nas redes' && (
                         <a
                           href={item.to}
-                          target={item.target}
-                          rel={
-                            item.target === '_blank'
-                              ? 'noopener noreferrer'
-                              : undefined
-                          }
-                          class="flex items-start gap-3 text-sm text-muted-foreground hover:text-foreground transition"
-                          aria-label={item.label}
+                          target={item.target ?? '_blank'}
+                          rel="noopener noreferrer"
+                          class="flex items-start gap-3 text-sm text-muted hover:text-highlighted transition"
                           data-social-link={item.id}>
                           {item.icon && (
                             <Icon
@@ -165,8 +162,7 @@ const { class: className = '' } = Astro.props
                               ? 'noopener noreferrer'
                               : undefined
                           }
-                          class="flex items-start gap-3 text-sm text-muted-foreground hover:text-foreground transition"
-                          aria-label={item.label}>
+                          class="flex items-start gap-3 text-sm text-muted hover:text-highlighted transition">
                           {item.icon && (
                             <Icon
                               name={item.icon}

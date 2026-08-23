@@ -208,7 +208,7 @@ const toc = extractTableOfContents(post.body.raw)
     if (!backBtn) return
 
     // Recupera a última página de listagem visitada pelo usuário
-    const lastBlogPath = sessionStorage.getItem('lastBlogPath')
+    const lastBlogPath = sessionStorage.getItem('lastBlogListPath')
 
     if (lastBlogPath) {
       backBtn.href = lastBlogPath

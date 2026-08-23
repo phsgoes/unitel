@@ -3,7 +3,7 @@
 ---
 
 <script>
-  import Fuse from 'fuse.js';
+  import type Fuse from 'fuse.js';
   import type { SearchPost } from '@/types';
 
   let fuseInstance: Fuse<SearchPost> | null = null;
@@ -14,10 +14,13 @@
     isFetching = true;
 
     try {
-      const response = await fetch('/search.json');
+      const [{ default: FuseModule }, response] = await Promise.all([
+        import('fuse.js'),
+        fetch('/search.json'),
+      ]);
       const posts: SearchPost[] = await response.json();
 
-      fuseInstance = new Fuse(posts, {
+      fuseInstance = new FuseModule(posts, {
         keys: ['title', 'description', 'categories.name'],
         threshold: 0.35, // Sensibilidade da busca
         ignoreLocation: true,

@@ -110,7 +110,7 @@ const timelineItems = [
         </aside>
 
         <!-- Scrollable Timeline Content -->
-        <main class="lg:col-span-9">
+        <div class="lg:col-span-9">
           {timelineItems.map((item, index) => {
             const isEven = index % 2 === 0;
             return (
@@ -140,19 +140,16 @@ const timelineItems = [
                       alt={item.alt}
                       width={1040}
                       height={693}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      fetchpriority={index === 0 ? "high" : "auto"}
                       imageClass="w-full rounded-2xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 dark:ring-white/10"
                     />
-                    {/* <img
-                      src={item.image}
-                      alt={item.alt}
-                      class="w-full rounded-2xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 dark:ring-white/10"
-                    /> */}
                   </div>
                 </div>
               </div>
             );
           })}
-        </main>
+        </div>
 
       </div>
     </div>

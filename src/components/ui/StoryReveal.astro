@@ -84,6 +84,7 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
   id={id}
   data-story-reveal
   data-story-count={safeItems.length}
+  style={`--story-count: ${safeItems.length};`}
   class="story-stage bg-zinc-950"
   transition:persist>
   <div class="story-panel">
@@ -103,6 +104,8 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
                 <img
                   src={item.image.src}
                   alt={item.image.alt}
+                  width="1200"
+                  height="800"
                   loading={index === 0 ? 'eager' : 'lazy'}
                   fetchpriority={index === 0 ? 'high' : 'auto'}
                   decoding="async"
@@ -112,7 +115,7 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
                 <div class:list={['absolute inset-0', theme.overlay]} />
 
                 {item.image.caption && (
-                  <div class="absolute bottom-6 left-6 text-xs uppercase tracking-[0.3em] text-white/70">
+                  <div class="absolute bottom-6 left-6 text-xs uppercase tracking-[0.3em] bg-default text-inverted/70 p-3 rounded-lg">
                     {String(index + 1).padStart(2, '0')} / {item.image.caption}
                   </div>
                 )}
@@ -161,9 +164,8 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
 
 <style>
   .story-stage {
-    --story-scroll-height: 1000dvh;
-    height: var(--story-scroll-height);
     position: relative;
+    height: calc(var(--story-count, 5) * 100dvh);
   }
 
   .story-panel {
@@ -196,7 +198,7 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
 
   @media (max-width: 768px) {
     .story-stage {
-      --story-mobile-scroll-per-item: 80dvh;
+      height: calc(var(--story-count, 5) * 80dvh);
     }
   }
 
@@ -240,14 +242,9 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
         container.querySelectorAll<HTMLElement>('[data-story-card]'),
       )
       if (!cards.length) return
-      const count = cards.length
-      const isMobile = window.matchMedia('(max-width: 768px)').matches
-      const viewportPerCard = isMobile ? 0.8 : 1
-      const scrollHeight = count * viewportPerCard * 100
-      container.style.setProperty('--story-scroll-height', `${scrollHeight}dvh`)
       const state = container as StoryRevealState
       state.__storyRevealCards = cards
-      state.__storyRevealCount = count
+      state.__storyRevealCount = cards.length
     }
 
     function updateComponent(container: HTMLElement) {

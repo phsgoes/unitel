@@ -6,7 +6,10 @@ import Header from '@/components/ui/Header.astro'
 import Footer from '@/components/ui/Footer.astro'
 import Main from '@/components/ui/Main.astro'
 import type { Post } from '@/types'
+import googleSansFont from '@/assets/fonts/google-sans-flex.woff2'
+import yellowtailFont from '@/assets/fonts/yellowtail.woff2'
 import WhatsappFab from '@/components/ui/WhatsappFab.astro'
+import { site } from '@/data/site'
 
 interface Props {
   title?: string
@@ -16,9 +19,9 @@ interface Props {
 }
 
 const {
-  title = 'Blog - Unitel Telecomunicações',
-  description = 'A Unitel é uma empresa de soluções na área de tecnologia da informação voltada a telecomunicações.',
-  image = 'https://saas-template-j898sqk9c-nuxt-js.vercel.app/_og/s/o_nz6by7.png',
+  title = site.defaultTitle,
+  description = site.defaultDescription,
+  image = new URL(site.ogImagePath, Astro.site).href,
   article = undefined,
 } = Astro.props
 
@@ -29,8 +32,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
+    <link rel="preload" href={googleSansFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={yellowtailFont} as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#2563eb" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
@@ -53,7 +60,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Your Site's Title"
+      title={site.legalName}
       href={new URL('rss.xml', Astro.site)}
     />
     <title>{title}</title>

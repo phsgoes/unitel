@@ -1,0 +1,406 @@
+---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+export interface Props {
+  speeds?: [number, number]
+  title?: string
+  subtitle?: string
+}
+
+const {
+  speeds = [90000, 78000],
+  title = 'Empresas que escolheram nossa expertise',
+  subtitle = 'Instituições de diferentes segmentos que fazem parte da nossa trajetória',
+} = Astro.props
+
+// Source of truth
+const clients = [
+  { name: 'Andro', path: '../../assets/images/clientes/saude/andro.avif' },
+  {
+    name: 'Casa Azul',
+    path: '../../assets/images/clientes/saude/casa-azul.avif',
+  },
+  {
+    name: 'Casa da Vida',
+    path: '../../assets/images/clientes/saude/casa-da-vida.avif',
+  },
+  {
+    name: 'Casa do Amor',
+    path: '../../assets/images/clientes/saude/casa-do-amor.avif',
+  },
+  {
+    name: 'Cicatriclin',
+    path: '../../assets/images/clientes/saude/cicatriclin.avif',
+  },
+  { name: 'CORF', path: '../../assets/images/clientes/saude/corf.avif' },
+  { name: 'CTD', path: '../../assets/images/clientes/saude/ctd.avif' },
+  {
+    name: 'Derm Clinic',
+    path: '../../assets/images/clientes/saude/derm-clinic.avif',
+  },
+  {
+    name: 'Formulize',
+    path: '../../assets/images/clientes/saude/formulize.avif',
+  },
+  { name: 'HCC', path: '../../assets/images/clientes/saude/hcc.avif' },
+  { name: 'HOC', path: '../../assets/images/clientes/saude/hoc.avif' },
+  {
+    name: 'Hospital Esaú Matos',
+    path: '../../assets/images/clientes/saude/hospital-esau-matos.avif',
+  },
+  {
+    name: 'Hospital Samur',
+    path: '../../assets/images/clientes/saude/hospital-samur.avif',
+  },
+  {
+    name: 'Hospital São Lucas',
+    path: '../../assets/images/clientes/saude/hospital-sao-lucas.avif',
+  },
+  {
+    name: 'Hospital Unimec',
+    path: '../../assets/images/clientes/saude/hospital-unimec.avif',
+  },
+  {
+    name: 'Hospital São Vicente de Paula',
+    path: '../../assets/images/clientes/saude/hsvp.avif',
+  },
+  { name: 'IBR', path: '../../assets/images/clientes/saude/ibr.avif' },
+  { name: 'ICAM', path: '../../assets/images/clientes/saude/icam.avif' },
+  { name: 'ICON', path: '../../assets/images/clientes/saude/icon.avif' },
+  { name: 'Imasto', path: '../../assets/images/clientes/saude/imasto.avif' },
+  {
+    name: 'Instituto Glass',
+    path: '../../assets/images/clientes/saude/instituto-glass.avif',
+  },
+  {
+    name: 'Laboratório Análise',
+    path: '../../assets/images/clientes/saude/laboratorio-analise.avif',
+  },
+  {
+    name: 'Laboratório Labo',
+    path: '../../assets/images/clientes/saude/laboratorio-labo.avif',
+  },
+  {
+    name: 'Laboratório Micro',
+    path: '../../assets/images/clientes/saude/laboratorio-micro.avif',
+  },
+  {
+    name: 'Laboratório Vida',
+    path: '../../assets/images/clientes/saude/laboratorio-vida.avif',
+  },
+  {
+    name: 'Otorrinomed',
+    path: '../../assets/images/clientes/saude/otorrinomed.avif',
+  },
+  {
+    name: 'Policlínica Vida',
+    path: '../../assets/images/clientes/saude/policlinica-vida.avif',
+  },
+  {
+    name: 'Clínica Santa Luzia',
+    path: '../../assets/images/clientes/saude/santa-luzia.avif',
+  },
+  { name: 'Sonnar', path: '../../assets/images/clientes/saude/sonnar.avif' },
+  {
+    name: 'Unimed do Sudoeste',
+    path: '../../assets/images/clientes/saude/unimed-do-sudoeste.avif',
+  },
+  { name: 'Uroday', path: '../../assets/images/clientes/saude/uroday.avif' },
+  {
+    name: 'Cambuí',
+    path: '../../assets/images/clientes/comercial/cambui.avif',
+  },
+  {
+    name: 'Chiacchio',
+    path: '../../assets/images/clientes/comercial/chiacchio.avif',
+  },
+  {
+    name: 'Colégio Oficina',
+    path: '../../assets/images/clientes/comercial/colegio-oficina.avif',
+  },
+  {
+    name: 'Colégio Sacramentinas',
+    path: '../../assets/images/clientes/comercial/colegio-sacramentinas.avif',
+  },
+  {
+    name: 'Compeças',
+    path: '../../assets/images/clientes/comercial/compecas.avif',
+  },
+  {
+    name: 'Comveima',
+    path: '../../assets/images/clientes/comercial/comveima.avif',
+  },
+  {
+    name: 'Elétrica Sol',
+    path: '../../assets/images/clientes/comercial/eletrica-sol.avif',
+  },
+  {
+    name: 'Icomportas',
+    path: '../../assets/images/clientes/comercial/icomportas.avif',
+  },
+  {
+    name: 'Mix Farma',
+    path: '../../assets/images/clientes/comercial/mix-farma.avif',
+  },
+  {
+    name: 'Paulo Barra Advogados',
+    path: '../../assets/images/clientes/comercial/paulo-barra-advogados.avif',
+  },
+  {
+    name: 'Prefeitura Municipal de Vitória da Conquista',
+    path: '../../assets/images/clientes/comercial/pmvc.avif',
+  },
+  {
+    name: 'Supermercados Santo Antônio',
+    path: '../../assets/images/clientes/comercial/santo-antonio.avif',
+  },
+  {
+    name: 'Sicoob',
+    path: '../../assets/images/clientes/comercial/sicoob.avif',
+  },
+  {
+    name: 'Stark Jeep',
+    path: '../../assets/images/clientes/comercial/stark-jeep.avif',
+  },
+  {
+    name: 'Tecnoguard',
+    path: '../../assets/images/clientes/comercial/tecnoguard.avif',
+  },
+  { name: 'Teiú', path: '../../assets/images/clientes/comercial/teiu.avif' },
+  {
+    name: 'Tubos Kep',
+    path: '../../assets/images/clientes/comercial/tubos-kep.avif',
+  },
+]
+
+const imageGlob = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/images/clientes/**/*.avif',
+  { eager: true },
+)
+
+const resolveClients = (segment: string) =>
+  clients
+    .filter((client) => client.path.includes(segment))
+    .map((client) => {
+      const module = imageGlob[client.path]
+      return {
+        ...client,
+        src: module
+          ? module.default
+          : (client.path as unknown as ImageMetadata),
+      }
+    })
+
+const healthClients = resolveClients('/saude/')
+const commercialClients = resolveClients('/comercial/')
+---
+
+<section
+  aria-labelledby="social-proof-title"
+  class="w-full min-h-screen py-16 bg-default overflow-hidden flex flex-col justify-center gap-8 md:gap-12 transition-colors duration-300">
+  <header class="text-center px-4 max-w-4xl mx-auto flex flex-col gap-3">
+    <h2
+      id="social-proof-title"
+      class="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+      {title}
+    </h2>
+    <p
+      class="text-sm md:text-base lg:text-lg text-slate-600 dark:text-slate-400 font-medium">
+      {subtitle}
+    </p>
+  </header>
+
+  <div class="relative flex flex-col gap-4 w-full mask-gradient">
+    {/* Primeira Linha (Saúde) - Direita para Esquerda */}
+    <div class="relative w-full overflow-hidden pt-12 pb-4">
+      <div
+        class="marquee-container marquee-left"
+        style={`--animation-duration: ${speeds[0]}ms;`}>
+        <ul
+          class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
+          {
+            healthClients.map((client) => (
+              <li class="relative flex items-center justify-center shrink-0 group/item">
+                <Image
+                  src={client.src}
+                  alt={`Logomarca da empresa ${client.name}`}
+                  height={56}
+                  format="avif"
+                  loading="lazy"
+                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 will-change-[filter,opacity]"
+                />
+                {/* Tooltip CSS com resguardo de altura e setinha */}
+                <span
+                  role="tooltip"
+                  aria-hidden="true"
+                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
+                  {client.name}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <ul
+          class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12"
+          aria-hidden="true">
+          {
+            healthClients.map((client) => (
+              <li class="relative flex items-center justify-center shrink-0 group/item">
+                <Image
+                  src={client.src}
+                  alt={`Logomarca da empresa ${client.name}`}
+                  height={56}
+                  format="avif"
+                  loading="lazy"
+                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 will-change-[filter,opacity]"
+                />
+                <span
+                  role="tooltip"
+                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
+                  {client.name}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    {/* Segunda Linha (Comercial) - Esquerda para Direita */}
+    <div class="relative w-full overflow-hidden pt-12 pb-4">
+      <div
+        class="marquee-container marquee-right"
+        style={`--animation-duration: ${speeds[1]}ms;`}>
+        <ul
+          class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
+          {
+            commercialClients.map((client) => (
+              <li class="relative flex items-center justify-center shrink-0 group/item">
+                <Image
+                  src={client.src}
+                  alt={`Logomarca da empresa ${client.name}`}
+                  height={56}
+                  format="avif"
+                  loading="lazy"
+                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 will-change-[filter,opacity]"
+                />
+                <span
+                  role="tooltip"
+                  aria-hidden="true"
+                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
+                  {client.name}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <ul
+          class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12"
+          aria-hidden="true">
+          {
+            commercialClients.map((client) => (
+              <li class="relative flex items-center justify-center shrink-0 group/item">
+                <Image
+                  src={client.src}
+                  alt={`Logomarca da empresa ${client.name}`}
+                  height={56}
+                  format="avif"
+                  loading="lazy"
+                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 will-change-[filter,opacity]"
+                />
+                <span
+                  role="tooltip"
+                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
+                  {client.name}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mask-gradient::before,
+  .mask-gradient::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    height: 100%;
+    width: 3rem;
+    pointer-events: none;
+  }
+
+  .mask-gradient::before {
+    left: 0;
+    background: linear-gradient(
+      to right,
+      var(--mask-color, #ffffff),
+      transparent
+    );
+  }
+
+  .mask-gradient::after {
+    right: 0;
+    background: linear-gradient(
+      to left,
+      var(--mask-color, #ffffff),
+      transparent
+    );
+  }
+
+  :global(.dark) .mask-gradient {
+    --mask-color: #0f172b; /* Tailwind slate-950 */
+  }
+
+  @media (min-width: 768px) {
+    .mask-gradient::before,
+    .mask-gradient::after {
+      width: 6rem;
+    }
+  }
+
+  .marquee-container {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .marquee-container:hover {
+    animation-play-state: paused;
+  }
+
+  .marquee-left {
+    animation: scroll-left var(--animation-duration, 30s) linear infinite;
+  }
+
+  .marquee-right {
+    animation: scroll-right var(--animation-duration, 30s) linear infinite;
+  }
+
+  @keyframes scroll-left {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes scroll-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-left,
+    .marquee-right {
+      animation-play-state: paused !important;
+    }
+  }
+</style>

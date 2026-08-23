@@ -14,6 +14,8 @@ export interface Props extends Omit<AstroImageProps, 'alt'> {
   objectPosition?: ObjectPosition
   imageClass?: string
   class?: string
+  loading?: 'eager' | 'lazy'
+  fetchpriority?: 'high' | 'low' | 'auto'
 }
 
 const {
@@ -24,6 +26,8 @@ const {
   class: className,
   imageClass,
   alt = '',
+  loading = 'lazy',
+  fetchpriority = 'auto',
   ...imageProps
 } = Astro.props as Props
 ---
@@ -43,7 +47,8 @@ const {
     aria-haspopup="dialog"
     aria-expanded="false"
     sizes={sizes}
-    loading="lazy"
+    loading={loading}
+    fetchpriority={fetchpriority}
     decoding="async"
     format="avif"
     style={{
