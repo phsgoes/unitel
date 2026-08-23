@@ -221,7 +221,7 @@ const commercialClients = resolveClients('/comercial/')
           class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
           {
             healthClients.map((client) => (
-              <li class="relative flex items-center justify-center shrink-0 group/item">
+              <li class="relative flex items-center justify-center shrink-0 group/item active:grayscale-0">
                 <Image
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
@@ -229,7 +229,7 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
-                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 will-change-[filter,opacity]"
+                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 group-active/item:grayscale-0 group-active/item:opacity-100 group-active/item:dark:invert-0 will-change-[filter,opacity]"
                 />
                 {/* Tooltip CSS com resguardo de altura e setinha */}
                 <span
@@ -247,7 +247,7 @@ const commercialClients = resolveClients('/comercial/')
           aria-hidden="true">
           {
             healthClients.map((client) => (
-              <li class="relative flex items-center justify-center shrink-0 group/item">
+              <li class="relative flex items-center justify-center shrink-0 group/item active:grayscale-0">
                 <Image
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
@@ -255,7 +255,7 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
-                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 will-change-[filter,opacity]"
+                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 group-active/item:grayscale-0 group-active/item:opacity-100 group-active/item:dark:invert-0 will-change-[filter,opacity]"
                 />
                 <span
                   role="tooltip"
@@ -278,7 +278,7 @@ const commercialClients = resolveClients('/comercial/')
           class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
           {
             commercialClients.map((client) => (
-              <li class="relative flex items-center justify-center shrink-0 group/item">
+              <li class="relative flex items-center justify-center shrink-0 group/item active:grayscale-0">
                 <Image
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
@@ -286,7 +286,7 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
-                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 will-change-[filter,opacity]"
+                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 group-active/item:grayscale-0 group-active/item:opacity-100 group-active/item:dark:invert-0 will-change-[filter,opacity]"
                 />
                 <span
                   role="tooltip"
@@ -303,7 +303,7 @@ const commercialClients = resolveClients('/comercial/')
           aria-hidden="true">
           {
             commercialClients.map((client) => (
-              <li class="relative flex items-center justify-center shrink-0 group/item">
+              <li class="relative flex items-center justify-center shrink-0 group/item active:grayscale-0">
                 <Image
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
@@ -311,7 +311,7 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
-                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 will-change-[filter,opacity]"
+                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 group-active/item:grayscale-0 group-active/item:opacity-100 group-active/item:dark:invert-0 will-change-[filter,opacity]"
                 />
                 <span
                   role="tooltip"
@@ -384,6 +384,21 @@ const commercialClients = resolveClients('/comercial/')
 
   .marquee-right {
     animation: scroll-right var(--animation-duration, 30s) linear infinite;
+  }
+
+  /* Aplica a pausa do carrossel no hover APENAS em telas com mouse */
+  @media (hover: hover) {
+    .marquee-container:hover {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Garante suporte a toque/foco nas imagens sem travar */
+  @media (hover: hover) {
+    .group\/item:hover .group-hover\/item\:grayscale-0 {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
   }
 
   @keyframes scroll-left {
