@@ -330,30 +330,43 @@ const commercialClients = resolveClients('/comercial/')
 </section>
 
 <script>
-  // Gerenciamento dinâmico do estado de toque imediato
-  const items = document.querySelectorAll('.client-item')
+  // Executa no carregamento inicial E a cada navegação de página do ViewTransitions
+  document.addEventListener('astro:page-load', () => {
+    const items = document.querySelectorAll('.client-item')
 
-  items.forEach((item) => {
-    const handleTouchStart = () => {
-      // Remove de outros elementos para garantir que só 1 fique colorido por vez
-      items.forEach((i) => i.classList.remove('is-touched'))
-      item.classList.add('is-touched')
-    }
+    items.forEach((item) => {
+      const handleTouchStart = () => {
+        items.forEach((i) => i.classList.remove('is-touched'))
+        item.classList.add('is-touched')
+      }
 
-    const handleTouchEnd = () => {
-      item.classList.remove('is-touched')
-    }
+      const handleTouchEnd = () => {
+        item.classList.remove('is-touched')
+      }
 
-    // Escuta eventos de ponteiro para cobrir qualquer tipo de toque mobile
-    item.addEventListener('pointerdown', handleTouchStart, { passive: true })
-    item.addEventListener('pointerup', handleTouchEnd, { passive: true })
-    item.addEventListener('pointercancel', handleTouchEnd, { passive: true })
-    item.addEventListener('pointerleave', handleTouchEnd, { passive: true })
+      // Pointer events com passive para não travar o scroll da página
+      item.addEventListener('pointerdown', handleTouchStart, { passive: true })
+      item.addEventListener('pointerup', handleTouchEnd, { passive: true })
+      item.addEventListener('pointercancel', handleTouchEnd, { passive: true })
+      item.addEventListener('pointerleave', handleTouchEnd, { passive: true })
+    })
   })
 </script>
 
 <style>
-  /* Bloqueia seleção e menu nativo de toque longo no mobile */
+  /* Mantém o estado da animação sincronizado durante a troca de páginas */
+  .marquee-container {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+
+  /* Impede que o estado da animação CSS reset dessincronizado */
+  .marquee-left,
+  .marquee-right {
+    view-transition-name: unset;
+  }
+
   .client-item {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -391,7 +404,7 @@ const commercialClients = resolveClients('/comercial/')
   }
 
   :global(.dark) .mask-gradient {
-    --mask-color: #0f172b; /* Tailwind slate-950 */
+    --mask-color: #0f172b;
   }
 
   @media (min-width: 768px) {
@@ -401,13 +414,6 @@ const commercialClients = resolveClients('/comercial/')
     }
   }
 
-  .marquee-container {
-    display: flex;
-    width: max-content;
-    will-change: transform;
-  }
-
-  /* Aplica a pausa do carrossel no hover APENAS para mouses/desktops */
   @media (hover: hover) {
     .marquee-container:hover {
       animation-play-state: paused;
