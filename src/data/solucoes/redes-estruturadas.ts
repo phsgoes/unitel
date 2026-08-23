@@ -7,7 +7,7 @@
  * See also: src/data/solucoes/README.md, src/types/solucao.ts
  */
 
-import redesEstruturadasImage from '@/assets/images/redes-estruturadas.webp'
+import redesEstruturadasImage from '@/assets/images/redes-estruturadas.avif'
 import { portfolioClientNames } from '@/data/portfolio-clients'
 import type { SolutionPage } from '@/types/solucao'
 
@@ -29,8 +29,7 @@ export const redesEstruturadasPage = {
   hero: {
     badge: 'Solução de infraestrutura empresarial',
     titleBefore: 'Redes estruturadas para uma empresa que ',
-    titleHighlight:
-      'precisa de uma infraestrutura preparada para crescer.',
+    titleHighlight: 'precisa de uma infraestrutura preparada para crescer.',
     description:
       'Uma rede bem projetada é a base para que computadores, sistemas, servidores, telefonia, dispositivos e equipes trabalhem de forma conectada. Com as soluções de Redes Estruturadas da Unitel, sua empresa ganha mais organização, desempenho, segurança e flexibilidade para sustentar a operação.',
     primaryCta: { label: 'Falar com um especialista', href: '/contato' },
@@ -91,7 +90,8 @@ export const redesEstruturadasPage = {
   },
   compare: {
     badge: 'Uma nova arquitetura',
-    title: 'Da rede improvisada para uma infraestrutura pensada para o negócio.',
+    title:
+      'Da rede improvisada para uma infraestrutura pensada para o negócio.',
     description:
       'Uma Rede Estruturada organiza a infraestrutura física de comunicação da empresa de forma padronizada, permitindo conectar diferentes ambientes, equipamentos e sistemas com mais previsibilidade.',
     beforeLabel: 'Estrutura convencional',
@@ -326,17 +326,20 @@ export const redesEstruturadasPage = {
           'Uma infraestrutura de rede pode atender computadores, impressoras, telefones IP, servidores, pontos de acesso Wi-Fi, câmeras, sistemas de controle de acesso e outros dispositivos conectados. O dimensionamento depende das tecnologias utilizadas e das necessidades de cada ambiente.',
       },
       {
-        question: 'A rede estruturada pode atender Telefonia IP e outros sistemas?',
+        question:
+          'A rede estruturada pode atender Telefonia IP e outros sistemas?',
         answer:
           'Sim. Uma rede estruturada pode servir como base para diferentes sistemas de comunicação e tecnologia, incluindo Telefonia IP, computadores, Wi-Fi, câmeras e outras soluções conectadas. O projeto deve considerar requisitos de capacidade, desempenho, organização e disponibilidade de cada aplicação.',
       },
       {
-        question: 'Uma rede estruturada pode acompanhar o crescimento da empresa?',
+        question:
+          'Uma rede estruturada pode acompanhar o crescimento da empresa?',
         answer:
           'Sim. Um dos principais objetivos de um projeto estruturado é criar uma infraestrutura preparada para expansão. Com planejamento adequado, novos usuários, setores, equipamentos e pontos de rede podem ser incorporados com mais organização e menor impacto sobre a operação existente.',
       },
       {
-        question: 'A rede estruturada melhora o desempenho da internet da empresa?',
+        question:
+          'A rede estruturada melhora o desempenho da internet da empresa?',
         answer:
           'Uma infraestrutura de cabeamento adequada pode contribuir para que os dispositivos aproveitem corretamente a capacidade disponível na rede. O desempenho final, entretanto, também depende de switches, roteadores, pontos de acesso, servidores, links de internet e do dimensionamento geral da infraestrutura.',
       },

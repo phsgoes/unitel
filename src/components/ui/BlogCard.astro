@@ -32,6 +32,7 @@ const publishedAt = new Intl.DateTimeFormat('pt-BR', {
     height={360}
     loading={featured ? 'eager' : 'lazy'}
     fetchpriority={featured ? 'high' : 'auto'}
+    format="avif"
     containerClass="relative overflow-hidden aspect-video w-full pointer-events-none shadow-sm rounded-lg"
     class="image-content object-cover object-top w-full h-full transform transition-transform duration-300 group-hover/blog-post:scale-110"
   />

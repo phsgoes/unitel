@@ -1,7 +1,7 @@
 ---
-import { Image } from 'astro:assets';
+import { Image } from 'astro:assets'
 
-const { node } = Astro.props;
+const { node } = Astro.props
 ---
 
 <Image
@@ -9,4 +9,5 @@ const { node } = Astro.props;
   alt={node.title}
   width={node.width}
   height={node.height}
+  format="avif"
 />

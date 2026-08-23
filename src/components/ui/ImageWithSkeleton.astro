@@ -30,7 +30,7 @@ const {
   containerClass = '',
   loading = 'lazy',
   fetchpriority = 'auto',
-  format = 'webp',
+  format = 'avif',
   ...restProps
 } = Astro.props
 
@@ -54,7 +54,6 @@ const computedAspectRatio = width && height ? `${width} / ${height}` : undefined
     {...restProps}
   />
 </div>
-
 
 <style>
   @reference "@/styles/global.css";

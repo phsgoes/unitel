@@ -7,7 +7,7 @@
  * See also: src/data/solucoes/README.md, src/types/solucao.ts
  */
 
-import callCenterImage from '@/assets/images/call-center.webp'
+import callCenterImage from '@/assets/images/call-center.avif'
 import { portfolioClientNames } from '@/data/portfolio-clients'
 import type { SolutionPage } from '@/types/solucao'
 
@@ -375,7 +375,8 @@ export const callCenterPage = {
           'Sim. Uma solução de Call Center pode ser dimensionada conforme a quantidade de atendentes, volume de chamadas, canais e objetivos da empresa. Isso permite estruturar uma operação adequada ao momento atual do negócio e ampliar os recursos conforme a demanda aumenta.',
       },
       {
-        question: 'Quais recursos podem fazer parte de uma solução de Call Center?',
+        question:
+          'Quais recursos podem fazer parte de uma solução de Call Center?',
         answer:
           'Dependendo do projeto, a solução pode incluir URA, filas de atendimento, distribuição automática de chamadas, gravação, relatórios, monitoramento, discagem, gestão de ramais, recursos de supervisão e integração com sistemas empresariais. A arquitetura é definida de acordo com o perfil da operação.',
       },

@@ -7,7 +7,7 @@
  * See also: src/data/solucoes/README.md, src/types/solucao.ts
  */
 
-import telefoniaIpImage from '@/assets/images/telefonia-ip.webp'
+import telefoniaIpImage from '@/assets/images/telefonia-ip.avif'
 import { portfolioClientNames } from '@/data/portfolio-clients'
 import { defaultWhyUnitelCards } from '@/data/why-unitel'
 import type { SolutionPage } from '@/types/solucao'
@@ -288,7 +288,8 @@ export const telefoniaIpPage = {
           'Telefonia IP é uma tecnologia que utiliza redes baseadas em protocolo IP para transportar chamadas de voz. Em ambientes empresariais, ela permite construir uma estrutura de comunicação mais flexível, escalável e integrada aos processos e sistemas utilizados pela organização.',
       },
       {
-        question: 'Qual é a diferença entre Telefonia IP e telefonia tradicional?',
+        question:
+          'Qual é a diferença entre Telefonia IP e telefonia tradicional?',
         answer:
           'Na Telefonia IP, a comunicação de voz utiliza uma infraestrutura de rede IP. Isso amplia as possibilidades de mobilidade, integração, gestão e expansão da telefonia. A arquitetura adequada depende da infraestrutura existente e das necessidades de cada empresa.',
       },
