@@ -102,8 +102,8 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
             data-card-index={index}
             style={`background-color: ${item.backgroundColor}; z-index: ${index + 1};`}
             aria-hidden={index === 0 ? 'false' : 'true'}>
-            <div class="grid h-full grid-cols-1 md:grid-cols-2">
-              <div class="relative h-[48dvh] overflow-hidden md:h-full">
+            <div class="flex flex-col h-full md:grid md:grid-cols-2">
+              <div class="relative h-[36svh] sm:h-[40svh] md:h-full shrink-0 overflow-hidden">
                 {typeof item.image.src === 'string' ? (
                   <img
                     src={item.image.src}
@@ -133,7 +133,7 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
                 <div class:list={['absolute inset-0', theme.overlay]} />
 
                 {item.image.caption && (
-                  <div class="absolute bottom-6 left-6 text-xs font-bold uppercase tracking-[0.3em] bg-black/85 text-white p-3 rounded-lg border border-white/20 shadow-md backdrop-blur-xs">
+                  <div class="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] bg-black/85 text-white px-2.5 py-1.5 sm:p-3 rounded-lg border border-white/20 shadow-md backdrop-blur-xs">
                     {String(index + 1).padStart(2, '0')} / {item.image.caption}
                   </div>
                 )}
@@ -141,33 +141,42 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
 
               <div
                 class:list={[
-                  'flex h-[52dvh] items-center px-8 py-12 sm:px-12 md:h-full md:px-16 lg:px-24',
+                  'relative flex-1 min-h-0 flex flex-col justify-center overflow-y-auto px-6 py-5 sm:px-10 sm:py-8 md:px-12 md:py-12 lg:px-20',
                   theme.text,
                 ]}
                 style={`background-color: ${item.backgroundColor};`}>
-                <div class="max-w-xl">
+                <div class="max-w-xl my-auto w-full">
                   <p
                     class:list={[
-                      'mb-5 text-xs font-bold uppercase tracking-[0.3em]',
+                      'mb-2 sm:mb-3 md:mb-5 text-xs font-bold uppercase tracking-[0.25em]',
                       theme.accent,
                     ]}>
                     {item.eyebrow}
                   </p>
-                  <h2 class="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                  <h2 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight">
                     {item.title}{' '}
                     <span class={theme.accent}>{item.titleAccent}</span>
                   </h2>
-                  <p class:list={['mt-8 text-lg leading-relaxed', theme.muted]}>
+                  <p
+                    class:list={[
+                      'mt-3 sm:mt-4 md:mt-8 text-sm sm:text-base md:text-lg leading-relaxed',
+                      theme.muted,
+                    ]}>
                     {item.description}
                   </p>
                   <p
                     class:list={[
-                      'mt-5 text-base leading-relaxed',
+                      'mt-2 sm:mt-3 md:mt-5 text-xs sm:text-sm md:text-base leading-relaxed opacity-90',
                       theme.muted,
                     ]}>
                     {item.secondaryDescription}
                   </p>
-                  <div class:list={['mt-10 h-px w-24', theme.divider]} />
+                  <div
+                    class:list={[
+                      'mt-3 sm:mt-6 md:mt-10 h-px w-16 sm:w-24',
+                      theme.divider,
+                    ]}
+                  />
                 </div>
               </div>
             </div>
@@ -181,14 +190,14 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
 <style>
   .story-stage {
     position: relative;
-    height: calc(var(--story-count, 5) * 100dvh);
+    height: calc(var(--story-count, 5) * 100svh);
   }
 
   .story-panel {
     position: sticky;
     top: 0;
     width: 100%;
-    height: 100dvh;
+    height: 100svh;
     overflow: hidden;
   }
 
@@ -214,7 +223,7 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
 
   @media (max-width: 768px) {
     .story-stage {
-      height: calc(var(--story-count, 5) * 80dvh);
+      height: calc(100svh + (var(--story-count, 5) - 1) * 85svh);
     }
   }
 
@@ -241,18 +250,6 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
       __storyRevealCount?: number
     }
 
-    function collectComponents() {
-      document
-        .querySelectorAll<HTMLElement>('[data-story-reveal]')
-        .forEach((element) => components.add(element))
-
-      for (const element of components) {
-        if (!document.documentElement.contains(element)) {
-          components.delete(element)
-        }
-      }
-    }
-
     function initializeComponent(container: HTMLElement) {
       const cards = Array.from(
         container.querySelectorAll<HTMLElement>('[data-story-card]'),
@@ -261,6 +258,16 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
       const state = container as StoryRevealState
       state.__storyRevealCards = cards
       state.__storyRevealCount = cards.length
+    }
+
+    function collectComponents() {
+      components.clear()
+      document
+        .querySelectorAll<HTMLElement>('[data-story-reveal]')
+        .forEach((element) => {
+          initializeComponent(element)
+          components.add(element)
+        })
     }
 
     function updateComponent(container: HTMLElement) {
@@ -273,32 +280,33 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
       }
 
       const count = cards.length
+      if (count <= 1) {
+        if (cards[0]) {
+          cards[0].style.opacity = '1'
+          cards[0].style.transform = 'translate3d(0, 0, 0) scale(1)'
+          cards[0].classList.add('is-active')
+          cards[0].setAttribute('aria-hidden', 'false')
+        }
+        return
+      }
+
       const rect = container.getBoundingClientRect()
       const totalScroll = container.offsetHeight - window.innerHeight
       if (totalScroll <= 0) return
 
       const passed = clamp(-rect.top, 0, totalScroll)
       const progress = passed / totalScroll
-      const step = 1 / count
-      const activeIndex = Math.min(count - 1, Math.floor(progress / step))
+      const numTransitions = count - 1
+      const globalProgress = progress * numTransitions
+      const activeIndex = clamp(
+        Math.floor(globalProgress),
+        0,
+        numTransitions - 1,
+      )
+      const localProgress = clamp(globalProgress - activeIndex, 0, 1)
+
       cards.forEach((card, index) => {
-        if (activeIndex === 0 && index === 0) {
-          card.style.opacity = '1'
-          card.style.transform = 'translate3d(0, 0, 0) scale(1)'
-          card.classList.add('is-active')
-          card.setAttribute('aria-hidden', 'false')
-          return
-        }
-
-        if (index > activeIndex) {
-          card.style.opacity = '0'
-          card.style.transform = 'translate3d(0, 100%, 0) scale(1)'
-          card.classList.remove('is-active')
-          card.setAttribute('aria-hidden', 'true')
-          return
-        }
-
-        if (index < activeIndex - 1) {
+        if (index < activeIndex) {
           card.style.opacity = '0'
           card.style.transform = 'translate3d(0, -5%, 0) scale(0.94)'
           card.classList.remove('is-active')
@@ -306,41 +314,48 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
           return
         }
 
-        if (index === activeIndex && index > 0) {
-          const cardProgress = clamp(
-            (progress - activeIndex * step) / step,
-            0,
-            1,
-          )
-          const entering = clamp(cardProgress / 0.55, 0, 1)
-          card.style.opacity = String(entering)
-          card.style.transform = `translate3d(0, ${(1 - entering) * 100}%, 0) scale(1)`
-          card.classList.add('is-active')
-          card.setAttribute('aria-hidden', 'false')
+        if (index > activeIndex + 1) {
+          card.style.opacity = '0'
+          card.style.transform = 'translate3d(0, 100%, 0) scale(1)'
+          card.classList.remove('is-active')
+          card.setAttribute('aria-hidden', 'true')
           return
         }
 
-        if (index === activeIndex - 1) {
-          const transitionProgress = clamp(
-            (progress - activeIndex * step) / step,
-            0,
-            1,
-          )
-          const scaleProgress = transitionProgress
-          const scale = 1 - scaleProgress * 0.06
-          const leaving = clamp((transitionProgress - 0.55) / 0.45, 0, 1)
-          const opacity = 1 - leaving * 0.9
+        if (index === activeIndex) {
+          const leaving = localProgress
+          const scale = 1 - leaving * 0.06
+          const opacity = Math.max(0, 1 - leaving * 0.95)
           card.style.opacity = String(opacity)
           card.style.transform = `translate3d(0, ${-leaving * 5}%, 0) scale(${scale})`
-          card.classList.remove('is-active')
-          card.setAttribute('aria-hidden', 'true')
+          if (localProgress < 0.5) {
+            card.classList.add('is-active')
+            card.setAttribute('aria-hidden', 'false')
+          } else {
+            card.classList.remove('is-active')
+            card.setAttribute('aria-hidden', 'true')
+          }
+          return
+        }
+
+        if (index === activeIndex + 1) {
+          const entering = localProgress
+          const translateY = (1 - entering) * 100
+          card.style.opacity = String(entering)
+          card.style.transform = `translate3d(0, ${translateY}%, 0) scale(1)`
+          if (localProgress >= 0.5) {
+            card.classList.add('is-active')
+            card.setAttribute('aria-hidden', 'false')
+          } else {
+            card.classList.remove('is-active')
+            card.setAttribute('aria-hidden', 'true')
+          }
           return
         }
       })
     }
 
     function updateAll() {
-      collectComponents()
       components.forEach(updateComponent)
     }
 
@@ -356,7 +371,15 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
     }
 
     window.addEventListener('scroll', requestUpdate, { passive: true })
-    window.addEventListener('resize', requestUpdate, { passive: true })
+    window.addEventListener(
+      'resize',
+      () => {
+        collectComponents()
+        requestUpdate()
+      },
+      { passive: true },
+    )
+
     document.addEventListener('astro:page-load', () => {
       collectComponents()
       requestUpdate()
@@ -365,6 +388,7 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
       collectComponents()
       requestUpdate()
     })
+
     collectComponents()
     requestUpdate()
   }
