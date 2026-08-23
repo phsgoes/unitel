@@ -90,6 +90,19 @@ const {
     />
     <title>{title}</title>
     <JsonLdSchemas schemas={[organization, website, ...jsonLdSchemas]} />
+    <script is:inline>
+      function applyTheme() {
+        const stored = typeof localStorage !== 'undefined' && (localStorage.getItem('theme') || localStorage.getItem('color-mode'))
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (stored === 'dark' || (!stored && systemPrefersDark)) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+      }
+      applyTheme()
+      document.addEventListener('astro:after-swap', applyTheme)
+    </script>
     <ClientRouter fallback="swap" />
   </head>
   <body>

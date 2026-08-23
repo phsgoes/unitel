@@ -10,7 +10,7 @@ export const storyItems: StoryRevealItem[] = [
   {
     backgroundColor: '#202020',
     image: {
-      src: comuniq.src,
+      src: comuniq,
       alt: 'ComuniQ',
       caption: 'ComuniQ',
     },
@@ -26,7 +26,7 @@ export const storyItems: StoryRevealItem[] = [
   {
     backgroundColor: '#24151b',
     image: {
-      src: callCenter.src,
+      src: callCenter,
       alt: 'Call Center',
       caption: 'Call Center',
     },
@@ -42,7 +42,7 @@ export const storyItems: StoryRevealItem[] = [
   {
     backgroundColor: '#17221d',
     image: {
-      src: redesEstruturadas.src,
+      src: redesEstruturadas,
       alt: 'Redes estruturadas',
       caption: 'Redes estruturadas',
     },
@@ -58,7 +58,7 @@ export const storyItems: StoryRevealItem[] = [
   {
     backgroundColor: '#111827',
     image: {
-      src: ouvidoriaDigital.src,
+      src: ouvidoriaDigital,
       alt: 'Ouvidoria Digital',
       caption: 'Ouvidoria Digital',
     },
@@ -75,7 +75,7 @@ export const storyItems: StoryRevealItem[] = [
   {
     backgroundColor: '#24151b',
     image: {
-      src: telefoniaIp.src,
+      src: telefoniaIp,
       alt: 'Telefonia IP',
       caption: 'Telefonia IP',
     },

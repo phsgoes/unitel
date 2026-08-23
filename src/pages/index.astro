@@ -18,16 +18,17 @@ import SocialProof from '@/components/ui/SocialProof.astro'
       sizes="100vw"
       loading="eager"
       fetchpriority="high"
+      quality={60}
       format="avif"
       class="absolute inset-0 h-full w-full object-cover object-center"
     />
-    <div class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
+    <div class="absolute inset-0 bg-black/65 backdrop-blur-xs"></div>
     <div
       class="relative z-10 flex h-full items-center justify-center px-6 text-center sm:px-12">
       <div class="max-w-3xl space-y-6">
         <h1 class="sr-only">Unitel Telecomunicações</h1>
         <LogoUnitel dark role="img" aria-label="Unitel Telecomunicações" />
-        <p class="mx-auto mt-12 max-w-2xl text-lg text-neutral-300 md:text-xl">
+        <p class="mx-auto mt-12 max-w-2xl text-lg font-medium text-white md:text-xl">
           Soluções especializada em projetos de telecomunicações, consultoria,
           telefonia digital IP, redes estruturadas e softwares de Call Center.
         </p>

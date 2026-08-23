@@ -1,8 +1,11 @@
 ---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
 export interface StoryRevealItem {
   backgroundColor: string
   image: {
-    src: string
+    src: ImageMetadata | string
     alt: string
     caption?: string
   }
@@ -37,42 +40,42 @@ const themes: Record<
   }
 > = {
   zinc: {
-    text: 'text-slate-50',
+    text: 'text-white',
     muted: 'text-slate-100',
-    accent: 'text-slate-50',
-    divider: 'bg-slate-100',
-    overlay: 'bg-gradient-to-r from-black/10 to-transparent',
+    accent: 'text-white',
+    divider: 'bg-white',
+    overlay: 'bg-gradient-to-r from-black/20 to-transparent',
   },
 
   emerald: {
     text: 'text-white',
-    muted: 'text-white/70',
-    accent: 'text-emerald-400',
+    muted: 'text-emerald-100',
+    accent: 'text-emerald-300',
     divider: 'bg-emerald-400',
-    overlay: 'bg-black/10',
+    overlay: 'bg-black/20',
   },
 
   blue: {
     text: 'text-white',
-    muted: 'text-white/70',
-    accent: 'text-blue-400',
+    muted: 'text-blue-100',
+    accent: 'text-blue-300',
     divider: 'bg-blue-400',
-    overlay: 'bg-black/10',
+    overlay: 'bg-black/20',
   },
 
   rose: {
     text: 'text-white',
-    muted: 'text-white/70',
-    accent: 'text-rose-400',
+    muted: 'text-rose-100',
+    accent: 'text-rose-300',
     divider: 'bg-rose-400',
     overlay: 'bg-black/20',
   },
 
   slate: {
     text: 'text-white',
-    muted: 'text-white/70',
-    accent: 'text-slate-400',
-    divider: 'bg-slate-400',
+    muted: 'text-slate-100',
+    accent: 'text-slate-200',
+    divider: 'bg-slate-300',
     overlay: 'bg-black/20',
   },
 }
@@ -101,21 +104,36 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
             aria-hidden={index === 0 ? 'false' : 'true'}>
             <div class="grid h-full grid-cols-1 md:grid-cols-2">
               <div class="relative h-[48dvh] overflow-hidden md:h-full">
-                <img
-                  src={item.image.src}
-                  alt={item.image.alt}
-                  width="1200"
-                  height="800"
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  fetchpriority={index === 0 ? 'high' : 'auto'}
-                  decoding="async"
-                  class="h-full w-full object-cover"
-                />
+                {typeof item.image.src === 'string' ? (
+                  <img
+                    src={item.image.src}
+                    alt={item.image.alt}
+                    width="1200"
+                    height="800"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={index === 0 ? 'high' : 'auto'}
+                    decoding="async"
+                    class="h-full w-full object-cover"
+                  />
+                ) : (
+                  <Image
+                    src={item.image.src}
+                    alt={item.image.alt}
+                    widths={[480, 768, 1024, 1200]}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={75}
+                    format="avif"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={index === 0 ? 'high' : 'auto'}
+                    decoding="async"
+                    class="h-full w-full object-cover"
+                  />
+                )}
 
                 <div class:list={['absolute inset-0', theme.overlay]} />
 
                 {item.image.caption && (
-                  <div class="absolute bottom-6 left-6 text-xs uppercase tracking-[0.3em] bg-default text-inverted/70 p-3 rounded-lg">
+                  <div class="absolute bottom-6 left-6 text-xs font-bold uppercase tracking-[0.3em] bg-black/85 text-white p-3 rounded-lg border border-white/20 shadow-md backdrop-blur-xs">
                     {String(index + 1).padStart(2, '0')} / {item.image.caption}
                   </div>
                 )}
@@ -132,7 +150,6 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
                     class:list={[
                       'mb-5 text-xs font-bold uppercase tracking-[0.3em]',
                       theme.accent,
-                      'opacity-70',
                     ]}>
                     {item.eyebrow}
                   </p>
@@ -147,7 +164,6 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
                     class:list={[
                       'mt-5 text-base leading-relaxed',
                       theme.muted,
-                      'opacity-70',
                     ]}>
                     {item.secondaryDescription}
                   </p>
