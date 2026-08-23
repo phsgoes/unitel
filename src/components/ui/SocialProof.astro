@@ -14,7 +14,6 @@ const {
   subtitle = 'Instituições de diferentes segmentos que fazem parte da nossa trajetória',
 } = Astro.props
 
-// Source of truth
 const clients = [
   { name: 'Andro', path: '../../assets/images/clientes/saude/andro.avif' },
   {
@@ -221,7 +220,7 @@ const commercialClients = resolveClients('/comercial/')
           class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
           {
             healthClients.map((client) => (
-              <li class="relative flex items-center justify-center shrink-0 group/item active:grayscale-0">
+              <li class="client-item relative flex items-center justify-center shrink-0 group/item select-none">
                 <Image
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
@@ -229,13 +228,13 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
-                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 group-active/item:grayscale-0 group-active/item:opacity-100 group-active/item:dark:invert-0 will-change-[filter,opacity]"
+                  draggable={false}
+                  class="client-image h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 in-[.is-touched]:grayscale-0 in-[.is-touched]:opacity-100 in-[.is-touched]:dark:invert-0 will-change-[filter,opacity] pointer-events-none"
                 />
-                {/* Tooltip CSS com resguardo de altura e setinha */}
                 <span
                   role="tooltip"
                   aria-hidden="true"
-                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
+                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 [.is-touched_&]:opacity-100 in-[.is-touched]:translate-y-0 in-[.is-touched]:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
                   {client.name}
                 </span>
               </li>
@@ -247,7 +246,7 @@ const commercialClients = resolveClients('/comercial/')
           aria-hidden="true">
           {
             healthClients.map((client) => (
-              <li class="relative flex items-center justify-center shrink-0 group/item active:grayscale-0">
+              <li class="client-item relative flex items-center justify-center shrink-0 group/item select-none">
                 <Image
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
@@ -255,11 +254,12 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
-                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 group-active/item:grayscale-0 group-active/item:opacity-100 group-active/item:dark:invert-0 will-change-[filter,opacity]"
+                  draggable={false}
+                  class="client-image h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 in-[.is-touched]:grayscale-0 in-[.is-touched]:opacity-100 in-[.is-touched]:dark:invert-0 will-change-[filter,opacity] pointer-events-none"
                 />
                 <span
                   role="tooltip"
-                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
+                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 in-[.is-touched]:opacity-100 in-[.is-touched]:translate-y-0 in-[.is-touched]:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
                   {client.name}
                 </span>
               </li>
@@ -278,7 +278,7 @@ const commercialClients = resolveClients('/comercial/')
           class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
           {
             commercialClients.map((client) => (
-              <li class="relative flex items-center justify-center shrink-0 group/item active:grayscale-0">
+              <li class="client-item relative flex items-center justify-center shrink-0 group/item select-none">
                 <Image
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
@@ -286,12 +286,13 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
-                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 group-active/item:grayscale-0 group-active/item:opacity-100 group-active/item:dark:invert-0 will-change-[filter,opacity]"
+                  draggable={false}
+                  class="client-image h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 in-[.is-touched]:grayscale-0 in-[.is-touched]:opacity-100 in-[.is-touched]:dark:invert-0 will-change-[filter,opacity] pointer-events-none"
                 />
                 <span
                   role="tooltip"
                   aria-hidden="true"
-                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
+                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 in-[.is-touched]:opacity-100 in-[.is-touched]:translate-y-0 in-[.is-touched]:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
                   {client.name}
                 </span>
               </li>
@@ -303,7 +304,7 @@ const commercialClients = resolveClients('/comercial/')
           aria-hidden="true">
           {
             commercialClients.map((client) => (
-              <li class="relative flex items-center justify-center shrink-0 group/item active:grayscale-0">
+              <li class="client-item relative flex items-center justify-center shrink-0 group/item select-none">
                 <Image
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
@@ -311,11 +312,12 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
-                  class="h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 group-active/item:grayscale-0 group-active/item:opacity-100 group-active/item:dark:invert-0 will-change-[filter,opacity]"
+                  draggable={false}
+                  class="client-image h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 in-[.is-touched]:grayscale-0 in-[.is-touched]:opacity-100 in-[.is-touched]:dark:invert-0 will-change-[filter,opacity] pointer-events-none"
                 />
                 <span
                   role="tooltip"
-                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
+                  class="pointer-events-none absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 opacity-0 translate-y-1 scale-95 group-hover/item:opacity-100 group-hover/item:translate-y-0 group-hover/item:scale-100 in-[.is-touched]:opacity-100 in-[.is-touched]:translate-y-0 in-[.is-touched]:scale-100 transition-all duration-200 ease-out whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold shadow-lg border border-slate-700/10 dark:border-slate-200/10 z-20 bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-slate-900 dark:after:border-t-slate-100">
                   {client.name}
                 </span>
               </li>
@@ -327,7 +329,38 @@ const commercialClients = resolveClients('/comercial/')
   </div>
 </section>
 
+<script>
+  // Gerenciamento dinâmico do estado de toque imediato
+  const items = document.querySelectorAll('.client-item')
+
+  items.forEach((item) => {
+    const handleTouchStart = () => {
+      // Remove de outros elementos para garantir que só 1 fique colorido por vez
+      items.forEach((i) => i.classList.remove('is-touched'))
+      item.classList.add('is-touched')
+    }
+
+    const handleTouchEnd = () => {
+      item.classList.remove('is-touched')
+    }
+
+    // Escuta eventos de ponteiro para cobrir qualquer tipo de toque mobile
+    item.addEventListener('pointerdown', handleTouchStart, { passive: true })
+    item.addEventListener('pointerup', handleTouchEnd, { passive: true })
+    item.addEventListener('pointercancel', handleTouchEnd, { passive: true })
+    item.addEventListener('pointerleave', handleTouchEnd, { passive: true })
+  })
+</script>
+
 <style>
+  /* Bloqueia seleção e menu nativo de toque longo no mobile */
+  .client-item {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
   .mask-gradient::before,
   .mask-gradient::after {
     content: '';
@@ -374,8 +407,11 @@ const commercialClients = resolveClients('/comercial/')
     will-change: transform;
   }
 
-  .marquee-container:hover {
-    animation-play-state: paused;
+  /* Aplica a pausa do carrossel no hover APENAS para mouses/desktops */
+  @media (hover: hover) {
+    .marquee-container:hover {
+      animation-play-state: paused;
+    }
   }
 
   .marquee-left {
@@ -384,21 +420,6 @@ const commercialClients = resolveClients('/comercial/')
 
   .marquee-right {
     animation: scroll-right var(--animation-duration, 30s) linear infinite;
-  }
-
-  /* Aplica a pausa do carrossel no hover APENAS em telas com mouse */
-  @media (hover: hover) {
-    .marquee-container:hover {
-      animation-play-state: paused;
-    }
-  }
-
-  /* Garante suporte a toque/foco nas imagens sem travar */
-  @media (hover: hover) {
-    .group\/item:hover .group-hover\/item\:grayscale-0 {
-      filter: grayscale(0%);
-      opacity: 1;
-    }
   }
 
   @keyframes scroll-left {
