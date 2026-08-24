@@ -7,6 +7,14 @@
 }
 
 @font-face {
+  font-family: 'Onest';
+  src: url('../assets/fonts/onest.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Yellowtail';
   src: url('../assets/fonts/yellowtail.woff2') format('woff2');
   font-weight: 400;

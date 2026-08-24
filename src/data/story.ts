@@ -22,6 +22,7 @@ export const storyItems: StoryRevealItem[] = [
       'O ComuniQ é a solução definitiva para empresas que buscam flexibilidade e inovação na comunicação empresarial. Nossa plataforma digital opera totalmente em nuvem, garantindo maior escalabilidade, segurança e acessibilidade.',
     secondaryDescription:
       'Esta é de fato uma plataforma de comunicação em nuvem para empresas que querem escalar e simplificar.',
+    linkTo: '/solucoes/comuniq',
   },
   {
     backgroundColor: '#24151b',
@@ -38,6 +39,7 @@ export const storyItems: StoryRevealItem[] = [
       'A nossa solução de Call Center é pensada para otimizar o atendimento, melhorar a experiência do cliente e gerar dados estratégicos. Com recursos avançados de monitoramento, relatórios, gravação e integração omnichannel, ajudamos sua empresa a transformar atendimento em relacionamento, com mais controle, eficiência e profissionalismo.',
     secondaryDescription:
       'Maximize a produtividade do seu call center com tecnologia de ponta. Oferecemos soluções completas para atendimento eficiente, incluindo filas de chamadas, URA Multinível e integração com CRMs.',
+    linkTo: '/solucoes/call-center',
   },
   {
     backgroundColor: '#17221d',
@@ -54,6 +56,7 @@ export const storyItems: StoryRevealItem[] = [
       'Projetamos e implantamos infraestruturas de rede estruturada que garantem desempenho, segurança e estabilidade para ambientes empresariais. Nossas soluções seguem padrões técnicos rigorosos, permitindo crescimento organizado, alta performance de dados, voz e imagem, além de facilitar manutenções e futuras expansões. A base sólida que sustenta todas as suas operações digitais.',
     secondaryDescription:
       'Com organização e padronização da infraestrutura, facilitam a manutenção, reduzem falhas e suportam o crescimento tecnológico.',
+    linkTo: '/solucoes/redes-estruturadas',
   },
   {
     backgroundColor: '#111827',
@@ -70,6 +73,7 @@ export const storyItems: StoryRevealItem[] = [
       'Pensando nas rigidez e exigências das normas de segurança e saúde no trabalaho, desenvolvemos uma solução específica para gerenciamento de riscos operacionais.',
     secondaryDescription:
       'A Ouvidoria ACOLHER+ é um canal seguro, confidencial e tecnológico criado para receber, tratar e encaminhar denúncias relacionadas a assédio e condutas inadequadas, garantindo proteção à vítima e integridade institucional.',
+    linkTo: '/solucoes/ouvidoria-digital',
   },
   {
     backgroundColor: '#3a0e58',
@@ -86,5 +90,6 @@ export const storyItems: StoryRevealItem[] = [
       'Transforme sua comunicação com um sistema de telefonia moderna, segura e escalável.',
     secondaryDescription:
       'Nossa tecnologia IP proporciona mais qualidade e flexibilidade para chamadas empresariais.',
+    linkTo: '/solucoes/telefonia-ip',
   },
 ]

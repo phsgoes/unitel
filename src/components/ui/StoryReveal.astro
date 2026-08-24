@@ -15,6 +15,7 @@ export interface StoryRevealItem {
   accentColor: StoryRevealColor
   description: string
   secondaryDescription: string
+  linkTo?: string
 }
 
 export type StoryRevealColor = 'zinc' | 'emerald' | 'blue' | 'rose' | 'slate'
@@ -42,7 +43,7 @@ const themes: Record<
   zinc: {
     text: 'text-white',
     muted: 'text-slate-100',
-    accent: 'text-white',
+    accent: 'text-slate-300',
     divider: 'bg-white',
     overlay: 'bg-gradient-to-r from-black/20 to-transparent',
   },
@@ -74,7 +75,7 @@ const themes: Record<
   slate: {
     text: 'text-white',
     muted: 'text-slate-100',
-    accent: 'text-slate-200',
+    accent: 'text-red-300',
     divider: 'bg-slate-300',
     overlay: 'bg-black/20',
   },
@@ -133,8 +134,16 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
                 <div class:list={['absolute inset-0', theme.overlay]} />
 
                 {item.image.caption && (
-                  <div class="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] bg-black/85 text-white px-2.5 py-1.5 sm:p-3 rounded-lg border border-white/20 shadow-md backdrop-blur-xs">
-                    {String(index + 1).padStart(2, '0')} / {item.image.caption}
+                  <div class="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] bg-black/85 text-white rounded-lg border border-white/20 shadow-md backdrop-blur-xs">
+                    <a
+                      href={new URL(item.linkTo || '', Astro.site).href}
+                      aria-label={`Item ${String(index + 1).padStart(2, '0')}: ${item.image.caption}`}
+                      class="flex w-full h-full px-2.5 py-1.5 sm:p-3">
+                      <span aria-hidden="true">
+                        {String(index + 1).padStart(2, '0')} /
+                      </span>
+                      {item.image.caption}
+                    </a>
                   </div>
                 )}
               </div>

@@ -6,6 +6,7 @@ import aboutImage from '@/assets/images/og-unitel.png'
 import { breadcrumbGenerator } from '@/seo/breadcrumb'
 import { absoluteUrl } from '@/data/site'
 import about from '@/seo/about'
+import CompanyPurpose from '@/components/ui/CompanyPurpose.astro'
 
 const timelineItems = [
   {
@@ -179,6 +180,7 @@ const breadcrumbListItem = breadcrumbGenerator([
       </div>
     </div>
   </div>
+  <CompanyPurpose />
 </PageLayout>
 
 <script>
