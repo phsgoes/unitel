@@ -14,8 +14,7 @@ import { Icon } from 'astro-icon/components'
   <Icon name="mdi:weather-sunny" class="shrink-0 size-5 dark:hidden" />
 </button>
 
-<script is:inline>
-  // Utility to obtain current resolved theme
+<script>
   function getPreferredTheme() {
     const stored = localStorage.getItem('theme') || localStorage.getItem('color-mode')
     if (stored) return stored
@@ -24,14 +23,7 @@ import { Icon } from 'astro-icon/components'
       : 'light'
   }
 
-  // Applies the theme class and syncs state
-  function applyTheme() {
-    const theme = getPreferredTheme()
-    const isDark = theme === 'dark'
-
-    document.documentElement.classList.toggle('dark', isDark)
-
-    // Update aria-label dynamically for accessibility
+  function updateToggleAria(isDark: boolean) {
     const toggleBtn = document.getElementById('theme-toggle')
     if (toggleBtn) {
       toggleBtn.setAttribute(
@@ -41,33 +33,28 @@ import { Icon } from 'astro-icon/components'
     }
   }
 
-  // Toggles theme state on click
   function toggleTheme() {
     const currentTheme = getPreferredTheme()
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
 
     localStorage.setItem('theme', newTheme)
     localStorage.setItem('color-mode', newTheme)
-    applyTheme()
+    const isDark = newTheme === 'dark'
+    document.documentElement.classList.toggle('dark', isDark)
+    updateToggleAria(isDark)
   }
 
-  // Initialize theme
-  applyTheme()
-
-  // Attach click handler (runs on initial load & after view transitions)
   function setupThemeToggle() {
     const toggleBtn = document.getElementById('theme-toggle')
     if (toggleBtn && !toggleBtn.dataset.themeBound) {
       toggleBtn.addEventListener('click', toggleTheme)
       toggleBtn.dataset.themeBound = 'true'
+      updateToggleAria(document.documentElement.classList.contains('dark'))
     }
   }
 
   setupThemeToggle()
 
-  // Handle Astro View Transitions re-renders smoothly
-  document.addEventListener('astro:after-swap', () => {
-    applyTheme()
-    setupThemeToggle()
-  })
+  document.addEventListener('astro:page-load', setupThemeToggle)
+  document.addEventListener('astro:after-swap', setupThemeToggle)
 </script>

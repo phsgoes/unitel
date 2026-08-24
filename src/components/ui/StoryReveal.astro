@@ -379,26 +379,50 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
       })
     }
 
-    window.addEventListener('scroll', requestUpdate, { passive: true })
+    let isVisible = false
+    const observer = typeof IntersectionObserver !== 'undefined'
+      ? new IntersectionObserver(
+          (entries) => {
+            const hasVisible = entries.some((entry) => entry.isIntersecting)
+            if (hasVisible && !isVisible) {
+              isVisible = true
+              window.addEventListener('scroll', requestUpdate, { passive: true })
+              requestUpdate()
+            } else if (!hasVisible && isVisible) {
+              isVisible = false
+              window.removeEventListener('scroll', requestUpdate)
+            }
+          },
+          { rootMargin: '200px 0px' },
+        )
+      : null
+
+    function setupObserver() {
+      collectComponents()
+      if (observer) {
+        components.forEach((c) => observer.observe(c))
+      } else {
+        window.addEventListener('scroll', requestUpdate, { passive: true })
+        requestUpdate()
+      }
+    }
+
     window.addEventListener(
       'resize',
       () => {
         collectComponents()
-        requestUpdate()
+        if (isVisible) requestUpdate()
       },
       { passive: true },
     )
 
     document.addEventListener('astro:page-load', () => {
-      collectComponents()
-      requestUpdate()
+      setupObserver()
     })
     document.addEventListener('astro:after-swap', () => {
-      collectComponents()
-      requestUpdate()
+      setupObserver()
     })
 
-    collectComponents()
-    requestUpdate()
+    setupObserver()
   }
 </script>

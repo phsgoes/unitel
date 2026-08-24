@@ -13,6 +13,10 @@ export default defineConfig({
   site: SITE_URL,
   base: SITE_BASE,
 
+  build: {
+    inlineStylesheets: 'always',
+  },
+
   vite: {
     plugins: [tailwindcss(), stubViteClientEntryPlugin()],
   },
