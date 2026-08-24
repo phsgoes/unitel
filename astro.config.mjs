@@ -4,9 +4,7 @@ import sitemap from '@astrojs/sitemap'
 import icon from 'astro-icon'
 import { stubViteClientEntryPlugin } from './scripts/stub-vite-client-entry.mjs'
 
-export const SITE_URL = import.meta.env.PROD
-  ? 'https://unitel-liard.vercel.app'
-  : 'http://localhost:4321'
+export const SITE_URL = import.meta.env.PROD ? 'https://unitel-liard.vercel.app' : 'http://localhost:4321'
 export const SITE_BASE = '/'
 
 export default defineConfig({
@@ -24,7 +22,6 @@ export default defineConfig({
   image: {
     remotePatterns: [
       { protocol: 'https', hostname: 'eu-west-2.graphassets.com' },
-      { protocol: 'https', hostname: 'upload.wikimedia.org' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'tailwindcss.com' },
     ],

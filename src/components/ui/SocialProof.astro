@@ -194,7 +194,7 @@ const commercialClients = resolveClients('/comercial/')
 
 <section
   aria-labelledby="social-proof-title"
-  class="w-full min-h-screen py-16 bg-default overflow-hidden flex flex-col justify-center gap-8 md:gap-12 transition-colors duration-300">
+  class="w-full min-h-screen py-16 bg-default overflow-hidden flex flex-col justify-center gap-8 md:gap-12 transition-colors duration-300 content-visibility-auto">
   <header class="text-center px-4 max-w-4xl mx-auto flex flex-col gap-3">
     <h2
       id="social-proof-title"
@@ -218,9 +218,10 @@ const commercialClients = resolveClients('/comercial/')
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
                   height={56}
-                  quality="low"
+                  quality={60}
                   format="avif"
                   loading="lazy"
+                  decoding="async"
                   draggable={false}
                   class="client-image h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 in-[.is-touched]:grayscale-0 in-[.is-touched]:opacity-100 in-[.is-touched]:dark:invert-0 will-change-[filter,opacity] pointer-events-none"
                 />
@@ -245,6 +246,7 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
+                  decoding="async"
                   draggable={false}
                   class="client-image h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 in-[.is-touched]:grayscale-0 in-[.is-touched]:opacity-100 in-[.is-touched]:dark:invert-0 will-change-[filter,opacity] pointer-events-none"
                 />
@@ -274,6 +276,7 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
+                  decoding="async"
                   draggable={false}
                   class="client-image h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 in-[.is-touched]:grayscale-0 in-[.is-touched]:opacity-100 in-[.is-touched]:dark:invert-0 will-change-[filter,opacity] pointer-events-none"
                 />
@@ -298,6 +301,7 @@ const commercialClients = resolveClients('/comercial/')
                   quality={60}
                   format="avif"
                   loading="lazy"
+                  decoding="async"
                   draggable={false}
                   class="client-image h-10 sm:h-12 md:h-14 w-auto object-contain grayscale opacity-80 dark:invert-[0.15] transition-all duration-300 ease-in-out group-hover/item:grayscale-0 group-hover/item:opacity-100 group-hover/item:dark:invert-0 in-[.is-touched]:grayscale-0 in-[.is-touched]:opacity-100 in-[.is-touched]:dark:invert-0 will-change-[filter,opacity] pointer-events-none"
                 />
@@ -316,8 +320,8 @@ const commercialClients = resolveClients('/comercial/')
 </section>
 
 <script>
-  // Executa no carregamento inicial E a cada navegação de página do ViewTransitions
-  document.addEventListener('astro:page-load', () => {
+  // Executa com prioridade ociosa para não travar FCP e Speed Index
+  function initClientTouch() {
     const items = document.querySelectorAll('.client-item')
 
     items.forEach((item) => {
@@ -336,7 +340,17 @@ const commercialClients = resolveClients('/comercial/')
       item.addEventListener('pointercancel', handleTouchEnd, { passive: true })
       item.addEventListener('pointerleave', handleTouchEnd, { passive: true })
     })
-  })
+  }
+
+  function scheduleInit() {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => initClientTouch(), { timeout: 2000 })
+    } else {
+      setTimeout(initClientTouch, 200)
+    }
+  }
+
+  document.addEventListener('astro:page-load', scheduleInit)
 </script>
 
 <style>

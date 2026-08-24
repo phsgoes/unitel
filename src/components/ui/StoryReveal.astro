@@ -200,6 +200,8 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
   .story-stage {
     position: relative;
     height: calc(var(--story-count, 5) * 100svh);
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 100svh;
   }
 
   .story-panel {
