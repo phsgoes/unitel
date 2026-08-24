@@ -1,6 +1,7 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro'
 import ImageZoom from '@/components/ui/ImageZoom.astro'
+import ImageProvider from '@/components/ui/ImageProvider.astro'
 import Breadcrumb from '@/components/ui/Breadcrumb.astro'
 import aboutImage from '@/assets/images/og-unitel.png'
 import { breadcrumbGenerator } from '@/seo/breadcrumb'
@@ -181,6 +182,7 @@ const breadcrumbListItem = breadcrumbGenerator([
     </div>
   </div>
   <CompanyPurpose />
+  <ImageProvider />
 </PageLayout>
 
 <script>

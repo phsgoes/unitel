@@ -7,14 +7,12 @@ import ogUnitelImage from '@/assets/images/og-unitel.png'
 import Header from '@/components/ui/Header.astro'
 import Footer from '@/components/ui/Footer.astro'
 import Main from '@/components/ui/Main.astro'
-import ImageProvider from '@/components/ui/ImageProvider.astro'
 
 import JsonLdSchemas from '@/seo/JsonLdSchemas.astro'
 import organization from '@/seo/organization'
 import website from '@/seo/website'
 import { site } from '@/data/site'
-import googleSansFont from '@/assets/fonts/google-sans-flex.woff2'
-import yellowtailFont from '@/assets/fonts/yellowtail.woff2'
+import onestFont from '@/assets/fonts/onest.woff2'
 import WhatsappFab from '@/components/ui/WhatsappFab.astro'
 
 interface Props {
@@ -48,14 +46,7 @@ const {
     <meta charset="utf-8" />
     <link
       rel="preload"
-      href={googleSansFont}
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href={yellowtailFont}
+      href={onestFont}
       as="font"
       type="font/woff2"
       crossorigin
@@ -124,7 +115,6 @@ const {
         <WhatsappFab />
       </section>
       <Footer />
-      <ImageProvider />
     </Main>
   </body>
 </html>
