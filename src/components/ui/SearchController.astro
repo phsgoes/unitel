@@ -3,80 +3,77 @@
 ---
 
 <script>
-  import type Fuse from 'fuse.js';
-  import type { SearchPost } from '@/types';
+  import type Fuse from 'fuse.js'
+  import type { SearchPost } from '@/types'
 
-  let fuseInstance: Fuse<SearchPost> | null = null;
-  let isFetching = false;
+  let fuseInstance: Fuse<SearchPost> | null = null
+  let isFetching = false
 
   async function initFuse() {
-    if (fuseInstance || isFetching) return;
-    isFetching = true;
+    if (fuseInstance || isFetching) return
+    isFetching = true
 
     try {
-      const [{ default: FuseModule }, response] = await Promise.all([
-        import('fuse.js'),
-        fetch('/search.json'),
-      ]);
-      const posts: SearchPost[] = await response.json();
+      const [{ default: FuseModule }, response] = await Promise.all([import('fuse.js'), fetch('/search.json')])
+      const posts: SearchPost[] = await response.json()
 
       fuseInstance = new FuseModule(posts, {
         keys: ['title', 'description', 'categories.name'],
         threshold: 0.35, // Sensibilidade da busca
         ignoreLocation: true,
-      });
+      })
     } catch (error) {
-      console.error('Erro ao carregar dados da busca:', error);
+      console.error('Erro ao carregar dados da busca:', error)
     } finally {
-      isFetching = false;
+      isFetching = false
     }
   }
 
   function setupSearchLogic() {
-    const input = document.getElementById('blog-search-input') as HTMLInputElement | null;
-    const grid = document.getElementById('posts-grid');
-    const pagination = document.getElementById('pagination-container');
+    const input = document.getElementById('blog-search-input') as HTMLInputElement | null
+    const grid = document.getElementById('posts-grid')
+    const pagination = document.getElementById('pagination-container')
 
-    if (!input || !grid) return;
+    if (!input || !grid) return
 
     // Guarda o HTML original do grid e da paginação para restaurar quando o campo for limpo
-    const originalGridHTML = grid.innerHTML;
-    const originalPaginationDisplay = pagination ? pagination.style.display : '';
+    const originalGridHTML = grid.innerHTML
+    const originalPaginationDisplay = pagination ? pagination.style.display : ''
 
     // Pré-carrega o índice ao passar o mouse ou focar no input
-    input.addEventListener('focus', initFuse, { once: true });
-    input.addEventListener('mouseenter', initFuse, { once: true });
+    input.addEventListener('focus', initFuse, { once: true })
+    input.addEventListener('mouseenter', initFuse, { once: true })
 
     input.addEventListener('input', async (e) => {
-      const query = (e.target as HTMLInputElement).value.trim();
+      const query = (e.target as HTMLInputElement).value.trim()
 
       if (!query) {
-        grid.innerHTML = originalGridHTML;
-        if (pagination) pagination.style.display = originalPaginationDisplay;
-        return;
+        grid.innerHTML = originalGridHTML
+        if (pagination) pagination.style.display = originalPaginationDisplay
+        return
       }
 
-      if (!fuseInstance) await initFuse();
-      if (!fuseInstance) return;
+      if (!fuseInstance) await initFuse()
+      if (!fuseInstance) return
 
-      const results = fuseInstance.search(query);
+      const results = fuseInstance.search(query)
 
       // Oculta a paginação padrão durante a busca ativa
-      if (pagination) pagination.style.display = 'none';
+      if (pagination) pagination.style.display = 'none'
 
       if (results.length === 0) {
         grid.innerHTML = `
           <div class="col-span-full py-12 text-center text-muted">
             Nenhum artigo encontrado para "<span class="font-semibold text-highlighted">${query}</span>".
           </div>
-        `;
-        return;
+        `
+        return
       }
 
       // Renderiza os resultados buscados no grid
       grid.innerHTML = results
         .map(({ item }) => {
-          const categories = item.categories?.map(c => c.name).join(' · ') || '';
+          const categories = item.categories?.map((c) => c.name).join(' · ') || 'Sem categoria'
           return `
             <article class="group relative flex flex-col items-start justify-between rounded-2xl border border-default p-6 transition-colors hover:bg-elevated/50">
               <div>
@@ -94,11 +91,11 @@
                 </p>
               </div>
             </article>
-          `;
+          `
         })
-        .join('');
-    });
+        .join('')
+    })
   }
 
-  document.addEventListener('astro:page-load', setupSearchLogic);
+  document.addEventListener('astro:page-load', setupSearchLogic)
 </script>
