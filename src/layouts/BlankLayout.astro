@@ -2,6 +2,7 @@
 import '@/styles/global.css'
 import { ClientRouter } from 'astro:transitions'
 import onestFont from '@/assets/fonts/onest.woff2'
+import yellowtailFont from '@/assets/fonts/yellowtail.woff2'
 import { site } from '@/data/site'
 
 const {
@@ -16,6 +17,7 @@ const {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preload" href={onestFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={yellowtailFont} as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="manifest" href="/site.webmanifest" />

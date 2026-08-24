@@ -13,6 +13,7 @@ import organization from '@/seo/organization'
 import website from '@/seo/website'
 import { site } from '@/data/site'
 import onestFont from '@/assets/fonts/onest.woff2'
+import yellowtailFont from '@/assets/fonts/yellowtail.woff2'
 import WhatsappFab from '@/components/ui/WhatsappFab.astro'
 
 interface Props {
@@ -47,6 +48,13 @@ const {
     <link
       rel="preload"
       href={onestFont}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href={yellowtailFont}
       as="font"
       type="font/woff2"
       crossorigin

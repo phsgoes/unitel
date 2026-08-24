@@ -7,6 +7,7 @@ import Footer from '@/components/ui/Footer.astro'
 import Main from '@/components/ui/Main.astro'
 import type { Post } from '@/types'
 import onestFont from '@/assets/fonts/onest.woff2'
+import yellowtailFont from '@/assets/fonts/yellowtail.woff2'
 import WhatsappFab from '@/components/ui/WhatsappFab.astro'
 
 import JsonLdSchemas from '@/seo/JsonLdSchemas.astro'
@@ -40,6 +41,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
     <link
       rel="preload"
       href={onestFont}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href={yellowtailFont}
       as="font"
       type="font/woff2"
       crossorigin

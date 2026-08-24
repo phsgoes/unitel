@@ -173,10 +173,9 @@ const clients = [
   },
 ]
 
-const imageGlob = import.meta.glob<{ default: ImageMetadata }>(
-  '../../assets/images/clientes/**/*.avif',
-  { eager: true },
-)
+const imageGlob = import.meta.glob<{ default: ImageMetadata }>('../../assets/images/clientes/**/*.avif', {
+  eager: true,
+})
 
 const resolveClients = (segment: string) =>
   clients
@@ -185,9 +184,7 @@ const resolveClients = (segment: string) =>
       const module = imageGlob[client.path]
       return {
         ...client,
-        src: module
-          ? module.default
-          : (client.path as unknown as ImageMetadata),
+        src: module ? module.default : (client.path as unknown as ImageMetadata),
       }
     })
 
@@ -204,8 +201,7 @@ const commercialClients = resolveClients('/comercial/')
       class="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
       {title}
     </h2>
-    <p
-      class="text-sm md:text-base lg:text-lg text-slate-700 dark:text-slate-200 font-medium">
+    <p class="text-sm md:text-base lg:text-lg text-slate-700 dark:text-slate-200 font-medium">
       {subtitle}
     </p>
   </header>
@@ -213,11 +209,8 @@ const commercialClients = resolveClients('/comercial/')
   <div class="relative flex flex-col gap-4 w-full mask-gradient">
     {/* Primeira Linha (Saúde) - Direita para Esquerda */}
     <div class="relative w-full overflow-hidden pt-12 pb-4">
-      <div
-        class="marquee-container marquee-left"
-        style={`--animation-duration: ${speeds[0]}ms;`}>
-        <ul
-          class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
+      <div class="marquee-container marquee-left" style={`--animation-duration: ${speeds[0]}ms;`}>
+        <ul class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
           {
             healthClients.map((client) => (
               <li class="client-item relative flex items-center justify-center shrink-0 group/item select-none">
@@ -225,7 +218,7 @@ const commercialClients = resolveClients('/comercial/')
                   src={client.src}
                   alt={`Logomarca da empresa ${client.name}`}
                   height={56}
-                  quality={60}
+                  quality="low"
                   format="avif"
                   loading="lazy"
                   draggable={false}
@@ -241,9 +234,7 @@ const commercialClients = resolveClients('/comercial/')
             ))
           }
         </ul>
-        <ul
-          class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12"
-          aria-hidden="true">
+        <ul class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12" aria-hidden="true">
           {
             healthClients.map((client) => (
               <li class="client-item relative flex items-center justify-center shrink-0 group/item select-none">
@@ -271,11 +262,8 @@ const commercialClients = resolveClients('/comercial/')
 
     {/* Segunda Linha (Comercial) - Esquerda para Direita */}
     <div class="relative w-full overflow-hidden pt-12 pb-4">
-      <div
-        class="marquee-container marquee-right"
-        style={`--animation-duration: ${speeds[1]}ms;`}>
-        <ul
-          class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
+      <div class="marquee-container marquee-right" style={`--animation-duration: ${speeds[1]}ms;`}>
+        <ul class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12">
           {
             commercialClients.map((client) => (
               <li class="client-item relative flex items-center justify-center shrink-0 group/item select-none">
@@ -299,9 +287,7 @@ const commercialClients = resolveClients('/comercial/')
             ))
           }
         </ul>
-        <ul
-          class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12"
-          aria-hidden="true">
+        <ul class="flex items-center min-w-max gap-12 sm:gap-16 md:gap-24 px-6 md:px-12" aria-hidden="true">
           {
             commercialClients.map((client) => (
               <li class="client-item relative flex items-center justify-center shrink-0 group/item select-none">
@@ -387,20 +373,12 @@ const commercialClients = resolveClients('/comercial/')
 
   .mask-gradient::before {
     left: 0;
-    background: linear-gradient(
-      to right,
-      var(--mask-color, #ffffff),
-      transparent
-    );
+    background: linear-gradient(to right, var(--mask-color, #ffffff), transparent);
   }
 
   .mask-gradient::after {
     right: 0;
-    background: linear-gradient(
-      to left,
-      var(--mask-color, #ffffff),
-      transparent
-    );
+    background: linear-gradient(to left, var(--mask-color, #ffffff), transparent);
   }
 
   :global(.dark) .mask-gradient {
