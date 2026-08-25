@@ -242,10 +242,6 @@ html.dark,
 @utility ring-inverted {
   --tw-ring-color: var(--ui-border-inverted);
 }
-@utility content-visibility-auto {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 700px;
-}
 
 /* ------------------------------------------------------------------
    Base styles

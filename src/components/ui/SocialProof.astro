@@ -193,8 +193,9 @@ const commercialClients = resolveClients('/comercial/')
 ---
 
 <section
+  id="social-proof"
   aria-labelledby="social-proof-title"
-  class="w-full min-h-screen py-16 bg-default overflow-hidden flex flex-col justify-center gap-8 md:gap-12 transition-colors duration-300 content-visibility-auto">
+  class="w-full min-h-screen py-16 bg-default overflow-hidden flex flex-col justify-center gap-8 md:gap-12 transition-colors duration-300">
   <header class="text-center px-4 max-w-4xl mx-auto flex flex-col gap-3">
     <h2
       id="social-proof-title"
@@ -320,10 +321,29 @@ const commercialClients = resolveClients('/comercial/')
 </section>
 
 <script>
-  // Executa com prioridade ociosa para não travar FCP e Speed Index
-  function initClientTouch() {
-    const items = document.querySelectorAll('.client-item')
+  function initSocialProof() {
+    const section = document.getElementById('social-proof')
+    if (!section) return
 
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              section.classList.add('is-running')
+            } else {
+              section.classList.remove('is-running')
+            }
+          })
+        },
+        { rootMargin: '100px 0px' },
+      )
+      observer.observe(section)
+    } else {
+      section.classList.add('is-running')
+    }
+
+    const items = section.querySelectorAll('.client-item')
     items.forEach((item) => {
       const handleTouchStart = () => {
         items.forEach((i) => i.classList.remove('is-touched'))
@@ -334,7 +354,6 @@ const commercialClients = resolveClients('/comercial/')
         item.classList.remove('is-touched')
       }
 
-      // Pointer events com passive para não travar o scroll da página
       item.addEventListener('pointerdown', handleTouchStart, { passive: true })
       item.addEventListener('pointerup', handleTouchEnd, { passive: true })
       item.addEventListener('pointercancel', handleTouchEnd, { passive: true })
@@ -344,9 +363,9 @@ const commercialClients = resolveClients('/comercial/')
 
   function scheduleInit() {
     if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(() => initClientTouch(), { timeout: 2000 })
+      window.requestIdleCallback(() => initSocialProof(), { timeout: 2000 })
     } else {
-      setTimeout(initClientTouch, 200)
+      setTimeout(initSocialProof, 200)
     }
   }
 
@@ -408,16 +427,23 @@ const commercialClients = resolveClients('/comercial/')
 
   @media (hover: hover) {
     .marquee-container:hover {
-      animation-play-state: paused;
+      animation-play-state: paused !important;
     }
   }
 
   .marquee-left {
     animation: scroll-left var(--animation-duration, 30s) linear infinite;
+    animation-play-state: paused;
   }
 
   .marquee-right {
     animation: scroll-right var(--animation-duration, 30s) linear infinite;
+    animation-play-state: paused;
+  }
+
+  :global(.is-running) .marquee-left,
+  :global(.is-running) .marquee-right {
+    animation-play-state: running;
   }
 
   @keyframes scroll-left {

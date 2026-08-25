@@ -23,6 +23,7 @@ interface Props {
   imageWidth?: number
   imageHeight?: number
   canonicalUrl?: string
+  preloadImage?: string | { src: string; srcset?: string; sizes?: string }
   jsonLdSchemas?: Array<{ [key: string]: unknown }>
 }
 
@@ -36,6 +37,7 @@ const {
   imageWidth = ogUnitelImage.width || 1200,
   imageHeight = ogUnitelImage.height || 630,
   canonicalUrl = `${new URL(Astro.url.pathname, Astro.site)}`,
+  preloadImage = undefined,
   jsonLdSchemas = [],
 } = Astro.props
 ---
@@ -45,6 +47,23 @@ const {
   <head>
     <meta charset="utf-8" />
     <link rel="preload" href={onestFont} as="font" type="font/woff2" crossorigin />
+    {
+      preloadImage && typeof preloadImage === 'string' && (
+        <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
+      )
+    }
+    {
+      preloadImage && typeof preloadImage === 'object' && (
+        <link
+          rel="preload"
+          as="image"
+          href={preloadImage.src}
+          imagesrcset={preloadImage.srcset}
+          imagesizes={preloadImage.sizes}
+          fetchpriority="high"
+        />
+      )
+    }
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="manifest" href="/site.webmanifest" />

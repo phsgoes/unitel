@@ -1,7 +1,7 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro'
 
-import { Image } from 'astro:assets'
+import { Image, getImage } from 'astro:assets'
 import { Icon } from 'astro-icon/components'
 import { storyItems } from '@/data/story'
 import officeBackground from '@/assets/images/office-background.avif'
@@ -11,9 +11,23 @@ import SocialProof from '@/components/ui/SocialProof.astro'
 import StoryReveal from '@/components/ui/StoryReveal.astro'
 import LogoUnitel from '@/components/ui/LogoUnitel.astro'
 import Testimonials from '@/components/ui/Testimonials.astro'
+
+const heroOptimized = await getImage({
+  src: officeBackground,
+  widths: [640, 1024, 1440, 1920],
+  sizes: '100vw',
+  format: 'avif',
+  quality: 'low',
+})
 ---
 
-<PageLayout title="Home">
+<PageLayout
+  title="Home"
+  preloadImage={{
+    src: heroOptimized.src,
+    srcset: heroOptimized.srcSet.attribute,
+    sizes: '100vw',
+  }}>
   <section class="relative h-screen w-full overflow-hidden bg-neutral-900">
     <Image
       src={officeBackground}
@@ -23,12 +37,12 @@ import Testimonials from '@/components/ui/Testimonials.astro'
       sizes="100vw"
       loading="eager"
       fetchpriority="high"
-      decoding="async"
+      decoding="sync"
       quality="low"
       format="avif"
       class="absolute inset-0 h-full w-full object-cover object-center"
     />
-    <div class="absolute inset-0 bg-black/65 backdrop-blur-xs"></div>
+    <div class="absolute inset-0 bg-black/65"></div>
     <div class="relative z-10 flex h-full items-center justify-center px-6 text-center sm:px-12">
       <div class="max-w-3xl space-y-6">
         <h1 class="sr-only">Unitel Telecomunicações</h1>
