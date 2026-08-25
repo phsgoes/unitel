@@ -111,8 +111,7 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
                     alt={item.image.alt}
                     width="1200"
                     height="800"
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    fetchpriority={index === 0 ? 'high' : 'auto'}
+                    loading="lazy"
                     decoding="async"
                     class="h-full w-full object-cover"
                   />
@@ -124,8 +123,7 @@ const getTheme = (color: StoryRevealColor) => themes[color] ?? themes.zinc
                     sizes="(max-width: 768px) 100vw, 50vw"
                     quality={75}
                     format="avif"
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    fetchpriority={index === 0 ? 'high' : 'auto'}
+                    loading="lazy"
                     decoding="async"
                     class="h-full w-full object-cover"
                   />

@@ -4,7 +4,6 @@ import '@/styles/global.css'
 import { ClientRouter } from 'astro:transitions'
 import onestFont from '@/assets/fonts/onest.woff2'
 
-import AnalyticsLifecycle from '@/components/analytics/AnalyticsLifecycle.astro'
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics.astro'
 
 import { site } from '@/data/site'
@@ -24,6 +23,7 @@ const { title = site.defaultTitle, description = site.defaultDescription, htmlCl
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preload" href={onestFont} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -31,10 +31,6 @@ const { title = site.defaultTitle, description = site.defaultDescription, htmlCl
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <GoogleAnalytics />
-    <AnalyticsLifecycle />
-    <ClientRouter fallback="swap" />
-    <slot name="head" />
     <script is:inline>
       function applyTheme() {
         const stored = localStorage.getItem('theme') || localStorage.getItem('color-mode')
@@ -52,9 +48,12 @@ const { title = site.defaultTitle, description = site.defaultDescription, htmlCl
 
       document.addEventListener('astro:after-swap', applyTheme)
     </script>
+    <GoogleAnalytics />
+    <ClientRouter fallback="swap" />
   </head>
 
   <body>
     <slot />
   </body>
 </html>
+
