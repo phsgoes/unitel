@@ -20,21 +20,9 @@ const { title = site.defaultTitle, description = site.defaultDescription, htmlCl
 <!doctype html>
 <html lang="pt-BR" class={htmlClass}>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preload" href={onestFont} as="font" type="font/woff2" crossorigin />
-    <slot name="head" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <title>{title}</title>
     <script is:inline>
       function applyTheme() {
         const stored = localStorage.getItem('theme') || localStorage.getItem('color-mode')
-
         const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
         if (stored === 'dark' || (!stored && systemPrefersDark)) {
@@ -48,8 +36,19 @@ const { title = site.defaultTitle, description = site.defaultDescription, htmlCl
 
       document.addEventListener('astro:after-swap', applyTheme)
     </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" href={onestFont} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
     <GoogleAnalytics />
-    <ClientRouter fallback="swap" />
+    <ClientRouter fallback="none" />
   </head>
 
   <body>

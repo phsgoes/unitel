@@ -15,6 +15,8 @@ export default defineConfig({
     inlineStylesheets: 'always',
   },
 
+  prefetch: false,
+
   vite: {
     plugins: [tailwindcss(), stubViteClientEntryPlugin()],
   },
