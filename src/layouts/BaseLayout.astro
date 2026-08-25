@@ -1,7 +1,7 @@
 ---
 import '@/styles/global.css'
 
-import { ClientRouter } from 'astro:transitions'
+import LazyClientRouter from '@/components/transitions/LazyClientRouter.astro'
 import onestFont from '@/assets/fonts/onest.woff2'
 
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics.astro'
@@ -48,7 +48,7 @@ const { title = site.defaultTitle, description = site.defaultDescription, htmlCl
     <meta name="description" content={description} />
     <title>{title}</title>
     <GoogleAnalytics />
-    <ClientRouter fallback="none" />
+    <LazyClientRouter fallback="none" />
   </head>
 
   <body>

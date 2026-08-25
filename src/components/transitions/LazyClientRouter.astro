@@ -1,0 +1,143 @@
+---
+type Fallback = 'none' | 'animate' | 'swap'
+
+export interface Props {
+  fallback?: Fallback
+}
+
+const { fallback = 'none' } = Astro.props
+---
+
+<style is:global>
+  /* Route announcer */
+  .astro-route-announcer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+    width: 1px;
+    height: 1px;
+  }
+</style>
+<meta name="astro-view-transitions-enabled" content="true" />
+<meta name="astro-view-transitions-fallback" content={fallback} />
+<script>
+  let initialized = false
+
+  async function initRouter() {
+    if (initialized) return
+    initialized = true
+
+    const { supportsViewTransitions, navigate } = await import('astro:transitions/client')
+
+    function getFallback(): string {
+      const el = document.querySelector('[name="astro-view-transitions-fallback"]')
+      return el ? el.getAttribute('content') || 'none' : 'none'
+    }
+
+    function isReloadEl(el: HTMLElement | SVGAElement): boolean {
+      return el.dataset.astroReload !== undefined
+    }
+
+    let lastClickedElementLeavingWindow: EventTarget | null = null
+    const leavesWindow = (ev: MouseEvent) =>
+      (ev.button && ev.button !== 0) ||
+      ev.metaKey ||
+      ev.ctrlKey ||
+      ev.altKey ||
+      ev.shiftKey
+
+    if (supportsViewTransitions || getFallback() !== 'none') {
+      document.addEventListener('click', (ev) => {
+        let link = ev.target
+        lastClickedElementLeavingWindow = leavesWindow(ev) ? link : null
+        if (ev.composed) {
+          link = ev.composedPath()[0]
+        }
+        if (link instanceof Element) {
+          link = link.closest('a, area')
+        }
+        if (
+          !(link instanceof HTMLAnchorElement) &&
+          !(link instanceof SVGAElement) &&
+          !(link instanceof HTMLAreaElement)
+        )
+          return
+
+        const linkTarget = link instanceof HTMLElement ? link.target : link.target.baseVal
+        const href = link instanceof HTMLElement ? link.href : link.href.baseVal
+        const origin = new URL(href, location.href).origin
+        if (
+          isReloadEl(link) ||
+          link.hasAttribute('download') ||
+          !link.href ||
+          (linkTarget && linkTarget !== '_self') ||
+          origin !== location.origin ||
+          lastClickedElementLeavingWindow ||
+          ev.defaultPrevented
+        ) {
+          return
+        }
+        ev.preventDefault()
+        navigate(href, {
+          history: link.dataset.astroHistory === 'replace' ? 'replace' : 'auto',
+          sourceElement: link,
+        })
+      })
+
+      document.addEventListener('submit', (ev) => {
+        let el = ev.target as HTMLElement
+        const submitter = ev.submitter
+        const clickedWithKeys = submitter && submitter === lastClickedElementLeavingWindow
+        lastClickedElementLeavingWindow = null
+
+        if (el.tagName !== 'FORM' || ev.defaultPrevented || isReloadEl(el) || clickedWithKeys) {
+          return
+        }
+        const form = el as HTMLFormElement
+        const formData = new FormData(form, submitter)
+        const formAction =
+          typeof form.action === 'string' ? form.action : form.getAttribute('action')
+        const formMethod =
+          typeof form.method === 'string' ? form.method : form.getAttribute('method')
+        let action = submitter?.getAttribute('formaction') ?? formAction ?? location.pathname
+        const method = submitter?.getAttribute('formmethod') ?? formMethod ?? 'get'
+
+        if (method === 'dialog' || location.origin !== new URL(action, location.href).origin) {
+          return
+        }
+
+        const options: Record<string, unknown> = { sourceElement: submitter ?? form }
+        if (method === 'get') {
+          const params = new URLSearchParams(formData as unknown as Record<string, string>)
+          const url = new URL(action)
+          url.search = params.toString()
+          action = url.toString()
+        } else {
+          options.formData = formData
+        }
+
+        ev.preventDefault()
+        navigate(action, options)
+      })
+    }
+  }
+
+  const triggerEvents = ['pointerdown', 'touchstart', 'mouseover', 'keydown', 'scroll']
+  const onInteraction = () => {
+    triggerEvents.forEach((e) => window.removeEventListener(e, onInteraction))
+    initRouter()
+  }
+  triggerEvents.forEach((e) => window.addEventListener(e, onInteraction, { passive: true, once: true }))
+
+  if (document.readyState === 'complete') {
+    setTimeout(initRouter, 2500)
+  } else {
+    window.addEventListener('load', () => {
+      setTimeout(initRouter, 2500)
+    })
+  }
+</script>
