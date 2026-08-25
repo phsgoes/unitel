@@ -15,6 +15,11 @@ export default defineConfig({
     inlineStylesheets: 'always',
   },
 
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: 'hover',
+  },
+
   vite: {
     plugins: [tailwindcss(), stubViteClientEntryPlugin()],
   },
