@@ -361,15 +361,10 @@ const commercialClients = resolveClients('/comercial/')
     })
   }
 
-  function scheduleInit() {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(() => initSocialProof(), { timeout: 2000 })
-    } else {
-      setTimeout(initSocialProof, 200)
-    }
-  }
-
-  document.addEventListener('astro:page-load', scheduleInit)
+  initSocialProof()
+  document.addEventListener('DOMContentLoaded', initSocialProof)
+  document.addEventListener('astro:page-load', initSocialProof)
+  document.addEventListener('astro:after-swap', initSocialProof)
 </script>
 
 <style>
