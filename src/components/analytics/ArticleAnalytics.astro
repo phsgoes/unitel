@@ -1,0 +1,19 @@
+<script>
+  import { initArticleAnalytics } from '@/lib/analytics/article'
+
+  document.addEventListener('astro:page-load', () => {
+    const article = document.querySelector('[data-article]')
+
+    if (!(article instanceof HTMLElement)) {
+      return
+    }
+
+    const slug = article.dataset.articleSlug
+
+    if (!slug) {
+      return
+    }
+
+    initArticleAnalytics(slug)
+  })
+</script>

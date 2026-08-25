@@ -1,0 +1,53 @@
+---
+const gaId = import.meta.env.PUBLIC_GA4_ID
+---
+
+{gaId && (
+  <script is:inline define:vars={{ gaId }}>
+    (() => {
+      if (window.__UNITEL_GA_INITIALIZED__) return
+
+      window.__UNITEL_GA_INITIALIZED__ = true
+
+      window.dataLayer = window.dataLayer || []
+
+      window.gtag =
+        window.gtag ||
+        function () {
+          window.dataLayer.push(arguments)
+        }
+
+      window.gtag('js', new Date())
+
+      window.gtag('config', gaId, {
+        send_page_view: false,
+      })
+
+      const loadGoogleAnalytics = () => {
+        if (
+          document.querySelector(
+            `script[data-ga4="${gaId}"]`,
+          )
+        ) {
+          return
+        }
+
+        const script = document.createElement('script')
+
+        script.async = true
+        script.src =
+          `https://www.googletagmanager.com/gtag/js?id=${gaId}`
+
+        script.dataset.ga4 = gaId
+
+        document.head.appendChild(script)
+      }
+
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(loadGoogleAnalytics)
+      } else {
+        window.setTimeout(loadGoogleAnalytics, 1000)
+      }
+    })()
+  </script>
+)}

@@ -1,0 +1,11 @@
+<script>
+  import { trackPageView } from '@/lib/analytics/google'
+
+  if (!window.__UNITEL_ANALYTICS_LIFECYCLE__) {
+    window.__UNITEL_ANALYTICS_LIFECYCLE__ = true
+
+    document.addEventListener('astro:page-load', () => {
+      trackPageView()
+    })
+  }
+</script>

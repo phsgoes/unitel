@@ -1,9 +1,9 @@
 ---
-import '@/styles/global.css'
+import BaseLayout from './BaseLayout.astro'
 
-import { ClientRouter } from 'astro:transitions'
 import ogUnitelImage from '@/assets/images/og-unitel.png'
 
+import WhatsappFab from '@/components/ui/WhatsappFab.astro'
 import Header from '@/components/ui/Header.astro'
 import Footer from '@/components/ui/Footer.astro'
 import Main from '@/components/ui/Main.astro'
@@ -12,8 +12,6 @@ import JsonLdSchemas from '@/seo/JsonLdSchemas.astro'
 import organization from '@/seo/organization'
 import website from '@/seo/website'
 import { site } from '@/data/site'
-import onestFont from '@/assets/fonts/onest.woff2'
-import WhatsappFab from '@/components/ui/WhatsappFab.astro'
 
 interface Props {
   title?: string
@@ -23,8 +21,16 @@ interface Props {
   imageWidth?: number
   imageHeight?: number
   canonicalUrl?: string
-  preloadImage?: string | { src: string; srcset?: string; sizes?: string }
-  jsonLdSchemas?: Array<{ [key: string]: unknown }>
+  preloadImage?:
+    | string
+    | {
+        src: string
+        srcset?: string
+        sizes?: string
+      }
+  jsonLdSchemas?: Array<{
+    [key: string]: unknown
+  }>
 }
 
 const defaultOgImage = new URL(ogUnitelImage.src, Astro.site).href
@@ -42,11 +48,24 @@ const {
 } = Astro.props
 ---
 
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="preload" href={onestFont} as="font" type="font/woff2" crossorigin />
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head">
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={site.legalName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:type" content={imageType} />
+    <meta property="og:image:width" content={String(imageWidth)} />
+    <meta property="og:image:height" content={String(imageHeight)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" type="application/rss+xml" title={site.legalName} href={new URL('rss.xml', Astro.site)} />
     {
       preloadImage && typeof preloadImage === 'string' && (
         <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
@@ -64,61 +83,19 @@ const {
         />
       )
     }
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pt_BR" />
-    <meta property="og:site_name" content={site.legalName} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={image} />
-    <meta property="og:image:type" content={imageType} />
-    <meta property="og:image:width" content={String(imageWidth)} />
-    <meta property="og:image:height" content={String(imageHeight)} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={image} />
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" type="application/rss+xml" title={site.legalName} href={new URL('rss.xml', Astro.site)} />
-    <title>{title}</title>
     <JsonLdSchemas schemas={[organization, website, ...jsonLdSchemas]} />
-    <script is:inline>
-      function applyTheme() {
-        const stored =
-          typeof localStorage !== 'undefined' && (localStorage.getItem('theme') || localStorage.getItem('color-mode'))
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        if (stored === 'dark' || (!stored && systemPrefersDark)) {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
-        }
-      }
-      applyTheme()
-      document.addEventListener('astro:after-swap', applyTheme)
-    </script>
-    <ClientRouter fallback="swap" />
-  </head>
-  <body>
-    <Header />
-    <Main>
-      <section class="relative isolate">
-        <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div class="absolute -left-40 -top-40 size-128 rounded-full bg-primary/10 blur-3xl"></div>
-          <div class="absolute -right-40 top-1/3 size-112 rounded-full bg-primary/8 blur-3xl"></div>
-          <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent">
-          </div>
-        </div>
-        <slot />
-        <WhatsappFab />
-      </section>
-      <Footer />
-    </Main>
-  </body>
-</html>
+  </Fragment>
+  <Header />
+  <Main>
+    <section class="relative isolate">
+      <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div class="absolute -left-40 -top-40 size-128 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute -right-40 top-1/3 size-112 rounded-full bg-primary/8 blur-3xl"></div>
+        <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent"></div>
+      </div>
+      <slot />
+      <WhatsappFab />
+    </section>
+    <Footer />
+  </Main>
+</BaseLayout>

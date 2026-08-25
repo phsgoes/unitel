@@ -8,7 +8,6 @@ import ImageWithSkeleton from '@/components/ui/ImageWithSkeleton.astro'
 import Breadcrumb from '@/components/ui/Breadcrumb.astro'
 import { breadcrumbGenerator } from '@/seo/breadcrumb'
 import { absoluteUrl } from '@/data/site'
-// import about from '@/seo/about'
 
 import { getAllPosts } from '@/services/posts'
 
@@ -62,16 +61,11 @@ const breadcrumbListItem = breadcrumbGenerator([
   jsonLdSchemas={[breadcrumbListItem]}>
   <div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
     <Breadcrumb
-      items={[
-        { label: 'Início', href: '/' },
-        { label: 'Blog', href: '/blog' },
-        { label: `${post.title}` },
-      ]}
+      items={[{ label: 'Início', href: '/' }, { label: 'Blog', href: '/blog' }, { label: `${post.title}` }]}
     />
     <!-- Post hero -->
     <div class="relative border-b border-default py-8">
-      <div
-        class="mb-2.5 text-sm font-semibold text-primary flex items-center gap-1.5">
+      <div class="mb-2.5 text-sm font-semibold text-primary flex items-center gap-1.5">
         {
           Array.isArray(post.categories) && post.categories.length ? (
             post.categories.map((category: { name: string }) => (
@@ -86,16 +80,12 @@ const breadcrumbListItem = breadcrumbGenerator([
           )
         }
         <span class="text-muted">·</span>
-        <time datetime={post.publishedAt} class="text-muted"
-          >{longDateFormat(post.publishedAt)}</time
-        >
+        <time datetime={post.publishedAt} class="text-muted">{longDateFormat(post.publishedAt)}</time>
       </div>
 
       <div>
-        <div
-          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <h1
-            class="text-3xl sm:text-4xl text-pretty font-bold text-highlighted">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <h1 class="text-3xl sm:text-4xl text-pretty font-bold text-highlighted">
             {post.title}
           </h1>
         </div>
@@ -108,7 +98,7 @@ const breadcrumbListItem = breadcrumbGenerator([
     <!-- Content grid: article + "On this page" aside -->
     <div class="flex flex-col lg:grid lg:grid-cols-10 lg:gap-10">
       <div class="lg:col-span-8">
-        <div class="mt-8 pb-24 space-y-12">
+        <article data-article data-article-slug={post.slug} class="mt-8 pb-24 space-y-12">
           <ImageWithSkeleton
             transition:name={`cover-${post.slug}`}
             transition:animate="initial"
@@ -123,10 +113,10 @@ const breadcrumbListItem = breadcrumbGenerator([
 
           <RichText document={post.body.raw} references={toc} />
 
+          <div data-reading-progress="100" aria-hidden="true" class="pointer-events-none h-px w-px"></div>
+
           <!-- Separator -->
-          <div
-            role="separator"
-            class="flex items-center align-center text-center w-full flex-row">
+          <div role="separator" class="flex items-center align-center text-center w-full flex-row">
             <div class="border-default w-full border-solid border-t"></div>
           </div>
 
@@ -143,12 +133,8 @@ const breadcrumbListItem = breadcrumbGenerator([
                       class="size-5 shrink-0 text-highlighted group-hover:text-primary transition-[color,translate] group-active:-translate-x-0.5 rtl:group-active:translate-x-0.5"
                     />
                   </div>
-                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">
-                    {previousPost?.title}
-                  </p>
-                  <p class="text-sm text-muted line-clamp-2">
-                    {previousPost?.description}
-                  </p>
+                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">{previousPost?.title}</p>
+                  <p class="text-sm text-muted line-clamp-2">{previousPost?.description}</p>
                 </a>
               ) : (
                 <a
@@ -160,12 +146,8 @@ const breadcrumbListItem = breadcrumbGenerator([
                       class="size-5 shrink-0 text-highlighted group-hover:text-primary transition-[color,translate] group-active:-translate-x-0.5 rtl:group-active:translate-x-0.5"
                     />
                   </div>
-                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">
-                    Lista de Posts
-                  </p>
-                  <p class="text-sm text-muted line-clamp-2">
-                    Leia todos os nossos posts
-                  </p>
+                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">Lista de Posts</p>
+                  <p class="text-sm text-muted line-clamp-2">Leia todos os nossos posts</p>
                 </a>
               )
             }
@@ -180,12 +162,8 @@ const breadcrumbListItem = breadcrumbGenerator([
                       class="size-5 shrink-0 text-highlighted group-hover:text-primary transition-[color,translate] group-active:translate-x-0.5 rtl:group-active:-translate-x-0.5"
                     />
                   </div>
-                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">
-                    {nextPost?.title}
-                  </p>
-                  <p class="text-sm text-muted line-clamp-2">
-                    {nextPost?.description}
-                  </p>
+                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">{nextPost?.title}</p>
+                  <p class="text-sm text-muted line-clamp-2">{nextPost?.description}</p>
                 </a>
               ) : (
                 <a
@@ -197,42 +175,16 @@ const breadcrumbListItem = breadcrumbGenerator([
                       class="size-5 shrink-0 text-highlighted group-hover:text-primary transition-[color,translate] group-active:-translate-x-0.5 rtl:group-active:translate-x-0.5"
                     />
                   </div>
-                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">
-                    Lista de Posts
-                  </p>
-                  <p class="text-sm text-muted line-clamp-2">
-                    Leia todos os nossos posts
-                  </p>
+                  <p class="font-medium text-[15px] text-highlighted mb-1 truncate">Lista de Posts</p>
+                  <p class="text-sm text-muted line-clamp-2">Leia todos os nossos posts</p>
                 </a>
               )
             }
           </div>
-        </div>
+        </article>
       </div>
 
       <TableOfContents items={toc} />
     </div>
   </div>
 </BlogLayout>
-
-<script>
-  function setupBackButton() {
-    const backBtn = document.getElementById(
-      'back-to-blog',
-    ) as HTMLAnchorElement | null
-    if (!backBtn) return
-
-    // Recupera a última página de listagem visitada pelo usuário
-    const lastBlogPath = sessionStorage.getItem('lastBlogListPath')
-
-    if (lastBlogPath) {
-      backBtn.href = lastBlogPath
-    } else {
-      // Fallback caso o usuário tenha chegado de um link externo direto no post
-      backBtn.href = '/blog'
-    }
-  }
-
-  // Executa no carregamento inicial e a cada transição no Astro
-  document.addEventListener('astro:page-load', setupBackButton)
-</script>

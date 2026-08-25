@@ -1,0 +1,60 @@
+---
+import '@/styles/global.css'
+
+import { ClientRouter } from 'astro:transitions'
+import onestFont from '@/assets/fonts/onest.woff2'
+
+import AnalyticsLifecycle from '@/components/analytics/AnalyticsLifecycle.astro'
+import GoogleAnalytics from '@/components/analytics/GoogleAnalytics.astro'
+
+import { site } from '@/data/site'
+
+interface Props {
+  title?: string
+  description?: string
+  htmlClass?: string
+}
+
+const { title = site.defaultTitle, description = site.defaultDescription, htmlClass = '' } = Astro.props
+---
+
+<!doctype html>
+<html lang="pt-BR" class={htmlClass}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" href={onestFont} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <GoogleAnalytics />
+    <AnalyticsLifecycle />
+    <ClientRouter fallback="swap" />
+    <slot name="head" />
+    <script is:inline>
+      function applyTheme() {
+        const stored = localStorage.getItem('theme') || localStorage.getItem('color-mode')
+
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+
+        if (stored === 'dark' || (!stored && systemPrefersDark)) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+      }
+
+      applyTheme()
+
+      document.addEventListener('astro:after-swap', applyTheme)
+    </script>
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>
