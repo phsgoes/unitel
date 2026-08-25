@@ -181,7 +181,7 @@ html.dark,
 
 @theme {
   --font-sans: 'Onest', sans-serif;
-  --font-handwritten: 'Yellowtail', cursive;
+  --font-handwritten: 'Dancing Script', 'Caveat', 'Segoe Script', 'Brush Script MT', cursive;
 }
 
 @theme inline {
